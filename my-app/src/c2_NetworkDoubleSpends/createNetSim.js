@@ -38,7 +38,7 @@ class Spender extends Node {
 const numNodes = 5
 const wallets = []
 const genesis = {}
-const network = new NetworkSimulator(5, 0.1);
+const network = new NetworkSimulator(5, 0);
 for (let i = 0; i < numNodes; i++) {
   // Create new identity
   wallets.push(EthCrypto.createIdentity())

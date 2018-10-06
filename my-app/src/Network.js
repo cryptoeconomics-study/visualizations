@@ -89,22 +89,27 @@ for (const node of nodes) {
 
 const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
-async function run (steps) {
-  for (let i = 0; i < 300; i++) {
 
-    network.tick()
-    await delay(1000)
-    console.log(network)
-  }
-}
 
 class Network extends Component {
-  componentDidMount() {}
-  render() {
+  componentDidMount() {
+    this.history = []
     try {
-      run(300)
+      this.run(300).then(
+
+      )
     } catch (e) {
     }
+  }
+  async run (steps) {
+    for (let i = 0; i < 300; i++) {
+      network.tick()
+      await delay(1000)
+      this.history.push(network)
+      console.log(network)
+    }
+  }
+  render() {
     return (
         <div id = "Network-graph">
           <Graph
