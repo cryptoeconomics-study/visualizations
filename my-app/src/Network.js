@@ -19,6 +19,18 @@ import blockies from './blockies-svg.js'
 //   });
 // }
 
+
+const ICONS = [
+'https://i.imgur.com/Wi9yFXw.png',
+'https://i.imgur.com/BBUyb4e.png',
+'https://i.imgur.com/NPH4rqg.png',
+'https://i.imgur.com/MptO0GC.png',
+'https://i.imgur.com/yHwPVBF.png',
+'https://i.imgur.com/yvv1MMb.png',
+'https://i.imgur.com/I4Dlkik.png',
+'https://i.imgur.com/jNB8LS6.png'
+]
+
 // graph payload (with minimalist structure)
 const data = {
   nodes: [],
@@ -30,6 +42,7 @@ for (let i = 0; i < nodes.length; i++) {
   data.nodes.push({
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 10),
+    svg: ICONS[i]
   })
 }
 for (const node of nodes) {
