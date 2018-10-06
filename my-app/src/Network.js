@@ -2,23 +2,7 @@ import React, { Component } from 'react';
 import {Graph, Node} from './react-d3-graph-custom/src/index';
 import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
-import blockies from './blockies-svg.js'
-
-
-
-// const createIcon = function(seed) {
-//   var icon = blockies({ // All options are optional
-//       seed: seed, // seed used to generate icon data, default: random
-//       color: '#dfe', // to manually specify the icon color, default: random
-//       bgcolor: '#aaa', // choose a different background color, default: random
-//       size: 15, // width/height of the icon in blocks, default: 8
-//       scale: 3, // width/height of each block in pixels, default: 4
-//       spotcolor: '#000' // each pixel has a 13% chance of being of a third color,
-//       // default: random. Set to -1 to disable it. These "spots" create structures
-//       // that look like eyes, mouths and noses.
-//   });
-// }
-
+import Sidebar from './Sidebar.js'
 
 const ICONS = [
 'https://i.imgur.com/Wi9yFXw.png',
@@ -158,7 +142,7 @@ class Network extends Component {
            network={network}/>
         </div>
         <div id = "Node-state">
-        <a>{clickedNode ? ('Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)) : 'No node selected.'}</a>
+        <Sidebar node = {clickedNode}/>
         </div>
       </div>
     );
