@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Graph, Node} from 'react-d3-graph';
+import {Graph, Node} from './react-d3-graph-custom/src/index';
 import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import blockies from './blockies-svg.js'
@@ -101,9 +101,9 @@ class Network extends Component {
   async run (steps) {
     for (let i = 0; i < 300; i++) {
       network.tick()
-      await delay(1000)
       this.history.push(network)
       this.setState({network: network})
+      await delay(1000)
     }
   }
   onClickNode (nodeId) {
@@ -127,7 +127,8 @@ class Network extends Component {
     // if not clicked, change nodes color back to normal
   }
   render() {
-    const node = this.state.clickedNode
+    const {clickedNode, network} = this.state
+
     return (
       <div>
         <div id = "Network-graph">
@@ -140,10 +141,11 @@ class Network extends Component {
            onMouseOverNode={this.onMouseOverNode.bind(this)}
            onMouseOutNode={this.onMouseOutNode.bind(this)}
            onMouseOverLink={onMouseOverLink}
-           onMouseOutLink={onMouseOutLink}/>
+           onMouseOutLink={onMouseOutLink}
+           network={network}/>
         </div>
         <div id = "Node-state">
-        <a>{node ? ('Node ' + node.pid + '\n State:' + JSON.stringify(node.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(node.invalidNonceTxs)) : 'No node selected.'}</a>
+        <a>{clickedNode ? ('Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)) : 'No node selected.'}</a>
         </div>
       </div>
     );
