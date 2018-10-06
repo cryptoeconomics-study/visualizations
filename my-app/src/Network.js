@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Graph} from 'react-d3-graph';
-import {nodes, network} from './c2_NetworkDoubleSpends/invalidWithHonestNodesTest.js'
+import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import blockies from './blockies-svg.js'
 
@@ -87,14 +87,24 @@ for (const node of nodes) {
   };
 // }
 
+const delay = (duration) =>
+  new Promise(resolve => setTimeout(resolve, duration))
+async function run (steps) {
+  for (let i = 0; i < 300; i++) {
+
+    network.tick()
+    await delay(1000)
+    console.log(network)
+  }
+}
 
 class Network extends Component {
   componentDidMount() {}
   render() {
-    // try {
-    //   run(300)
-    // } catch (e) {
-    // }
+    try {
+      run(300)
+    } catch (e) {
+    }
     return (
         <div id = "Network-graph">
           <Graph

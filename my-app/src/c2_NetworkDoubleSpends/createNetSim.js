@@ -55,15 +55,4 @@ for (let i = 0; i < numNodes; i++) {
   network.connectPeer(nodes[i], 2)
 }
 
-
-try {
-  network.run(300)
-} catch (e) {
-  console.log('One of our honest nodes had a transaction fail because of network latency!')
-  console.log('err:', e)
-  for (let i = 0; i < numNodes; i++) {
-    console.log('~~~~~~~~~~~ Node', i, '~~~~~~~~~~~')
-    console.log(nodes[i].state)
-  }
-  console.log(nodes[1].invalidNonceTxs[wallets[0].address])
-}
+module.exports = {nodes, network}
