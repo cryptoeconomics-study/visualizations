@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Graph} from 'react-d3-graph';
+import {Graph, Node} from 'react-d3-graph';
 import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import blockies from './blockies-svg.js'
@@ -30,7 +30,6 @@ for (let i = 0; i < nodes.length; i++) {
   data.nodes.push({
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 10),
-    state: nodes[i].state
   })
 }
 for (const node of nodes) {
@@ -58,27 +57,15 @@ for (const node of nodes) {
     }
   };
 
-  // graph event callbacks
-  const onClickNode = function(nodeId) {
-    const node = nodes.find((node) => {
-      return node.pid === nodeId;
-    });
-    'Clicked node' + JSON.stringify(node.state)
-  };
 
-  const onMouseOverNode = function(nodeId) {
-       // window.alert(`Mouse over node ${nodeId}`);
-  };
 
-  const onMouseOutNode = function(nodeId) {
-       // window.alert(`Mouse out node ${nodeId}`);
-  };
 
   const onClickLink = function(source, target) {
        window.alert(`Clicked link between ${source} and ${target}`);
   };
 
   const onMouseOverLink = function(source, target) {
+
        // window.alert(`Mouse over in link between ${source} and ${target}`);
   };
 
@@ -87,13 +74,23 @@ for (const node of nodes) {
   };
 // }
 
+const getNode = function (nodeId) {
+  return nodes.find((node) => {
+    return node.pid === nodeId;
+  });
+}
 const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
 
 
 class Network extends Component {
+  constructor() {
+    super()
+    this.state = {clickedNode: null, prevNode: null}
+  }
   componentDidMount() {
     this.history = []
+    //run when play is hit
     try {
       this.run(300).then(
 
@@ -106,24 +103,49 @@ class Network extends Component {
       network.tick()
       await delay(1000)
       this.history.push(network)
-      console.log(network)
+      this.setState({network: network})
     }
   }
+  onClickNode (nodeId) {
+      const node = getNode(nodeId)
+      // console.log('Clicked node', node.state, node.invalidNonceTxs)
+      if (this.state.clickedNode && node.pid === this.state.clickedNode.pid) {
+        this.setState({clickedNode: null, isNodeClicked: false})
+      } else {
+        this.setState({clickedNode: node, isNodeClicked: true})
+      }
+    };
+
+  onMouseOverNode (nodeId) {
+    // const node = getNode(nodeId)
+    // this.setState({clickedNode: node})
+    // if not clicked, highlight node in green
+  };
+
+  onMouseOutNode (nodeId) {
+    // if(!this.state.isNodeClicked) this.setState({clickedNode: this.state.prevNode})
+    // if not clicked, change nodes color back to normal
+  }
   render() {
+    const node = this.state.clickedNode
     return (
+      <div>
         <div id = "Network-graph">
           <Graph
            id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
            data={data}
            config={myConfig}
-           onClickNode={onClickNode}
+           onClickNode={this.onClickNode.bind(this)}
            onClickLink={onClickLink}
-           onMouseOverNode={onMouseOverNode}
-           onMouseOutNode={onMouseOutNode}
+           onMouseOverNode={this.onMouseOverNode.bind(this)}
+           onMouseOutNode={this.onMouseOutNode.bind(this)}
            onMouseOverLink={onMouseOverLink}
            onMouseOutLink={onMouseOutLink}/>
         </div>
-
+        <div id = "Node-state">
+        <a>{node ? ('Node ' + node.pid + '\n State:' + JSON.stringify(node.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(node.invalidNonceTxs)) : 'No node selected.'}</a>
+        </div>
+      </div>
     );
   }
 }
