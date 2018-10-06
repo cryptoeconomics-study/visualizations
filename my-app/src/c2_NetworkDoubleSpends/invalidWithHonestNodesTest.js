@@ -38,7 +38,7 @@ class Spender extends Node {
 const numNodes = 5
 const wallets = []
 const genesis = {}
-const network = new NetworkSimulator(latency = 5, packetLoss = 0.1);
+const network = new NetworkSimulator(5, 0.1);
 for (let i = 0; i < numNodes; i++) {
   // Create new identity
   wallets.push(EthCrypto.createIdentity())
@@ -52,11 +52,12 @@ const nodes = []
 // Create new nodes based on our wallets, and connect them to the network
 for (let i = 0; i < numNodes; i++) {
   nodes.push(new Spender(wallets[i], JSON.parse(JSON.stringify(genesis)), network))
-  network.connectPeer(nodes[i], numConnections = 2)
+  network.connectPeer(nodes[i], 2)
 }
 
+
 try {
-  network.run(steps = 300)
+  network.run(300)
 } catch (e) {
   console.log('One of our honest nodes had a transaction fail because of network latency!')
   console.log('err:', e)
@@ -66,3 +67,5 @@ try {
   }
   console.log(nodes[1].invalidNonceTxs[wallets[0].address])
 }
+
+module.exports = {nodes, network}
