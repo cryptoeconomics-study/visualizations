@@ -83,13 +83,13 @@ class Network extends Component {
   }
   componentDidMount() {
     //run when play is hit
-    try {
-      this.run(200).then(()=>{
-        this.getTick(200)
-      }
-      )
-    } catch (e) {
-    }
+    // try {
+    //   this.run(300).then(()=>{
+    //     this.getTick(200)
+    //   }
+    //   )
+    // } catch (e) {
+    // }
   }
   async run (steps) {
     for (let i = 0; i < steps; i++) {
@@ -225,6 +225,7 @@ class Network extends Component {
            onMouseOutLink={onMouseOutLink}
            messages={messages}
            time={time}
+           speed={0.01}
            onTick = {this.getTick.bind(this)}/>
         </div>
         <div id = "Node-state">
