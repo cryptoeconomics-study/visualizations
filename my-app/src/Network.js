@@ -83,10 +83,9 @@ const delay = (duration) =>
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, prevNode: null}
+    this.state = {clickedNode: null, history: []}
   }
   componentDidMount() {
-    this.history = []
     //run when play is hit
     try {
       this.run(300).then(
@@ -98,7 +97,8 @@ class Network extends Component {
   async run (steps) {
     for (let i = 0; i < 300; i++) {
       network.tick()
-      this.history.push(network)
+      const history = this.state.history
+      history.push(network)
       this.setState({network: network})
       await delay(1000)
     }
