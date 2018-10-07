@@ -123,7 +123,7 @@ class Network extends Component {
     } else if (time === history.length ) {
       this.tick()
     }
-    console.log('time:', time, 'history at time:', history[time])
+    // console.log('time:', time, 'history at time:', history[time])
     let messages = this.setMessageQueue(history[time])
     // Update states if agent already clicked
     if (clickedNode){
@@ -172,13 +172,21 @@ class Network extends Component {
   }
 
   rewind(){
-    this.setState({speed : this.state.speed /= 1.5})
-    console.log('rewind', this.state)
+    let speed = this.state.speed
+    if(speed*1.5 > 10){
+      return
+    }
+    this.setState({speed : speed *= 1.5})
+    console.log('rewind', speed)
   }
 
   fastforward(){
-    this.setState({speed : this.state.speed *= 1.5})
-    console.log('fastforward', this.state)
+    let speed = this.state.speed
+    if(speed/1.5 < .005){
+      return
+    }
+    this.setState({speed : speed /= 1.5})
+    console.log('fastforward', speed)
   }
 
   stepbackward(){
@@ -239,7 +247,7 @@ class Network extends Component {
 
   }
   render() {
-    const {clickedNode, messages, time, paused} = this.state
+    const {clickedNode, messages, time, paused, speed} = this.state
 
     return (
       <div id="App-container">
@@ -263,7 +271,7 @@ Sodales neque sodales ut etiam sit amet nisl. Quam quisque id diam vel quam elem
            onMouseOutLink={onMouseOutLink}
            messages={messages}
            time={time}
-           speed={this.state.speed}
+           speed={speed}
            paused={paused}
            onTick = {this.getTick.bind(this)}
            nodeState = {this.getNode.bind(this)}/>
