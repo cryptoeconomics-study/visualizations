@@ -406,6 +406,7 @@ export default class Graph extends React.Component {
             draggedNode['fy'] = draggedNode.y;
 
             this._tick();
+            this.animate();
         }
     };
 

@@ -40,7 +40,7 @@ class Spender extends Node {
 }
 
 // ****** Test this out using a simulated network ****** //
-const numNodes = 7
+const numNodes = 10
 const wallets = []
 const genesis = {}
 const network = new NetworkSimulator(15, 0);

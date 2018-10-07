@@ -11,9 +11,9 @@ class Controls extends Component {
     const {pause, stepforward, stepbackward, rewind, fastforward, reset} = this.props
     return (
         <div id = "Controls">
-          <button onClick={rewind}>Slow Down</button>
+       
           <button onClick={pause}>Pause</button>
-          <button onClick={fastforward}>Speed Up</button>
+      
         </div>
     );
   }

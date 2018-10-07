@@ -35,8 +35,8 @@ export default class Link extends React.Component {
      * Handle link click event.
      * @returns {undefined}
      */
-    handleOnClickLink = () => this.props.onClickLink
-                            && this.props.onClickLink(this.props.source, this.props.target);
+    // handleOnClickLink = () => this.props.onClickLink
+    //                         && this.props.onClickLink(this.props.source, this.props.target);
 
     /**
      * Handle mouse over link event.
