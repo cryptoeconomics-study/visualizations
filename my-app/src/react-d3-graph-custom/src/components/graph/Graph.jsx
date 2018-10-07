@@ -23,7 +23,7 @@ const D3_CONST = {
 };
 
 // View animation/state loop constant values
-const VIEW_TIME_INCREMENT = 0.0001
+const VIEW_TIME_INCREMENT = 0.01
 
 export default class Graph extends React.Component {
     
@@ -488,5 +488,4 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     restartSimulation = () => !this.state.config.staticGraph && this.state.simulation.restart();
-
 }
