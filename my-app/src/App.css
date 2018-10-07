@@ -1,22 +1,50 @@
 .App {
   text-align: center;
-  background-color: #eeee;
-}
-
-.App-logo {
-  height: 150px;
+  background-color: #fff;
 }
 
 .App-header {
-  height: 150px;
-  padding: 20px;
-  color: white;
+  padding: 5px;
 }
 
 .App-title {
   font-size: 1.5em;
+  color: black;
 }
 
 .App-intro {
   font-size: large;
+}
+
+#Controls {
+	width: 100%;
+}
+
+#Text-container {
+	width: 25%;
+}
+
+#Sidebar-container {
+	width: 25%;
+}
+
+#Text {
+	
+}
+
+#Sidebar {
+
+}
+
+#Network-graph {
+
+}
+
+#Network-container {
+	width: 50%;
+}
+
+#App-container {
+	display: flex;
+	flex-direction: row;
 }
