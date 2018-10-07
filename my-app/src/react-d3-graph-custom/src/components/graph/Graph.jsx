@@ -148,6 +148,8 @@ export default class Graph extends React.Component {
                 }
                 this.getTick(Math.floor(newTime))
 
+            }
+
             this.animate()
 
             this.setState({time : newTime})
