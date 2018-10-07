@@ -8,6 +8,7 @@
     "clone": "^2.1.2",
     "eth-crypto": "^1.2.3",
     "rc-slider": "^8.6.3",
+    "rc-table": "^6.3.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5"

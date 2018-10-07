@@ -23,7 +23,7 @@ const D3_CONST = {
 };
 
 // View animation/state loop constant values
-const VIEW_TIME_INCREMENT = 0.01
+const VIEW_TIME_INCREMENT = 0.1
 
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
