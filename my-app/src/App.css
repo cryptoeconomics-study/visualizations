@@ -1,10 +1,15 @@
 .App {
   text-align: center;
   background-color: #fff;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 
 .App-header {
   padding: 5px;
+  height: 5%;
 }
 
 .App-title {
@@ -16,12 +21,38 @@
   font-size: large;
 }
 
-#Controls {
+#Controls-container {
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	align-content: space-around;
+}
+
+#Controls * {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	align-content: space-around;
+}
+
+#input-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
 	width: 100%;
+}
+
+#Parameters {
+	width: 90%;
 }
 
 #Text-container {
 	width: 30%;
+	overflow: hidden;
+	max-height: min-content;
+	min-height: min-content;
 }
 
 #Sidebar-container {
@@ -37,7 +68,7 @@
 #Text {
 	margin: 20px;
 	text-align: left;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #Sidebar {
@@ -48,12 +79,19 @@
 
 }
 
+b {
+	padding: 0px !important;
+}
+
 #Network-container {
 	width: 40%;
 	max-height: 90%;
+	align-content: center;
 }
 
 #App-container {
 	display: flex;
 	flex-direction: row;
+	overflow: hidden;
+	height: 95%;
 }
