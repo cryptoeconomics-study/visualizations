@@ -12,11 +12,8 @@ class Controls extends Component {
     return (
         <div id = "Controls">
           <button onClick={rewind}>Rewind</button>
-          <button onClick={stepbackward}>Step Backward</button>
           <button onClick={pause}>Pause</button>
-          <button onClick={stepforward}>Step Forward</button>
           <button onClick={fastforward}>Fastforward</button>
-          <button style={{background:"yellow"}} onClick={reset}>Reset</button>
         </div>
     );
   }
