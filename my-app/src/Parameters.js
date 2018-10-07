@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Slider, { Range } from 'rc-slider';
-
+import 'rc-slider/assets/index.css';
 
 class Parameters extends Component {
   constructor(props) {
@@ -11,8 +11,7 @@ class Parameters extends Component {
     const {setSpeed, setLatency, setPacketLoss} = this.props
     return (
         <div id = "Parameters">
-          <Slider onChange={setSpeed} defaultValue={50} maximumTrackStyle={{ backgroundColor: 'red', height: 10 }}
-          minimumTrackStyle={{ backgroundColor: 'blue', height: 10 }} />
+        <Slider defaultValue={50} onAfterChange={setSpeed} style={{padding:"20px"}} max={100}/>
         </div>
     );
   }
@@ -20,7 +19,3 @@ class Parameters extends Component {
 
 export default Parameters;
 
-
-// <input type="text" name="speed" onChange={setSpeed}/>
-//           <input type="text" name="latency" onChange={setLatency}/>
-//           <input type="text" name="packetLoss" onChange={setPacketLoss}/>

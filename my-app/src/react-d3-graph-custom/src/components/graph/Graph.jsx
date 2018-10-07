@@ -121,7 +121,7 @@ export default class Graph extends React.Component {
         this.animate()
 
         if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
-            console.log("TICK", prevTime)
+            // console.log("TICK", prevTime)
             const messages = this.state.messages
             var nodesDictionary = this.state.nodes
             for(var i = 0; i < messages.length; i++) {
