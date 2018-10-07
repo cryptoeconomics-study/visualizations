@@ -74,6 +74,7 @@ export default class Graph extends React.Component {
 
         if (nextProps.messages) this.setState({messages: nextProps.messages})
         if (nextProps.speed) this.setState({speed: nextProps.speed})
+        if (nextProps.nodeState) this.setState({nodeState : nextProps.nodeState})
 
         var nodesDictionary = this.state.nodes
         // console.log("props:", nodesDictionary)
@@ -186,6 +187,7 @@ export default class Graph extends React.Component {
     animate() {
         const messages = this.state.messages
         // console.log('state messages', this.state.messages)
+
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
                 var nodesDictionary = this.state.nodes
@@ -252,7 +254,9 @@ export default class Graph extends React.Component {
             this.state.config,
             this.state.highlightedNode,
             this.state.highlightedLink,
-            this.state.transform
+            this.state.transform,
+            this.state.nodeState,
+            this.state.time
         );
 
         const svgStyle = {

@@ -30,7 +30,7 @@ for (let i = 0; i < nodes.length; i++) {
   data.nodes.push({
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 10),
-    svg: ICONS[i]
+    // svg: ICONS[i]
   })
 }
 for (const node of nodes) {
@@ -135,9 +135,11 @@ class Network extends Component {
 
   getNode (nodeId, time) {
     const currNetwork = this.state.history[time]
-    return currNetwork.agents.find((node) => {
-      return node.pid === nodeId;
-    });
+    if (currNetwork) {
+      return currNetwork.agents.find((node) => {
+        return node.pid === nodeId;
+      });
+    }
   }
 
   onClickNode (nodeId) {
@@ -256,7 +258,8 @@ class Network extends Component {
            time={time}
            speed={0.01}
            paused={paused}
-           onTick = {this.getTick.bind(this)}/>
+           onTick = {this.getTick.bind(this)}
+           nodeState = {this.getNode.bind(this)}/>
         </div>
         <div id = "Node-state">
         <Sidebar 
