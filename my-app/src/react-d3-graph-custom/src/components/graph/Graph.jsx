@@ -150,6 +150,7 @@ export default class Graph extends React.Component {
                     // console.log("added node to msg!")
 
                     newTxNode.isMessage = true
+                    newTxNode.sig = messages[i].message.sig
                     nodesDictionary[this.state.time + Math.random()] = newTxNode
                 }
                 // console.log(msg.node)

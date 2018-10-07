@@ -15,8 +15,8 @@ class Sidebar extends Component {
     const doubleSpend = this.props.doubleSpend
     return (
         <div id = "Node-state">
-          <a>{clickedNode ? ('Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)) : 'No node selected.'}</a>
-          <button style={{background:"red"}} onClick={()=>doubleSpend(clickedNode)}>Double Spend</button>
+          {clickedNode ? (<div><p>{'Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)}</p><button style={{background:"red"}} onClick={()=>doubleSpend(clickedNode)}>Double Spend</button></div>): 'No node selected.' }
+
         </div>
     );
   }

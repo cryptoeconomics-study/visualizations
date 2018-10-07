@@ -62,7 +62,7 @@ function _buildLinks(nodes, links, linksMatrix, config, linkCallbacks, highlight
 function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform) {
     return Object.keys(nodes).map(nodeId => {
         let props;
-        
+
         if (nodes[nodeId].isMessage){
             props = messageProps(
                 Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
@@ -72,6 +72,9 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
                 highlightedLink,
                 transform
             );
+            const color = nodes[nodeId].sig.substring(2,8)
+            console.log(color)
+            props.fill = '#' + color
         } else {
             props = buildNodeProps(
                 Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
