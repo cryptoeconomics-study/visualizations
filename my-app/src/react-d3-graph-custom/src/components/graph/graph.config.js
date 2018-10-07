@@ -138,7 +138,7 @@ export default {
     nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
-    width: 800,
+    width: 1000,
     node: {
         color: '#d3d3d3',
         fontColor: 'black',
@@ -160,10 +160,11 @@ export default {
         symbolType: 'circle'
     },
     link: {
-        color: '#d3d3d3',
+        color: '#000000',
         opacity: 1,
         semanticStrokeWidth: false,
         strokeWidth: 1.5,
         highlightColor: '#d3d3d3'
     }
 };
+
