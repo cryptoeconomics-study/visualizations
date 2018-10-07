@@ -5,14 +5,14 @@ import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import Sidebar from './Sidebar.js'
 
 const ICONS = [
-'https://i.imgur.com/Wi9yFXw.png',
-'https://i.imgur.com/BBUyb4e.png',
-'https://i.imgur.com/NPH4rqg.png',
-'https://i.imgur.com/MptO0GC.png',
-'https://i.imgur.com/yHwPVBF.png',
-'https://i.imgur.com/yvv1MMb.png',
-'https://i.imgur.com/I4Dlkik.png',
-'https://i.imgur.com/jNB8LS6.png'
+  'https://i.imgur.com/Wi9yFXw.png',
+  'https://i.imgur.com/BBUyb4e.png',
+  'https://i.imgur.com/NPH4rqg.png',
+  'https://i.imgur.com/MptO0GC.png',
+  'https://i.imgur.com/yHwPVBF.png',
+  'https://i.imgur.com/yvv1MMb.png',
+  'https://i.imgur.com/I4Dlkik.png',
+  'https://i.imgur.com/jNB8LS6.png'
 ]
 
 // graph payload (with minimalist structure)
