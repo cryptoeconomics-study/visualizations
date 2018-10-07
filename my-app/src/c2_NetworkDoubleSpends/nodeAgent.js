@@ -9,8 +9,9 @@ class Node {
     // Blockchain identity
     this.wallet = wallet
     // P2P Node identity -- used for connecting to peers
-    this.p2pNodeId = EthCrypto.createIdentity()
-    this.pid = this.p2pNodeId.address
+    // this.p2pNodeId = EthCrypto.createIdentity()
+    // this.pid = this.p2pNodeId.address
+    this.pid = wallet.address
     this.network = network
     this.state = genesis
     this.transactions = []
