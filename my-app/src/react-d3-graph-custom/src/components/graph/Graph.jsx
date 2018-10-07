@@ -23,7 +23,7 @@ const D3_CONST = {
 };
 
 // View animation/state loop constant values
-const VIEW_TIME_INCREMENT = 0.1
+var VIEW_TIME_INCREMENT = 0.1
 
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
@@ -72,9 +72,17 @@ export default class Graph extends React.Component {
             transform
         });
 
+        console.log(VIEW_TIME_INCREMENT)
+
         if (nextProps.messages) this.setState({messages: nextProps.messages})
-        if (nextProps.speed) this.setState({speed: nextProps.speed})
+        if (nextProps.speed) {
+            this.setState({speed: nextProps.speed}, function() {
+                VIEW_TIME_INCREMENT = 1/this.state.speed
+            })
+        }
         if (nextProps.nodeState) this.setState({nodeState : nextProps.nodeState})
+
+        
 
         var nodesDictionary = this.state.nodes
         // console.log("props:", nodesDictionary)
