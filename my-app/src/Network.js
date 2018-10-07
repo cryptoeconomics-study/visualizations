@@ -123,7 +123,7 @@ class Network extends Component {
     }
     console.log('time:', time, 'history at time:', history[time])
     let messages = this.setMessageQueue(history[time])
-      this.setState({messages: messages, time: time})
+    this.setState({messages: messages, time: time})
   }
 
   getNode (nodeId, time) {
