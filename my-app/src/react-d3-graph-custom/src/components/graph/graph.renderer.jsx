@@ -82,7 +82,7 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
             const color = nodes[nodeId].sig.substring(2,8)
             props.fill = '#' + color
             if (nodes[nodeId].isDoubleSpend){
-                props.size = 100
+                props.size = 35
                 props.stroke = '#000000'
                 props.strokeWidth = 2
             }
