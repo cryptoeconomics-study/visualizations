@@ -25,6 +25,10 @@ const D3_CONST = {
 // View animation/state loop constant values
 const VIEW_TIME_INCREMENT = 0.01
 
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
 export default class Graph extends React.Component {
     
     constructor(props) {
@@ -38,25 +42,8 @@ export default class Graph extends React.Component {
         this.state.time = 0;
     }
 
-    createTransaction(messages, time) {
-        var positionData = {}
-        for(var msg of messages){
-            if (msg.sentTime === time){
-                console.log(msg.recvTime)
-                // positionData[time].push('x1' : NodePos[msg.sender].x, 
-                //                         'y1' : NodePos[msg.sender].y, 
-                //                         'x2' : NodePos[msg.receiver].x, 
-                //                         'y2' : NodePos[msg.receiver].y, 
-                //                         'delta' : msg.rcvTime - time)
-                // console.log("message just sent!", msg.sentTime, time)
-                }
-            }
-        }
-
     componentWillReceiveProps(nextProps) {
         // console.log('got new messages:', nextProps.messages, nextProps.time)
-        
-        this.createTransaction(nextProps.messages, nextProps.time)
 
         //don't touch
         const newGraphElements =
@@ -113,6 +100,7 @@ export default class Graph extends React.Component {
         this._zoomConfig();
         this.tick = this.tick.bind(this)
         this.animate = this.animate.bind(this)
+        this.getTick = this.props.onTick
         this.start()
     }
 
@@ -122,12 +110,29 @@ export default class Graph extends React.Component {
 
     start() {
         this.tick()
+        this.getTick(0)
     }
 
     tick() {
-        console.log(this.state.time)
+        const prevTime = this.state.time
+        //console.log(prevTime)
         const newTime = this.state.time + VIEW_TIME_INCREMENT;
+        
         this.animate()
+
+        if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
+            console.log("TICK", prevTime)
+            const messages = this.state.messages
+            var nodesDictionary = this.state.nodes
+            for(var i = 0; i < messages.length; i++) {
+                const key = getKeyByValue(nodesDictionary, messages[i].node)
+                delete nodesDictionary[key]
+            }
+            this.getTick(Math.floor(newTime))
+        }
+
+        this.animate()
+
         this.setState({time : newTime})
         setTimeout(this.tick, 1);
     }
@@ -138,27 +143,28 @@ export default class Graph extends React.Component {
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
                 var nodesDictionary = this.state.nodes
-                var msg = messages[i]
-                if (!msg.node) {
+                if (!messages[i].node) {
                     let newTxNode = new Node()
                     messages[i].node = newTxNode
                     // console.log("newNode", messages[i].node)
                     // console.log("added node to msg!")
+
+                    newTxNode.size = 100
                     nodesDictionary[this.state.time + Math.random()] = newTxNode
                 } 
-                console.log(msg.node)
-                var node = msg.node
-                const progress = (this.state.time - msg.sentTime)/(msg.recvTime - msg.sentTime)
+                // console.log(msg.node)
+                var node = messages[i].node
+                const progress = (this.state.time - messages[i].sentTime)/(messages[i].recvTime - messages[i].sentTime)
                 
                 if (progress <= 1 && progress >= 0) {
-                    const sender = nodesDictionary[msg.sender]
-                    const recipient = nodesDictionary[msg.recipient.pid]
+                    const sender = nodesDictionary[messages[i].sender]
+                    const recipient = nodesDictionary[messages[i].recipient.pid]
 
-                    console.log("sender", sender)
-                    console.log("recipe", recipient)
+                    // console.log("sender", sender)
+                    // console.log("recipe", recipient)
 
-                    console.log("senderX", sender.y)
-                    console.log("recipeX", recipient.y)
+                    // console.log("senderX", sender.y)
+                    // console.log("recipeX", recipient.y)
 
                     node.x = sender.x
                     node.y = sender.y
@@ -171,9 +177,12 @@ export default class Graph extends React.Component {
 
                     node.x = progress * (recipient.x - sender.x) + sender.x
                     node.y = progress * (recipient.y - sender.y) + sender.y
+                } else if (progress > 1) {
+                    const key = getKeyByValue(nodesDictionary, node)
+                    delete nodesDictionary[key]
+                    messages.splice(i, 1)
                 }
             }
-            if(messages.length) console.log("newNode2", messages[0].node)
             this.setState( { messages : messages } )
         }
     }
@@ -404,9 +413,9 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     onMouseOverNode = id => {
-        this.props.onMouseOverNode && this.props.onMouseOverNode(id);
+        // this.props.onMouseOverNode && this.props.onMouseOverNode(id);
 
-        this.state.config.nodeHighlightBehavior && this._setNodeHighlightedValue(id, true);
+        // this.state.config.nodeHighlightBehavior && this._setNodeHighlightedValue(id, true);
     };
 
     /**

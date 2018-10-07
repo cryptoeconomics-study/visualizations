@@ -82,13 +82,13 @@ class Network extends Component {
   }
   componentDidMount() {
     //run when play is hit
-    try {
-      this.run(300).then(()=>{
-        this.getTick(200)
-      }
-      )
-    } catch (e) {
-    }
+    // try {
+    //   this.run(300).then(()=>{
+    //     this.getTick(200)
+    //   }
+    //   )
+    // } catch (e) {
+    // }
   }
   async run (steps) {
     for (let i = 0; i < steps; i++) {
