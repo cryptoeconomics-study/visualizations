@@ -24,6 +24,7 @@ class Sidebar extends Component {
     const doubleSpend = this.props.doubleSpend
     const data = (clickedNode) ?
       Object.keys(clickedNode.state).map(nodeId => { return {...clickedNode.state[nodeId], address: nodeId.substring(0,10), key: nodeId}}) : null
+      console.log(data)
     const getInvalidNonceTxs = (address) => {
       if (clickedNode.invalidNonceTxs && clickedNode.invalidNonceTxs[address]){
         return JSON.stringify(clickedNode.invalidNonceTxs[address])
@@ -31,7 +32,7 @@ class Sidebar extends Component {
     }
     //<p>{'Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)
     return (
-        <div id = "Node-state">
+        <div id = "Sidebar">
           {clickedNode ? (
             <div>
               <h4>Node {clickedNode.pid.substring(0,10)}</h4>

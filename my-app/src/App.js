@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Understanding Consensus</h1>
+          <h1 className="App-title">Visualizing Consensus</h1>
         </header>
         <Network/>
       </div>

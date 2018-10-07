@@ -251,19 +251,17 @@ class Network extends Component {
 
     return (
       <div id="App-container">
-        <div id="Text-container"><div id="Text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed libero enim sed faucibus turpis. Placerat vestibulum lectus mauris ultrices eros in cursus. Dolor magna eget est lorem. Lacus sed turpis tincidunt id aliquet risus feugiat in. Turpis tincidunt id aliquet risus feugiat in ante. Sed vulputate mi sit amet mauris commodo quis. Nisl nunc mi ipsum faucibus vitae aliquet nec. Cras fermentum odio eu feugiat pretium nibh. Purus viverra accumsan in nisl nisi scelerisque eu. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget. Sapien faucibus et molestie ac feugiat. Arcu felis bibendum ut tristique et. Egestas congue quisque egestas diam. Etiam non quam lacus suspendisse faucibus interdum. Tincidunt dui ut ornare lectus sit. Dictum sit amet justo donec enim diam vulputate. Lorem ipsum dolor sit amet consectetur adipiscing.
+        <div id="Text-container"><h3>V2: A Distributed Ledger</h3><div id="Text">Building a centralized payments processor like Paypal is simple, but relies on trust that Paypal will not break the rules. A simple way to decentralize PayPal is to make clients download all transactions and run the PayPal code to generate their belief of the current state.  In this section we see why this is not enough, how to mentally model a network & synchrony assumptions.<br/><br/>
 
-Eu sem integer vitae justo eget magna fermentum. Odio tempor orci dapibus ultrices. Amet purus gravida quis blandit turpis cursus in hac habitasse. Augue mauris augue neque gravida in fermentum et sollicitudin. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Velit egestas dui id ornare arcu odio. Tellus integer feugiat scelerisque varius. Felis donec et odio pellentesque diam. Sagittis id consectetur purus ut faucibus pulvinar elementum integer. Leo vel orci porta non pulvinar neque.
+<b>Synchronous network</b> -- Global clock, & there is a known (constant) latency L in which all messages are assumed to be received. For instance all messages propagate in 5 seconds.<br/><br/>
 
-Augue neque gravida in fermentum et. Leo duis ut diam quam nulla porttitor massa id. Hac habitasse platea dictumst quisque sagittis. Tortor at auctor urna nunc id. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Nisl nisi scelerisque eu ultrices vitae auctor eu augue ut. Iaculis eu non diam phasellus vestibulum lorem sed risus. Porttitor rhoncus dolor purus non enim. Augue mauris augue neque gravida in fermentum et sollicitudin. Cras tincidunt lobortis feugiat vivamus at. Nulla porttitor massa id neque aliquam vestibulum morbi. Vitae proin sagittis nisl rhoncus. Consectetur libero id faucibus nisl. In iaculis nunc sed augue lacus.
+<b>Partially Synchronous network</b> -- There is some unknown latency L in which all messages are assumed to be received. It is important to note that this latency is unknown and could be extremely high.<br/><br/>
 
-Sodales neque sodales ut etiam sit amet nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed libero enim sed faucibus turpis. Placerat vestibulum lectus mauris ultrices eros in cursus. Dolor magna eget est lorem. Lacus sed turpis tincidunt id aliquet risus feugiat in. Turpis tincidunt id aliquet risus feugiat in ante. Sed vulputate mi sit amet mauris commodo quis. Nisl nunc mi ipsum faucibus vitae aliquet nec. Cras fermentum odio eu feugiat pretium nibh. Purus viverra accumsan in nisl nisi scelerisque eu. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget. Sapien faucibus et molestie ac feugiat. Arcu felis bibendum ut tristique et. Egestas congue quisque egestas diam. Etiam non quam lacus suspendisse faucibus interdum. Tincidunt dui ut ornare lectus sit. Dictum sit amet justo donec enim diam vulputate. Lorem ipsum dolor sit amet consectetur adipiscing.
+<b>Asynchronous network</b> -- Local clock, & there are no timing assumptions made. We are not able to determine objectively the time ordering of transactions, though each individual node still has an idea of what order it saw messages arrive in (and different nodes can disagree).<br/><br/>
 
-Eu sem integer vitae justo eget magna fermentum. Odio tempor orci dapibus ultrices. Amet purus gravida quis blandit turpis cursus in hac habitasse. Augue mauris augue neque gravida in fermentum et sollicitudin. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Velit egestas dui id ornare arcu odio. Tellus integer feugiat scelerisque varius. Felis donec et odio pellentesque diam. Sagittis id consectetur purus ut faucibus pulvinar elementum integer. Leo vel orci porta non pulvinar neque.
+In a decentralized system, we cannot rely on a global clock, and we cannot assume a constant latency for all messages to be delivered.<br/><br/>
 
-Augue neque gravida in fermentum et. Leo duis ut diam quam nulla porttitor massa id. Hac habitasse platea dictumst quisque sagittis. Tortor at auctor urna nunc id. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Nisl nisi scelerisque eu ultrices vitae auctor eu augue ut. Iaculis eu non diam phasellus vestibulum lorem sed risus. Porttitor rhoncus dolor purus non enim. Augue mauris augue neque gravida in fermentum et sollicitudin. Cras tincidunt lobortis feugiat vivamus at. Nulla porttitor massa id neque aliquam vestibulum morbi. Vitae proin sagittis nisl rhoncus. Consectetur libero id faucibus nisl. In iaculis nunc sed augue lacus.
-
-Sodales neque sodales ut etiam sit amet nisl.Quam quisque id diam vel quam elementum pulvinar. Ac orci phasellus egestas tellus rutrum tellus. Consequat nisl vel pretium lectus quam id leo in vitae. Habitant morbi tristique senectus et. At tempor commodo ullamcorper a lacus vestibulum sed arcu. Pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Tristique senectus et netus et malesuada fames ac turpis. Porttitor lacus luctus accumsan tortor posuere ac ut consequat semper. Magna etiam tempor orci eu lobortis. Tortor posuere ac ut consequat se</div></div>
+This is the root cause of the double spend problem: an attacker can send one message to Jing & another message to Aparna each spending the same coins. If Jing and Aparna both accept those transactions, their states will diverge and we will have a fork. Not good! We need decentralized consensus!</div></div>
         <div id = "Network-container-">
           <Graph ref={instance => { this.graph = instance; }}
            id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
@@ -281,17 +279,21 @@ Sodales neque sodales ut etiam sit amet nisl.Quam quisque id diam vel quam eleme
            paused={paused}
            onTick = {this.getTick.bind(this)}
            nodeState = {this.getNode.bind(this)}/>
-          <div id="Controls">
-            <Controls 
-            pause = {this.pause.bind(this)}
-            stepbackward = {this.stepbackward.bind(this)}
-            stepforward = {this.stepforward.bind(this)}
-            rewind = {this.rewind.bind(this)}
-            fastforward = {this.fastforward.bind(this)}
-            reset = {this.reset.bind(this)}/>
-            <Parameters
-            setSpeed = {this.setSpeed.bind(this)}
-            setLatency = {this.setLatency.bind(this)}/>
+          <div id="input-container">
+            <div id="Controls-container">
+              <Controls 
+              pause = {this.pause.bind(this)}
+              stepbackward = {this.stepbackward.bind(this)}
+              stepforward = {this.stepforward.bind(this)}
+              rewind = {this.rewind.bind(this)}
+              fastforward = {this.fastforward.bind(this)}
+              reset = {this.reset.bind(this)}/>
+            </div>
+            <div id="Parameters-container">
+              <Parameters
+              setSpeed = {this.setSpeed.bind(this)}
+              setLatency = {this.setLatency.bind(this)}/>
+            </div>
           </div>
         </div>
         <div id="Sidebar-container">

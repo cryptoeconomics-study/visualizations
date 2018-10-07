@@ -138,7 +138,7 @@ export default {
     nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
-    width: 1300,
+    width: 1200,
     node: {
         color: '#d3d3d3',
         fontColor: 'black',
