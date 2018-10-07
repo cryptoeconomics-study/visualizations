@@ -79,7 +79,7 @@ const delay = (duration) =>
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, history: []}
+    this.state = {clickedNode: null, history: [], paused: false}
   }
   componentDidMount() {
     //run when play is hit
@@ -163,6 +163,7 @@ class Network extends Component {
 
   pause(){
     console.log('pause')
+    this.setState({ paused: !this.state.paused })
     //this.state.speed = 1    //(reset FF/Rewind)
     // this.state.pause ^= 1  //toggle pause
   }
@@ -183,13 +184,20 @@ class Network extends Component {
     if(time < 1){
       return
     }
+    this.setState({paused:true})
+    this.graph.step(time - 1)
     this.getTick(time - 1)
+    this.graph.animate()
+    //this.graph.setState({messages: this.setMessageQueue(this.history[time])})
   }
 
   stepforward(){
     console.log('stepforward')
     const {clickedNode, time} = this.state
+    this.setState({paused:true})
+    this.graph.step(time + 1)
     this.getTick(time + 1)
+    this.graph.animate()
   }
   
   reset(){
@@ -216,12 +224,12 @@ class Network extends Component {
 
   }
   render() {
-    const {clickedNode, messages, time} = this.state
+    const {clickedNode, messages, time, paused} = this.state
 
     return (
       <div>
         <div id = "Network-graph">
-          <Graph
+          <Graph ref={instance => { this.graph = instance; }}
            id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
            data={data}
            config={myConfig}
@@ -234,6 +242,7 @@ class Network extends Component {
            messages={messages}
            time={time}
            speed={0.01}
+           paused={paused}
            onTick = {this.getTick.bind(this)}/>
         </div>
         <div id = "Node-state">

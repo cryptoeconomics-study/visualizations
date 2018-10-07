@@ -129,7 +129,7 @@
  */
 export default {
     automaticRearrangeAfterDropNode: false,
-    height: 400,
+    height: 700,
     highlightDegree: 1,
     highlightOpacity: 1,
     linkHighlightBehavior: false,

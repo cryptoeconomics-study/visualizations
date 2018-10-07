@@ -40,6 +40,7 @@ export default class Graph extends React.Component {
 
         this.state = graphHelper.initializeGraphState(this.props, this.state);
         this.state.time = 0;
+        this.state.paused = false;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -71,8 +72,23 @@ export default class Graph extends React.Component {
             transform
         });
 
-        this.setState({messages:nextProps.messages})
-        this.setState({speed: nextProps.speed})
+        if (nextProps.messages) this.setState({messages: nextProps.messages})
+        if (nextProps.speed) this.setState({speed: nextProps.speed})
+        
+        var nodesDictionary = this.state.nodes
+        console.log("props:", nodesDictionary)
+
+        // nice
+        const wasPaused = this.state.paused
+
+        this.setState({paused: nextProps.paused}, function() {
+            if (wasPaused && !nextProps.paused) {
+                this.tick()
+            }
+        });
+
+        
+
     }
 
     componentDidUpdate() {
@@ -114,27 +130,56 @@ export default class Graph extends React.Component {
     }
 
     tick() {
-        const prevTime = this.state.time
-        //console.log(prevTime)
-        const newTime = this.state.time + VIEW_TIME_INCREMENT;
+        console.log("in tick:", this.state.paused)
+        if (!this.state.paused) {
+            const prevTime = this.state.time
+            console.log(prevTime)
+            const newTime = this.state.time + VIEW_TIME_INCREMENT;
 
-        this.animate()
+            this.animate()
 
-        if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
-            console.log("TICK", prevTime)
-            const messages = this.state.messages
-            var nodesDictionary = this.state.nodes
-            for(var i = 0; i < messages.length; i++) {
-                const key = getKeyByValue(nodesDictionary, messages[i].node)
-                delete nodesDictionary[key]
+            if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
+                console.log("TICK", prevTime)
+                const messages = this.state.messages
+                var nodesDictionary = this.state.nodes
+                for(var i = 0; i < messages.length; i++) {
+                    const key = getKeyByValue(nodesDictionary, messages[i].node)
+                    delete nodesDictionary[key]
+                }
+                this.getTick(Math.floor(newTime))
             }
-            this.getTick(Math.floor(newTime))
+
+            this.animate()
+
+            this.setState({time : newTime})
+            setTimeout(this.tick, 1);
+        } else {
+        console.log("paused!")
+        }
+    }
+
+    step(time) {
+        const messages = this.state.messages
+        var nodesDictionary = this.state.nodes
+
+        console.log(nodesDictionary)
+
+        for(var i = 0; i < messages.length; i++) {
+            const key = getKeyByValue(nodesDictionary, messages[i].node)
+            console.log("to delete:", key)
+            delete nodesDictionary[key]
         }
 
-        this.animate()
+        console.log(nodesDictionary)
 
-        this.setState({time : newTime})
-        setTimeout(this.tick, 1);
+
+        this.animate()
+        this.setState({time : time},
+            function() {
+                console.log("SET TIME TO", this.state.time)
+                this.getTick(time)
+                this.animate()
+            })
     }
 
     animate() {
@@ -147,8 +192,7 @@ export default class Graph extends React.Component {
                     let newTxNode = new Node()
                     messages[i].node = newTxNode
                     // console.log("newNode", messages[i].node)
-                    // console.log("added node to msg!")
-
+                    console.log("added node to msg!")
                     newTxNode.isMessage = true
                     nodesDictionary[this.state.time + Math.random()] = newTxNode
                 }
