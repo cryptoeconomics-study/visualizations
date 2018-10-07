@@ -13,6 +13,8 @@ import * as graphRenderer from './graph.renderer';
 import * as graphHelper from './graph.helper';
 import utils from '../../utils';
 
+import Node from '../node/Node.jsx';
+
 // Some d3 constant values
 const D3_CONST = {
     FORCE_LINK_STRENGTH: 1,
@@ -20,78 +22,273 @@ const D3_CONST = {
     SIMULATION_ALPHA_TARGET: 0.05
 };
 
-/**
- * Graph component is the main component for react-d3-graph components, its interface allows its user
- * to build the graph once the user provides the data, configuration (optional) and callback interactions (also optional).
- * The code for the [live example](https://danielcaldas.github.io/react-d3-graph/sandbox/index.html)
- * can be consulted [here](https://github.com/danielcaldas/react-d3-graph/blob/master/sandbox/Sandbox.jsx)
- * @example
- * import { Graph } from 'react-d3-graph';
- *
- * // graph payload (with minimalist structure)
- * const data = {
- *     nodes: [
- *       {id: 'Harry'},
- *       {id: 'Sally'},
- *       {id: 'Alice'}
- *     ],
- *     links: [
- *         {source: 'Harry', target: 'Sally'},
- *         {source: 'Harry', target: 'Alice'},
- *     ]
- * };
- *
- * // the graph configuration, you only need to pass down properties
- * // that you want to override, otherwise default ones will be used
- * const myConfig = {
- *     nodeHighlightBehavior: true,
- *     node: {
- *         color: 'lightgreen',
- *         size: 120,
- *         highlightStrokeColor: 'blue'
- *     },
- *     link: {
- *         highlightColor: 'lightblue'
- *     }
- * };
- *
- * // graph event callbacks
- * const onClickNode = function(nodeId) {
- *      window.alert('Clicked node ${nodeId}');
- * };
- *
- * const onMouseOverNode = function(nodeId) {
- *      window.alert(`Mouse over node ${nodeId}`);
- * };
- *
- * const onMouseOutNode = function(nodeId) {
- *      window.alert(`Mouse out node ${nodeId}`);
- * };
- *
- * const onClickLink = function(source, target) {
- *      window.alert(`Clicked link between ${source} and ${target}`);
- * };
- *
- * const onMouseOverLink = function(source, target) {
- *      window.alert(`Mouse over in link between ${source} and ${target}`);
- * };
- *
- * const onMouseOutLink = function(source, target) {
- *      window.alert(`Mouse out link between ${source} and ${target}`);
- * };
- *
- * <Graph
- *      id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
- *      data={data}
- *      config={myConfig}
- *      onClickNode={onClickNode}
- *      onClickLink={onClickLink}
- *      onMouseOverNode={onMouseOverNode}
- *      onMouseOutNode={onMouseOutNode}
- *      onMouseOverLink={onMouseOverLink}
- *      onMouseOutLink={onMouseOutLink}/>
- */
+// View animation/state loop constant values
+const VIEW_TIME_INCREMENT = 0.0001
+
 export default class Graph extends React.Component {
+    
+    constructor(props) {
+        super(props);
+
+        if (!this.props.id) {
+            utils.throwErr(this.constructor.name, ERRORS.GRAPH_NO_ID_PROP);
+        }
+
+        this.state = graphHelper.initializeGraphState(this.props, this.state);
+        this.state.time = 0;
+    }
+
+    createTransaction(messages, time) {
+        var positionData = {}
+        for(var msg of messages){
+            if (msg.sentTime === time){
+                console.log(msg.recvTime)
+                // positionData[time].push('x1' : NodePos[msg.sender].x, 
+                //                         'y1' : NodePos[msg.sender].y, 
+                //                         'x2' : NodePos[msg.receiver].x, 
+                //                         'y2' : NodePos[msg.receiver].y, 
+                //                         'delta' : msg.rcvTime - time)
+                // console.log("message just sent!", msg.sentTime, time)
+                }
+            }
+        }
+
+    componentWillReceiveProps(nextProps) {
+        // console.log('got new messages:', nextProps.messages, nextProps.time)
+        
+        this.createTransaction(nextProps.messages, nextProps.time)
+
+        //don't touch
+        const newGraphElements =
+            nextProps.data.nodes.length !== this.state.nodesInputSnapshot.length ||
+            nextProps.data.links.length !== this.state.linksInputSnapshot.length ||
+            !utils.isDeepEqual(nextProps.data, {
+                nodes: this.state.nodesInputSnapshot,
+                links: this.state.linksInputSnapshot
+            });
+        const configUpdated =
+            !utils.isObjectEmpty(nextProps.config) && !utils.isDeepEqual(nextProps.config, this.state.config);
+        const state = newGraphElements ? graphHelper.initializeGraphState(nextProps, this.state) : this.state;
+        const config = configUpdated ? utils.merge(DEFAULT_CONFIG, nextProps.config || {}) : this.state.config;
+
+        // in order to properly update graph data we need to pause eventual d3 ongoing animations
+        newGraphElements && this.pauseSimulation();
+
+        const transform = nextProps.config.panAndZoom !== this.state.config.panAndZoom ? 1 : this.state.transform;
+
+        this.setState({
+            ...state,
+            config,
+            newGraphElements,
+            configUpdated,
+            transform
+        });
+
+        this.setState({messages:nextProps.messages})
+        this.setState({speed: nextProps.speed})
+    }
+
+    componentDidUpdate() {
+        // if the property staticGraph was activated we want to stop possible ongoing simulation
+        this.state.config.staticGraph && this.pauseSimulation();
+
+        if (!this.state.config.staticGraph && this.state.newGraphElements) {
+            this._graphForcesConfig();
+            this.restartSimulation();
+            this.setState({ newGraphElements: false });
+        }
+
+        if (this.state.configUpdated) {
+            this._zoomConfig();
+            this.setState({ configUpdated: false });
+        }
+    }
+
+    componentDidMount() {
+        if (!this.state.config.staticGraph) {
+            this._graphForcesConfig();
+        }
+
+        // graph zoom and drag&drop all network
+        this._zoomConfig();
+        this.tick = this.tick.bind(this)
+        this.animate = this.animate.bind(this)
+        this.start()
+    }
+
+    componentWillUnmount() {
+        this.pauseSimulation();
+    }
+
+    start() {
+        this.tick()
+    }
+
+    tick() {
+        console.log(this.state.time)
+        const newTime = this.state.time + VIEW_TIME_INCREMENT;
+        this.animate()
+        this.setState({time : newTime})
+        setTimeout(this.tick, 1);
+    }
+
+    animate() {
+        const messages = this.state.messages
+        // console.log('state messages', this.state.messages)
+        if (messages) {
+            for(var i = 0; i < messages.length; i++) {
+                var nodesDictionary = this.state.nodes
+                var msg = messages[i]
+                if (!msg.node) {
+                    let newTxNode = new Node()
+                    messages[i].node = newTxNode
+                    // console.log("newNode", messages[i].node)
+                    // console.log("added node to msg!")
+                    nodesDictionary[this.state.time + Math.random()] = newTxNode
+                } 
+                console.log(msg.node)
+                var node = msg.node
+                const progress = (this.state.time - msg.sentTime)/(msg.recvTime - msg.sentTime)
+                
+                if (progress <= 1 && progress >= 0) {
+                    const sender = nodesDictionary[msg.sender]
+                    const recipient = nodesDictionary[msg.recipient.pid]
+
+                    console.log("sender", sender)
+                    console.log("recipe", recipient)
+
+                    console.log("senderX", sender.y)
+                    console.log("recipeX", recipient.y)
+
+                    node.x = sender.x
+                    node.y = sender.y
+
+                    node.x = recipient.x
+                    node.y = recipient.y
+
+                    // node['fx'] = node.x;
+                    // node['fy'] = node.y;
+
+                    node.x = progress * (recipient.x - sender.x) + sender.x
+                    node.y = progress * (recipient.y - sender.y) + sender.y
+                }
+            }
+            if(messages.length) console.log("newNode2", messages[0].node)
+            this.setState( { messages : messages } )
+        }
+    }
+
+    render() {
+        const { nodes, links } = graphRenderer.buildGraph(
+            this.state.nodes,
+            {
+                onClickNode: this.props.onClickNode,
+                onMouseOverNode: this.onMouseOverNode,
+                onMouseOut: this.onMouseOutNode
+            },
+            this.state.d3Links,
+            this.state.links,
+            {
+                onClickLink: this.props.onClickLink,
+                onMouseOverLink: this.onMouseOverLink,
+                onMouseOutLink: this.onMouseOutLink
+            },
+            this.state.config,
+            this.state.highlightedNode,
+            this.state.highlightedLink,
+            this.state.transform
+        );
+
+        const svgStyle = {
+            height: this.state.config.height,
+            width: this.state.config.width
+        };
+
+        return (
+            <div id={`${this.state.id}-${CONST.GRAPH_WRAPPER_ID}`}>
+                <svg style={svgStyle}>
+                    <g id={`${this.state.id}-${CONST.GRAPH_CONTAINER_ID}`}>
+                        {links}
+                        {nodes}
+                    </g>
+                </svg>
+            </div>
+        );
+    }
+
+    // react-d3-graph methods
+    /**
+     * Graph component is the main component for react-d3-graph components, its interface allows its user
+     * to build the graph once the user provides the data, configuration (optional) and callback interactions (also optional).
+     * The code for the [live example](https://danielcaldas.github.io/react-d3-graph/sandbox/index.html)
+     * can be consulted [here](https://github.com/danielcaldas/react-d3-graph/blob/master/sandbox/Sandbox.jsx)
+     * @example
+     * import { Graph } from 'react-d3-graph';
+     *
+     * // graph payload (with minimalist structure)
+     * const data = {
+     *     nodes: [
+     *       {id: 'Harry'},
+     *       {id: 'Sally'},
+     *       {id: 'Alice'}
+     *     ],
+     *     links: [
+     *         {source: 'Harry', target: 'Sally'},
+     *         {source: 'Harry', target: 'Alice'},
+     *     ]
+     * };
+     *
+     * // the graph configuration, you only need to pass down properties
+     * // that you want to override, otherwise default ones will be used
+     * const myConfig = {
+     *     nodeHighlightBehavior: true,
+     *     node: {
+     *         color: 'lightgreen',
+     *         size: 120,
+     *         highlightStrokeColor: 'blue'
+     *     },
+     *     link: {
+     *         highlightColor: 'lightblue'
+     *     }
+     * };
+     *
+     * // graph event callbacks
+     * const onClickNode = function(nodeId) {
+     *      window.alert('Clicked node ${nodeId}');
+     * };
+     *
+     * const onMouseOverNode = function(nodeId) {
+     *      window.alert(`Mouse over node ${nodeId}`);
+     * };
+     *
+     * const onMouseOutNode = function(nodeId) {
+     *      window.alert(`Mouse out node ${nodeId}`);
+     * };
+     *
+     * const onClickLink = function(source, target) {
+     *      window.alert(`Clicked link between ${source} and ${target}`);
+     * };
+     *
+     * const onMouseOverLink = function(source, target) {
+     *      window.alert(`Mouse over in link between ${source} and ${target}`);
+     * };
+     *
+     * const onMouseOutLink = function(source, target) {
+     *      window.alert(`Mouse out link between ${source} and ${target}`);
+     * };
+     *
+     * <Graph
+     *      id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
+     *      data={data}
+     *      config={myConfig}
+     *      onClickNode={onClickNode}
+     *      onClickLink={onClickLink}
+     *      onMouseOverNode={onMouseOverNode}
+     *      onMouseOutNode={onMouseOutNode}
+     *      onMouseOverLink={onMouseOverLink}
+     *      onMouseOutLink={onMouseOutLink}/>
+     */
+
     /**
      * Sets d3 tick function and configures other d3 stuff such as forces and drag events.
      * @returns {undefined}
@@ -292,124 +489,4 @@ export default class Graph extends React.Component {
      */
     restartSimulation = () => !this.state.config.staticGraph && this.state.simulation.restart();
 
-    constructor(props) {
-        super(props);
-
-        if (!this.props.id) {
-            utils.throwErr(this.constructor.name, ERRORS.GRAPH_NO_ID_PROP);
-        }
-
-        this.state = graphHelper.initializeGraphState(this.props, this.state);
-    }
-
-    createTransaction(messages, time) {
-        var positionData = {}
-        for(var msg of messages){
-            if (msg.sentTime === time){
-                console.log(msg.recvTime)
-                // positionData[time].push('x1' : NodePos[msg.sender].x, 
-                //                         'y1' : NodePos[msg.sender].y, 
-                //                         'x2' : NodePos[msg.receiver].x, 
-                //                         'y2' : NodePos[msg.receiver].y, 
-                //                         'delta' : msg.rcvTime - time)
-                // console.log("message just sent!", msg.sentTime, time)
-                }
-            }
-        }
-
-    componentWillReceiveProps(nextProps) {
-        // console.log('got new messages:', nextProps.messages, nextProps.time)
-        this.createTransaction(nextProps.messages, nextProps.time)
-        const newGraphElements =
-            nextProps.data.nodes.length !== this.state.nodesInputSnapshot.length ||
-            nextProps.data.links.length !== this.state.linksInputSnapshot.length ||
-            !utils.isDeepEqual(nextProps.data, {
-                nodes: this.state.nodesInputSnapshot,
-                links: this.state.linksInputSnapshot
-            });
-        const configUpdated =
-            !utils.isObjectEmpty(nextProps.config) && !utils.isDeepEqual(nextProps.config, this.state.config);
-        const state = newGraphElements ? graphHelper.initializeGraphState(nextProps, this.state) : this.state;
-        const config = configUpdated ? utils.merge(DEFAULT_CONFIG, nextProps.config || {}) : this.state.config;
-
-        // in order to properly update graph data we need to pause eventual d3 ongoing animations
-        newGraphElements && this.pauseSimulation();
-
-        const transform = nextProps.config.panAndZoom !== this.state.config.panAndZoom ? 1 : this.state.transform;
-
-        this.setState({
-            ...state,
-            config,
-            newGraphElements,
-            configUpdated,
-            transform
-        });
-    }
-
-    componentDidUpdate() {
-        // if the property staticGraph was activated we want to stop possible ongoing simulation
-        this.state.config.staticGraph && this.pauseSimulation();
-
-        if (!this.state.config.staticGraph && this.state.newGraphElements) {
-            this._graphForcesConfig();
-            this.restartSimulation();
-            this.setState({ newGraphElements: false });
-        }
-
-        if (this.state.configUpdated) {
-            this._zoomConfig();
-            this.setState({ configUpdated: false });
-        }
-    }
-
-    componentDidMount() {
-        if (!this.state.config.staticGraph) {
-            this._graphForcesConfig();
-        }
-
-        // graph zoom and drag&drop all network
-        this._zoomConfig();
-    }
-
-    componentWillUnmount() {
-        this.pauseSimulation();
-    }
-
-    render() {
-        const { nodes, links } = graphRenderer.buildGraph(
-            this.state.nodes,
-            {
-                onClickNode: this.props.onClickNode,
-                onMouseOverNode: this.onMouseOverNode,
-                onMouseOut: this.onMouseOutNode
-            },
-            this.state.d3Links,
-            this.state.links,
-            {
-                onClickLink: this.props.onClickLink,
-                onMouseOverLink: this.onMouseOverLink,
-                onMouseOutLink: this.onMouseOutLink
-            },
-            this.state.config,
-            this.state.highlightedNode,
-            this.state.highlightedLink,
-            this.state.transform
-        );
-
-        const svgStyle = {
-            height: this.state.config.height,
-            width: this.state.config.width
-        };
-
-        return (
-            <div id={`${this.state.id}-${CONST.GRAPH_WRAPPER_ID}`}>
-                <svg style={svgStyle}>
-                    <g id={`${this.state.id}-${CONST.GRAPH_CONTAINER_ID}`}>
-                        {links}
-                        {nodes}
-                    </g>
-                </svg>
-            </div>
-        );
-    }
 }

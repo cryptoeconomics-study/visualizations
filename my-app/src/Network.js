@@ -153,7 +153,8 @@ class Network extends Component {
            onMouseOverLink={onMouseOverLink}
            onMouseOutLink={onMouseOutLink}
            messages={messages}
-           time={time}/>
+           time={time}
+           speed={0.01}/>
         </div>
         <div id = "Node-state">
         <Sidebar node = {clickedNode}/>
