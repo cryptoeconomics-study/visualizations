@@ -25,12 +25,14 @@ class Spender extends Node {
       console.log('We are honest so we wont send anything :)')
       return
     }
-    // Generate random transaction
-    const tx = this.generateTx(this.getRandomReceiver(), 10)
-    this.transactions.push(tx)
-    this.applyTransaction(tx)
-    // Broadcast this tx to the network
-    this.network.broadcast(this.pid, tx)
+    // Generate random transaction 5% of the time
+    if(Math.random() < 0.05) {
+      const tx = this.generateTx(this.getRandomReceiver(), 10)
+      this.transactions.push(tx)
+      this.applyTransaction(tx)
+      // Broadcast this tx to the network
+      this.network.broadcast(this.pid, tx)
+    }
   }
 }
 
