@@ -147,7 +147,6 @@ export default class Graph extends React.Component {
                     delete nodesDictionary[key]
                 }
                 this.getTick(Math.floor(newTime))
-            }
 
             this.animate()
 

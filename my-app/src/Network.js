@@ -170,13 +170,13 @@ class Network extends Component {
   }
 
   rewind(){
-    console.log('rewind')
-    // this.state.speed *= 1.5
+    this.setState({speed : this.state.speed *= 1.5})
+    console.log('rewind', this.state)
   }
 
   fastforward(){
-    console.log('fastforward')
-    // this.state.speed /= 1.5
+    this.setState({speed : this.state.speed /= 1.5})
+    console.log('fastforward', this.state)
   }
 
   stepbackward(){
@@ -202,13 +202,11 @@ class Network extends Component {
   }
 
   doubleSpend(evilNode){
-    //shuffle agents, select 3
-    //0 tries to spend to 1,2
-    console.log(evilNode)
     const drEvil = evilNode.pid
-    console.log(network.peers, "pid:", drEvil, network.peers[drEvil])
     const victims = [network.peers[drEvil][0], network.peers[drEvil][1]]
     const spends = [evilNode.generateTx(victims[0].wallet.address, 10), evilNode.generateTx(victims[1].wallet.address, 10)]
+    spends[0].isDoubleSpend = true
+    spends[1].isDoubleSpend = true
     network.broadcastTo(drEvil, victims[0], spends[0])
     network.broadcastTo(drEvil, victims[1], spends[1])
 
@@ -221,9 +219,9 @@ class Network extends Component {
     this.getTick(0)
   }
   setSpeed(value){
-    // let raw = event.target.value
-    let scaled = Math.min(Math.max(parseInt(value), 1), 5)
-    console.log("speeedooo", value, scaled)
+    let speed = value/1000.0
+    this.setState({speed : speed})
+    console.log("speeedooo", speed)
 
   }
   setLatency(event){
