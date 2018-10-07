@@ -3,6 +3,7 @@ import {Graph, Node} from './react-d3-graph-custom/src/index';
 import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import Sidebar from './Sidebar.js'
+import clone  from 'clone';
 
 const ICONS = [
   'https://i.imgur.com/Wi9yFXw.png',
@@ -62,7 +63,6 @@ for (const node of nodes) {
   };
 
   const onMouseOverLink = function(source, target) {
-
        // window.alert(`Mouse over in link between ${source} and ${target}`);
   };
 
@@ -71,14 +71,8 @@ for (const node of nodes) {
   };
 // }
 
-const getNode = function (nodeId) {
-  return nodes.find((node) => {
-    return node.pid === nodeId;
-  });
-}
 const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
-
 
 class Network extends Component {
   constructor() {
@@ -88,13 +82,19 @@ class Network extends Component {
   componentDidMount() {
     //run when play is hit
     try {
-      this.run(300).then(
-
+      this.run(300).then(()=>{
+        this.getTick(200)
+      }
       )
     } catch (e) {
     }
   }
-
+  async run (steps) {
+    for (let i = 0; i < steps; i++) {
+      this.getTick(i)
+      await delay(10)
+    }
+  }
   setMessageQueue(network){
     let oldQ = network.messageQueue
     var newQ = []
@@ -105,26 +105,43 @@ class Network extends Component {
     });
     return newQ
   }
-
-  async run (steps) {
-    for (let i = 0; i < 300; i++) {
-      network.tick()
-      const history = this.state.history
-      history.push(network)
-      let messageQueue = this.setMessageQueue(network)
-      this.setState({messages: messageQueue, time: network.time - 1, history: history})
-      await delay(1000)
-    }
+  tick() {
+    network.tick()
+    const history = this.state.history
+    history.push(clone(network))
+    this.setState({history: history})
   }
+  //
+  //sets Messages
+  getTick(time) {
+    const {history} = this.state
+    if(time > history.length) {
+      throw new Error('You skipped a time step!')
+    } else if (time === history.length ) {
+      this.tick()
+    }
+    console.log('time:', time, 'history at time:', history[time])
+    let messages = this.setMessageQueue(history[time])
+      this.setState({messages: messages, time: time})
+  }
+
+  getNode (nodeId, time) {
+    const currNetwork = this.state.history[time]
+    return currNetwork.agents.find((node) => {
+      return node.pid === nodeId;
+    });
+  }
+
   onClickNode (nodeId) {
-      const node = getNode(nodeId)
-      // console.log('Clicked node', node.state, node.invalidNonceTxs)
-      if (this.state.clickedNode && node.pid === this.state.clickedNode.pid) {
-        this.setState({clickedNode: null, isNodeClicked: false})
-      } else {
-        this.setState({clickedNode: node, isNodeClicked: true})
-      }
-    };
+    const {clickedNode, time} = this.state
+    const node = this.getNode(nodeId, time)
+    // console.log('Clicked node', node.state, node.invalidNonceTxs)
+    if (clickedNode && node.pid === clickedNode.pid) {
+      this.setState({clickedNode: null, isNodeClicked: false})
+    } else {
+      this.setState({clickedNode: node, isNodeClicked: true})
+    }
+  };
 
   onMouseOverNode (nodeId) {
     // const node = getNode(nodeId)
@@ -153,7 +170,8 @@ class Network extends Component {
            onMouseOverLink={onMouseOverLink}
            onMouseOutLink={onMouseOutLink}
            messages={messages}
-           time={time}/>
+           time={time}
+           onTick = {this.getTick.bind(this)}/>
         </div>
         <div id = "Node-state">
         <Sidebar node = {clickedNode}/>
