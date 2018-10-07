@@ -9,7 +9,7 @@ import CONST from './graph.const';
 
 import Link from '../link/Link';
 import Node from '../node/Node';
-import { buildLinkProps, buildNodeProps } from './graph.helper';
+import { buildLinkProps, buildNodeProps, messageProps } from './graph.helper';
 
 /**
  * Build Link components given a list of links.
@@ -62,8 +62,9 @@ function _buildLinks(nodes, links, linksMatrix, config, linkCallbacks, highlight
 function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform) {
     return Object.keys(nodes).map(nodeId => {
         let props;
+        
         if (nodes[nodeId].isMessage){
-            props = buildNodeProps(
+            props = messageProps(
                 Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
                 config,
                 {},

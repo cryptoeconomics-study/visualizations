@@ -314,6 +314,57 @@ function buildNodeProps(node, config, nodeCallbacks = {}, highlightedNode, highl
     };
 }
 
+function messageProps(node, config, nodeCallbacks = {}, highlightedNode, highlightedLink, transform) {
+    const highlight =
+        node.highlighted ||
+        (node.id === (highlightedLink && highlightedLink.source) ||
+            node.id === (highlightedLink && highlightedLink.target));
+    const opacity = _getNodeOpacity(node, highlightedNode, highlightedLink, config);
+    let fill = node.color || config.node.color;
+
+    if (highlight && config.node.highlightColor !== CONST.KEYWORDS.SAME) {
+        fill = config.node.highlightColor;
+    }
+
+    let stroke = config.node.strokeColor;
+
+    if (highlight && config.node.highlightStrokeColor !== CONST.KEYWORDS.SAME) {
+        stroke = config.node.highlightStrokeColor;
+    }
+
+    const t = 1 / transform;
+    const nodeSize = node.size || config.node.size;
+    const fontSize = highlight ? config.node.highlightFontSize : config.node.fontSize;
+    const dx = fontSize * t + nodeSize / 100 + 1.5;
+    const strokeWidth = highlight ? config.node.highlightStrokeWidth : config.node.strokeWidth;
+    const svg = node.svg || config.node.svg;
+    const fontColor = node.fontColor || config.node.fontColor;
+
+    return {
+        className: CONST.NODE_CLASS_NAME,
+        cursor: config.node.mouseCursor,
+        cx: (node && node.x) || '0',
+        cy: (node && node.y) || '0',
+        fill: '#00FF1E',
+        fontColor,
+        fontSize: 0,
+        dx,
+        fontWeight: highlight ? config.node.highlightFontWeight : config.node.fontWeight,
+        id: node.id,
+        label: "",
+        onClickNode: nodeCallbacks.onClickNode,
+        onMouseOverNode: nodeCallbacks.onMouseOverNode,
+        onMouseOut: nodeCallbacks.onMouseOut,
+        opacity,
+        renderLabel: config.node.renderLabel,
+        size: 15.0 * t,
+        stroke,
+        strokeWidth: strokeWidth * t,
+        svg,
+        type: node.symbolType || config.node.symbolType
+    };
+}
+
 /**
  * Encapsulates common procedures to initialize graph.
  * @param {Object} props - Graph component props, object that holds data, id and config.
@@ -407,4 +458,4 @@ function updateNodeHighlightedValue(nodes, links, config, id, value = false) {
     };
 }
 
-export { buildLinkProps, buildNodeProps, initializeGraphState, updateNodeHighlightedValue };
+export { buildLinkProps, buildNodeProps, messageProps, initializeGraphState, updateNodeHighlightedValue };
