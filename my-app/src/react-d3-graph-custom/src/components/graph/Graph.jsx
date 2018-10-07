@@ -72,6 +72,7 @@ export default class Graph extends React.Component {
         });
 
         this.setState({messages:nextProps.messages})
+        this.setState({messageNodes:[]})
         this.setState({speed: nextProps.speed})
     }
 
@@ -115,7 +116,6 @@ export default class Graph extends React.Component {
 
     tick() {
         const prevTime = this.state.time
-        //console.log(prevTime)
         const newTime = this.state.time + VIEW_TIME_INCREMENT;
 
         this.animate()
@@ -123,11 +123,12 @@ export default class Graph extends React.Component {
         if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
             console.log("TICK", prevTime)
             const messages = this.state.messages
-            var nodesDictionary = this.state.nodes
-            for(var i = 0; i < messages.length; i++) {
-                const key = getKeyByValue(nodesDictionary, messages[i].node)
-                delete nodesDictionary[key]
-            }
+            // Unnecessary since they will be deleted by getTick()
+            // var nodesDictionary = this.state.messageNodes
+            // for(var i = 0; i < messages.length; i++) {
+            //     const key = getKeyByValue(nodesDictionary, messages[i].node)
+            //     delete nodesDictionary[key]
+            // }
             this.getTick(Math.floor(newTime))
         }
 
@@ -142,15 +143,14 @@ export default class Graph extends React.Component {
         // console.log('state messages', this.state.messages)
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
-                var nodesDictionary = this.state.nodes
+                var messageNodes = this.state.messageNodes
                 if (!messages[i].node) {
                     let newTxNode = new Node()
                     messages[i].node = newTxNode
                     // console.log("newNode", messages[i].node)
                     // console.log("added node to msg!")
-
-                    newTxNode.size = 100
-                    nodesDictionary[this.state.time + Math.random()] = newTxNode
+                    newTxNode.size = 10
+                    messageNodes.push(newTxNode)
                 }
                 // console.log(msg.node)
                 var node = messages[i].node
@@ -178,17 +178,18 @@ export default class Graph extends React.Component {
                     node.x = progress * (recipient.x - sender.x) + sender.x
                     node.y = progress * (recipient.y - sender.y) + sender.y
                 } else if (progress > 1) {
-                    const key = getKeyByValue(nodesDictionary, node)
-                    delete nodesDictionary[key]
+                    messageNodes.splice(i, 1)
                     messages.splice(i, 1)
                 }
             }
             this.setState( { messages : messages } )
+            this.setState( { messageNodes : messageNodes } )
         }
     }
 
     render() {
         const { nodes, links } = graphRenderer.buildGraph(
+            this.state.messageNodes,
             this.state.nodes,
             {
                 onClickNode: this.props.onClickNode,
