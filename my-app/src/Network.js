@@ -4,6 +4,7 @@ import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
 import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
 import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
+import Parameters from './Parameters.js'
 import clone  from 'clone';
 
 const ICONS = [
@@ -83,7 +84,7 @@ class Network extends Component {
   componentDidMount() {
     //run when play is hit
     try {
-      this.run(300).then(()=>{
+      this.run(200).then(()=>{
         this.getTick(200)
       }
       )
@@ -157,6 +158,54 @@ class Network extends Component {
 
   pause(){
     console.log('pause')
+    //this.state.speed = 1    //(reset FF/Rewind)
+    // this.state.pause ^= 1  //toggle pause
+  }
+
+  rewind(){
+    console.log('rewind')
+    // this.state.speed *= 1.5
+  }
+
+  fastforward(){
+    console.log('fastforward')
+    // this.state.speed /= 1.5
+  }
+
+  stepbackward(){
+    console.log('stepbackward')
+    const {clickedNode, time} = this.state
+    if(time < 1){
+      return
+    }
+    this.getTick(time - 1)
+    if (clickedNode){
+      const node = this.getNode(clickedNode.pid, time - 1)
+      this.setState({clickedNode: node, isNodeClicked: true})
+    }
+  }
+
+  stepforward(){
+    console.log('stepforward')
+    const {clickedNode, time} = this.state
+    this.getTick(time + 1)
+    if (clickedNode){
+      const node = this.getNode(clickedNode.pid, time + 1)
+      this.setState({clickedNode: node, isNodeClicked: true})
+    }
+  }
+  
+  reset(){
+    console.log('reset')
+    const {clickedNode, time} = this.state
+    this.getTick(0)
+    if (clickedNode){
+      const node = this.getNode(clickedNode.pid, 0)
+      this.setState({clickedNode: node, isNodeClicked: true})
+    }
+  }
+  setSpeed(event){
+    console.log("speeedooo", event)
   }
   render() {
     const {clickedNode, messages, time} = this.state
@@ -180,7 +229,15 @@ class Network extends Component {
         </div>
         <div id = "Node-state">
         <Sidebar node = {clickedNode}/>
-        <Controls pause = {this.pause.bind(this)}/>
+        <Controls 
+          pause = {this.pause.bind(this)}
+          stepbackward = {this.stepbackward.bind(this)}
+          stepforward = {this.stepforward.bind(this)}
+          rewind = {this.rewind.bind(this)}
+          fastforward = {this.fastforward.bind(this)}
+          reset = {this.reset.bind(this)}/>
+        <Parameters
+          setSpeed = {this.setSpeed.bind(this)}/>
         </div>
       </div>
     );
