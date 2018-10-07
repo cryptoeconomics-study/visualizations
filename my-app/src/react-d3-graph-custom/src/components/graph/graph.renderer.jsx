@@ -61,14 +61,26 @@ function _buildLinks(nodes, links, linksMatrix, config, linkCallbacks, highlight
  */
 function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform) {
     return Object.keys(nodes).map(nodeId => {
-        const props = buildNodeProps(
-            Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
-            config,
-            nodeCallbacks,
-            highlightedNode,
-            highlightedLink,
-            transform
-        );
+        let props;
+        if (nodes[nodeId].isMessage){
+            props = buildNodeProps(
+                Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
+                config,
+                {},
+                highlightedNode,
+                highlightedLink,
+                transform
+            );
+        } else {
+            props = buildNodeProps(
+                Object.assign({}, nodes[nodeId], { id: `${nodeId}` }),
+                config,
+                nodeCallbacks,
+                highlightedNode,
+                highlightedLink,
+                transform
+            );
+        }
 
         return <Node key={nodeId} {...props} />;
     });
