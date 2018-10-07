@@ -16,7 +16,7 @@ class Controls extends Component {
           <button onClick={pause}>Pause</button>
           <button onClick={stepforward}>Step Forward</button>
           <button onClick={fastforward}>Fastforward</button>
-          <button style={{background:"red"}} onClick={reset}>Reset</button>
+          <button style={{background:"yellow"}} onClick={reset}>Reset</button>
         </div>
     );
   }

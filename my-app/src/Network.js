@@ -6,6 +6,7 @@ import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
 import Parameters from './Parameters.js'
 import clone  from 'clone';
+const _ = require('lodash')
 
 const ICONS = [
   'https://i.imgur.com/Wi9yFXw.png',
@@ -191,16 +192,30 @@ class Network extends Component {
     const {clickedNode, time} = this.state
     this.getTick(time + 1)
   }
+
+  doubleSpend(evilNode){
+    //shuffle agents, select 3
+    //0 tries to spend to 1,2
+    console.log(evilNode)
+    const drEvil = evilNode.pid
+    console.log(network.peers, "pid:", drEvil, network.peers[drEvil])
+    const victims = [network.peers[drEvil][0], network.peers[drEvil][1]]
+    const spends = [evilNode.generateTx(victims[0].wallet.address, 10), evilNode.generateTx(victims[1].wallet.address, 10)]
+    network.broadcastTo(drEvil, victims[0], spends[0])
+    network.broadcastTo(drEvil, victims[1], spends[1])
+
+    console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
+  }
   
   reset(){
     console.log('reset')
     const {clickedNode, time} = this.state
     this.getTick(0)
   }
-  setSpeed(event){
-    let raw = event.target.value
-    let scaled = Math.min(Math.max(parseInt(raw), 1), 5)
-    console.log("speeedooo", raw, scaled)
+  setSpeed(value){
+    // let raw = event.target.value
+    let scaled = Math.min(Math.max(parseInt(value), 1), 5)
+    console.log("speeedooo", value, scaled)
 
   }
   setLatency(event){
@@ -237,7 +252,9 @@ class Network extends Component {
            onTick = {this.getTick.bind(this)}/>
         </div>
         <div id = "Node-state">
-        <Sidebar node = {clickedNode}/>
+        <Sidebar 
+        node = {clickedNode}
+        doubleSpend = {this.doubleSpend.bind(this)}/>
         <Controls 
           pause = {this.pause.bind(this)}
           stepbackward = {this.stepbackward.bind(this)}
@@ -247,8 +264,7 @@ class Network extends Component {
           reset = {this.reset.bind(this)}/>
         <Parameters
           setSpeed = {this.setSpeed.bind(this)}
-          setLatency = {this.setLatency.bind(this)}
-          setPacketLoss = {this.setPacketLoss.bind(this)}/> 
+          setLatency = {this.setLatency.bind(this)}/>
         </div>
       </div>
     );
