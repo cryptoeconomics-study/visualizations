@@ -26,7 +26,8 @@ class Spender extends Node {
       return
     }
     // Generate random transaction 5% of the time
-    if(Math.random() < 0.05) {
+    console.log(Math.round((new Date()).getTime() / 10000))
+    if(Math.random() < 0.1 && (Math.round((new Date()).getTime() / 10000) % 3 === 0)) {
       const tx = this.generateTx(this.getRandomReceiver(), 10)
       this.transactions.push(tx)
       this.applyTransaction(tx)
