@@ -9,6 +9,7 @@ import CONST from './graph.const';
 
 import Link from '../link/Link';
 import Node from '../node/Node';
+import Message from '../node/Message';
 import { buildLinkProps, buildNodeProps } from './graph.helper';
 
 /**
@@ -74,6 +75,20 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
     });
 }
 
+function _buildMessages(messages,  config, transform) {
+    return messages.forEach((message, index) => {
+        const props = buildNodeProps(
+            Object.assign({}, message),
+            config,
+            transform
+        );
+
+        return <Message key={index} {...props} />;
+    });
+}
+
+
+
 /**
  * Method that actually is exported an consumed by Graph component in order to build all Nodes and Link
  * components.
@@ -117,6 +132,7 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
  * @memberof Graph/helper
  */
 function buildGraph(
+    messages,
     nodes,
     nodeCallbacks,
     links,
@@ -138,7 +154,8 @@ function buildGraph(
             highlightedNode,
             highlightedLink,
             transform
-        )
+        ),
+        messages: _buildMessages(messages, config, transform)
     };
 }
 

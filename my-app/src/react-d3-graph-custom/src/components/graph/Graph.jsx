@@ -30,7 +30,7 @@ function getKeyByValue(object, value) {
 }
 
 export default class Graph extends React.Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -117,7 +117,7 @@ export default class Graph extends React.Component {
     tick() {
         const prevTime = this.state.time
         const newTime = this.state.time + VIEW_TIME_INCREMENT;
-        
+
         this.animate()
 
         if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
@@ -149,14 +149,13 @@ export default class Graph extends React.Component {
                     messages[i].node = newTxNode
                     // console.log("newNode", messages[i].node)
                     // console.log("added node to msg!")
-
                     newTxNode.size = 10
                     messageNodes.push(newTxNode)
-                } 
+                }
                 // console.log(msg.node)
                 var node = messages[i].node
                 const progress = (this.state.time - messages[i].sentTime)/(messages[i].recvTime - messages[i].sentTime)
-                
+
                 if (progress <= 1 && progress >= 0) {
                     const sender = messageNodes[messages[i].sender]
                     const recipient = messageNodes[messages[i].recipient.pid]
