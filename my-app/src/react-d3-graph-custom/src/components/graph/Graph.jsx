@@ -40,6 +40,7 @@ export default class Graph extends React.Component {
 
         this.state = graphHelper.initializeGraphState(this.props, this.state);
         this.state.time = 0;
+        this.state.messageNodes = []
     }
 
     componentWillReceiveProps(nextProps) {
@@ -143,6 +144,7 @@ export default class Graph extends React.Component {
         // console.log('state messages', this.state.messages)
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
+                var nodes = this.state.nodes
                 var messageNodes = this.state.messageNodes
                 if (!messages[i].node) {
                     let newTxNode = new Node()
@@ -157,8 +159,8 @@ export default class Graph extends React.Component {
                 const progress = (this.state.time - messages[i].sentTime)/(messages[i].recvTime - messages[i].sentTime)
 
                 if (progress <= 1 && progress >= 0) {
-                    const sender = messageNodes[messages[i].sender]
-                    const recipient = messageNodes[messages[i].recipient.pid]
+                    const sender = nodes[messages[i].sender]
+                    const recipient = nodes[messages[i].recipient.pid]
 
                     // console.log("sender", sender)
                     // console.log("recipe", recipient)
@@ -188,6 +190,8 @@ export default class Graph extends React.Component {
     }
 
     render() {
+        console.log(this.state.nodes)
+        console.log(this.state.messageNodes)
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.messageNodes,
             this.state.nodes,
