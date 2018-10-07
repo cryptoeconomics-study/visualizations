@@ -11,7 +11,7 @@ class Controls extends Component {
     const {pause, fastforward, rewind} = this.props
     return (
         <div id = "Controls">
-          <button onclick={pause()}>Pause</button>
+          <button onClick={pause}>Pause</button>
         </div>
     );
   }
