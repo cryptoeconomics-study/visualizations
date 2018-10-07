@@ -96,12 +96,15 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
                 transform
             );
             if (nodeState) {
-                let state = nodeState(nodeId, Math.floor(time)).state
-                if (state) {
-                    let stateHash = getHash(state)
-                    let color = stateHash.substr(-6)
-                    //console.log(color)
-                    props.fill = '#' + color
+                let node = nodeState(nodeId, Math.floor(time))
+                if (node) {
+                    let state = node.state
+                    if (state) {
+                        let stateHash = getHash(state)
+                        let color = stateHash.substr(-6)
+                        //console.log(color)
+                        props.fill = '#' + color
+                    }
                 }
             }
         }

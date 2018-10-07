@@ -80,7 +80,7 @@ const delay = (duration) =>
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, history: [], paused: false}
+    this.state = {clickedNode: null, history: [], paused: false, speed: 10}
   }
   componentDidMount() {
     //run when play is hit
@@ -172,12 +172,12 @@ class Network extends Component {
   }
 
   rewind(){
-    this.setState({speed : this.state.speed *= 1.5})
+    this.setState({speed : this.state.speed /= 1.5})
     console.log('rewind', this.state)
   }
 
   fastforward(){
-    this.setState({speed : this.state.speed /= 1.5})
+    this.setState({speed : this.state.speed *= 1.5})
     console.log('fastforward', this.state)
   }
 
@@ -256,7 +256,7 @@ class Network extends Component {
            onMouseOutLink={onMouseOutLink}
            messages={messages}
            time={time}
-           speed={0.01}
+           speed={this.state.speed}
            paused={paused}
            onTick = {this.getTick.bind(this)}
            nodeState = {this.getNode.bind(this)}/>
