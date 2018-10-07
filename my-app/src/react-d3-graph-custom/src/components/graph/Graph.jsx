@@ -74,9 +74,9 @@ export default class Graph extends React.Component {
 
         if (nextProps.messages) this.setState({messages: nextProps.messages})
         if (nextProps.speed) this.setState({speed: nextProps.speed})
-        
+
         var nodesDictionary = this.state.nodes
-        console.log("props:", nodesDictionary)
+        // console.log("props:", nodesDictionary)
 
         // nice
         const wasPaused = this.state.paused
@@ -87,7 +87,7 @@ export default class Graph extends React.Component {
             }
         });
 
-        
+
 
     }
 
@@ -130,16 +130,16 @@ export default class Graph extends React.Component {
     }
 
     tick() {
-        console.log("in tick:", this.state.paused)
+        // console.log("in tick:", this.state.paused)
         if (!this.state.paused) {
             const prevTime = this.state.time
-            console.log(prevTime)
+            // console.log(prevTime)
             const newTime = this.state.time + VIEW_TIME_INCREMENT;
 
             this.animate()
 
             if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
-                console.log("TICK", prevTime)
+                // console.log("TICK", prevTime)
                 const messages = this.state.messages
                 var nodesDictionary = this.state.nodes
                 for(var i = 0; i < messages.length; i++) {
@@ -193,8 +193,9 @@ export default class Graph extends React.Component {
                     let newTxNode = new Node()
                     messages[i].node = newTxNode
                     // console.log("newNode", messages[i].node)
-                    console.log("added node to msg!")
+                    // console.log("added node to msg!")
                     newTxNode.isMessage = true
+                    newTxNode.isDoubleSpend = messages[i].message.isDoubleSpend
                     newTxNode.sig = messages[i].message.sig
                     nodesDictionary[this.state.time + Math.random()] = newTxNode
                 }
