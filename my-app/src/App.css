@@ -21,28 +21,29 @@
   font-size: large;
 }
 
-#Controls-container {
+/*#Controls-container {
 	width: 90%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	align-content: space-around;
-}
+}*/
 
-#Controls * {
+#Controls {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	align-content: space-around;
 }
 
+/*
 #input-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
-	
+	float: right;
 	width: 100%;
-}
+}*/
 
 #Parameters {
 	width: 90%;
@@ -58,11 +59,13 @@
 #Sidebar-container {
 	width: 30%;
 	max-height: 90%;
+	border: 1px black solid;
 }
 
 
-#Text-container * {
+#Text-container {
 	padding: 10px;
+	border: 1px black solid;
 }
 
 #Text {
@@ -71,8 +74,8 @@
 	overflow-y: scroll;
 }
 
-#Sidebar {
-
+#Sidebar * {
+	padding: 5px;
 }
 
 #Network-graph {
@@ -87,6 +90,7 @@ b {
 	width: 40%;
 	max-height: 90%;
 	align-content: center;
+	border: 2px black solid;
 }
 
 #App-container {

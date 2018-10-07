@@ -289,11 +289,11 @@ This is the root cause of the double spend problem: an attacker can send one mes
               fastforward = {this.fastforward.bind(this)}
               reset = {this.reset.bind(this)}/>
             </div>
-            <div id="Parameters-container">
+            {/*<div id="Parameters-container">
               <Parameters
               setSpeed = {this.setSpeed.bind(this)}
               setLatency = {this.setLatency.bind(this)}/>
-            </div>
+            </div>*/}
           </div>
         </div>
         <div id="Sidebar-container">
