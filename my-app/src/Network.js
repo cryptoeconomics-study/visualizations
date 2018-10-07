@@ -116,7 +116,7 @@ class Network extends Component {
   //
   //sets Messages
   getTick(time) {
-    const {history} = this.state
+    const {history, clickedNode} = this.state
     if(time > history.length) {
       throw new Error('You skipped a time step!')
     } else if (time === history.length ) {
@@ -124,6 +124,11 @@ class Network extends Component {
     }
     console.log('time:', time, 'history at time:', history[time])
     let messages = this.setMessageQueue(history[time])
+    // Update states if agent already clicked
+    if (clickedNode){
+      const node = this.getNode(clickedNode.pid, time)
+      this.setState({clickedNode: node, isNodeClicked: true})
+    }
     this.setState({messages: messages, time: time})
   }
 
@@ -179,33 +184,36 @@ class Network extends Component {
       return
     }
     this.getTick(time - 1)
-    if (clickedNode){
-      const node = this.getNode(clickedNode.pid, time - 1)
-      this.setState({clickedNode: node, isNodeClicked: true})
-    }
   }
 
   stepforward(){
     console.log('stepforward')
     const {clickedNode, time} = this.state
     this.getTick(time + 1)
-    if (clickedNode){
-      const node = this.getNode(clickedNode.pid, time + 1)
-      this.setState({clickedNode: node, isNodeClicked: true})
-    }
   }
   
   reset(){
     console.log('reset')
     const {clickedNode, time} = this.state
     this.getTick(0)
-    if (clickedNode){
-      const node = this.getNode(clickedNode.pid, 0)
-      this.setState({clickedNode: node, isNodeClicked: true})
-    }
   }
   setSpeed(event){
-    console.log("speeedooo", event)
+    let raw = event.target.value
+    let scaled = Math.min(Math.max(parseInt(raw), 1), 5)
+    console.log("speeedooo", raw, scaled)
+
+  }
+  setLatency(event){
+    let raw = event.target.value
+    let scaled = Math.min(Math.max(parseInt(raw), 1), 10)
+    console.log("latency", raw, scaled)
+
+  }
+  setPacketLoss(event){
+    let raw = event.target.value
+    let scaled = Math.min(Math.max(parseInt(raw), 1), 20)
+    console.log("packetloss", raw, scaled)
+
   }
   render() {
     const {clickedNode, messages, time} = this.state
@@ -238,7 +246,9 @@ class Network extends Component {
           fastforward = {this.fastforward.bind(this)}
           reset = {this.reset.bind(this)}/>
         <Parameters
-          setSpeed = {this.setSpeed.bind(this)}/>
+          setSpeed = {this.setSpeed.bind(this)}
+          setLatency = {this.setLatency.bind(this)}
+          setPacketLoss = {this.setPacketLoss.bind(this)}/> 
         </div>
       </div>
     );
