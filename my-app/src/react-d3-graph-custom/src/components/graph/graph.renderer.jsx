@@ -59,7 +59,14 @@ function _buildLinks(nodes, links, linksMatrix, config, linkCallbacks, highlight
  * @returns {Object} returns the generated array of nodes components
  * @memberof Graph/helper
  */
-function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform) {
+
+var EthCrypto = require('eth-crypto')
+
+function getHash (tx) {
+  return EthCrypto.hash.keccak256(JSON.stringify(tx))
+}
+
+function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform, nodeState, time) {
     return Object.keys(nodes).map(nodeId => {
         let props;
 
@@ -88,6 +95,15 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
                 highlightedLink,
                 transform
             );
+            if (nodeState) {
+                let state = nodeState(nodeId, Math.floor(time)).state
+                if (state) {
+                    let stateHash = getHash(state)
+                    let color = stateHash.substr(-6)
+                    //console.log(color)
+                    props.fill = '#' + color
+                }
+            }
         }
 
         return <Node key={nodeId} {...props} />;
@@ -145,10 +161,12 @@ function buildGraph(
     config,
     highlightedNode,
     highlightedLink,
-    transform
+    transform,
+    nodeState,
+    time
 ) {
     return {
-        nodes: _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform),
+        nodes: _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform, nodeState, time),
         links: _buildLinks(
             nodes,
             links,

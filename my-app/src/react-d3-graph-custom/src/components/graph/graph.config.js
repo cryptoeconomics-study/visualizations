@@ -134,7 +134,7 @@ export default {
     highlightOpacity: 1,
     linkHighlightBehavior: false,
     maxZoom: 8,
-    minZoom: 0.1,
+    minZoom: 1,
     nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
