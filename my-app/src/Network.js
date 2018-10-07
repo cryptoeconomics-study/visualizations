@@ -111,11 +111,24 @@ class Network extends Component {
     } catch (e) {
     }
   }
+
+  setMessageQueue(network){
+    let oldQ = network.messageQueue
+    var newQ = []
+    Object.keys(oldQ).forEach(function(key,index) {
+      for (let message of oldQ[key]) {
+        newQ.push({...message, rcvTime: key})
+      }
+    });
+    return newQ
+  }
+
   async run (steps) {
     for (let i = 0; i < 300; i++) {
       network.tick()
       this.history.push(network)
-      this.setState({network: network})
+      let messageQueue = this.setMessageQueue(network)
+      this.setState({messages: messageQueue, time: network.time - 1})
       await delay(1000)
     }
   }
@@ -140,7 +153,7 @@ class Network extends Component {
     // if not clicked, change nodes color back to normal
   }
   render() {
-    const {clickedNode, network} = this.state
+    const {clickedNode, messages, time} = this.state
 
     return (
       <div>
@@ -155,7 +168,8 @@ class Network extends Component {
            onMouseOutNode={this.onMouseOutNode.bind(this)}
            onMouseOverLink={onMouseOverLink}
            onMouseOutLink={onMouseOutLink}
-           network={network}/>
+           messages={messages}
+           time={time}/>
         </div>
         <div id = "Node-state">
         <a>{clickedNode ? ('Node ' + clickedNode.pid + '\n State:' + JSON.stringify(clickedNode.state) + '\n Invalid Nonce Txs:' +  JSON.stringify(clickedNode.invalidNonceTxs)) : 'No node selected.'}</a>

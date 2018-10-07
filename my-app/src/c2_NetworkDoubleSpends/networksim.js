@@ -35,7 +35,11 @@ class NetworkSimulator {
     if (!(recvTime in this.messageQueue)) {
       this.messageQueue[recvTime] = []
     }
-    this.messageQueue[recvTime].push({sender: sender, sentTime: this.time, recipient: receiver, message})
+    this.messageQueue[recvTime].push({sender: sender, 
+                                     sentTime: this.time, 
+                                     recipient: receiver, 
+                                     recvTime: recvTime,
+                                     message})
   }
 
   tick () {
