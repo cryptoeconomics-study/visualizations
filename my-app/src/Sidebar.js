@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import {Graph, Node} from './react-d3-graph-custom/src/index';
-import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
-import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
-import blockies from './blockies-svg.js'
 
 
 

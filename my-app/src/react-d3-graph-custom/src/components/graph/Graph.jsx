@@ -307,10 +307,10 @@ export default class Graph extends React.Component {
         for(var msg of messages){
             if (msg.sentTime === time){
                 console.log(msg.recvTime)
-                // positionData[time].push('x1' : NodePos[msg.sender].x, 
-                //                         'y1' : NodePos[msg.sender].y, 
-                //                         'x2' : NodePos[msg.receiver].x, 
-                //                         'y2' : NodePos[msg.receiver].y, 
+                // positionData[time].push('x1' : NodePos[msg.sender].x,
+                //                         'y1' : NodePos[msg.sender].y,
+                //                         'x2' : NodePos[msg.receiver].x,
+                //                         'y2' : NodePos[msg.receiver].y,
                 //                         'delta' : msg.rcvTime - time)
                 // console.log("message just sent!", msg.sentTime, time)
                 }
