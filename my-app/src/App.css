@@ -10,6 +10,7 @@
 .App-header {
   padding: 5px;
   height: 5%;
+  	border: 1px black solid;
 }
 
 .App-title {
@@ -21,29 +22,27 @@
   font-size: large;
 }
 
-/*#Controls-container {
-	width: 90%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	align-content: space-around;
-}*/
+#Controls-container {
+	width: 100%;
+}
 
 #Controls {
 	display: flex;
 	flex-direction: row;
-	align-items: center;
 	align-content: space-around;
+	padding-left: 30%;
 }
 
-/*
+#Controls button {
+	width: 150px;
+	height: 30px;
+	font-size: 20px;
+}
+
+
 #input-container {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	float: right;
 	width: 100%;
-}*/
+}
 
 #Parameters {
 	width: 90%;
