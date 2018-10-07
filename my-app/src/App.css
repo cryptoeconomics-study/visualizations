@@ -21,15 +21,23 @@
 }
 
 #Text-container {
-	width: 25%;
+	width: 30%;
 }
 
 #Sidebar-container {
-	width: 25%;
+	width: 30%;
+	max-height: 90%;
+}
+
+
+#Text-container * {
+	padding: 10px;
 }
 
 #Text {
-	
+	margin: 20px;
+	text-align: left;
+	overflow: scroll;
 }
 
 #Sidebar {
@@ -41,7 +49,8 @@
 }
 
 #Network-container {
-	width: 50%;
+	width: 40%;
+	max-height: 90%;
 }
 
 #App-container {
