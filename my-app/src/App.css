@@ -1,16 +1,24 @@
 .App {
-  text-align: center;
-  background-color: #fff;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+	text-align: center;
+	background-color: #fff;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	position: fixed;
+	top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+button {
+	border-radius: 5px;
 }
 
 .App-header {
-  padding: 5px;
-  height: 5%;
-  	border: 1px black solid;
+  padding: 2px;
+  border: 0px black solid;
 }
 
 .App-title {
@@ -29,8 +37,7 @@
 #Controls {
 	display: flex;
 	flex-direction: row;
-	align-content: space-around;
-	padding-left: 40%;
+	justify-content: space-around;
 }
 
 #Controls button {
@@ -40,32 +47,52 @@
 }
 
 
-#input-container {
+#Input-container {
 	width: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 }
 
 #Parameters {
 	width: 90%;
 }
 
+#Network-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+	max-height: 100%;
+	align-content: center;
+	border: 2px black solid;
+	flex: 1 1 auto;
+}
+
 #Text-container {
-	width: 30%;
-	overflow: hidden;
-	max-height: min-content;
-	min-height: min-content;
+	width: 550px;
+	/*display: block;*/
+	/*overflow: hidden;*/
+	height: 100%;
+	position:relative;
+	padding: 10px;
+	border: 2px black solid;
+	border-left: 0;
+	border-right: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #Sidebar-container {
-	width: 30%;
-	max-height: 90%;
-	border: 1px black solid;
+	width: 550px;
+	height: 100%;
+	border: 2px black solid;
+	border-left: 0;
+	border-right: 0;
+	padding-top: 15px;
 }
 
-
-#Text-container {
-	padding: 10px;
-	border: 1px black solid;
-}
 
 #Text {
 	margin: 20px;
@@ -77,19 +104,22 @@
 	padding: 5px;
 }
 
-#Network-graph {
-
-}
 
 b {
 	padding: 0px !important;
 }
 
-#Network-container {
-	width: 40%;
-	max-height: 90%;
+
+#Graph-container {
+	width: 100%;
+	height: 90%;
 	align-content: center;
-	border: 2px black solid;
+}
+
+#graph-id-graph-wrapper, svg {
+	width: 100%;
+	height: 100%;
+	align-content: center;
 }
 
 #App-container {

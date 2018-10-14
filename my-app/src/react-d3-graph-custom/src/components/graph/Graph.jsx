@@ -259,9 +259,15 @@ export default class Graph extends React.Component {
             this.state.time
         );
 
+        var chartDiv = document.getElementById("Graph-container");
+        // var width = chartDiv.clientWidth;
+        // var height = chartDiv.clientHeight;
+
         const svgStyle = {
-            height: this.state.config.height,
-            width: this.state.config.width
+            maxHeight: "100%",
+            maxWidth: "100%",
+            viewBox: "0 0 1000 1000",
+            preserveAspectRatio: "xMaxYMax"
         };
 
         return (

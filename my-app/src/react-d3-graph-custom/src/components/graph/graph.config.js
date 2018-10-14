@@ -129,7 +129,7 @@
  */
 export default {
     automaticRearrangeAfterDropNode: false,
-    height: 800,
+    height: 1000,
     highlightDegree: 1,
     highlightOpacity: 1,
     linkHighlightBehavior: false,
@@ -138,7 +138,7 @@ export default {
     nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
-    width: 1200,
+    width: 1000,
     node: {
         color: '#d3d3d3',
         fontColor: 'black',

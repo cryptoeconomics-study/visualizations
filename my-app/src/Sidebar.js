@@ -37,7 +37,7 @@ class Sidebar extends Component {
             <div>
               <h4>Node {clickedNode.pid.substring(0,10)}</h4>
               <Table columns= {columns} data = {data} expandedRowRender={record => {return 'Invalid Nonce Txs: ' + getInvalidNonceTxs(record.key)}} expandIconAsCell/>
-              <button style={{background:"red"}} onClick={()=>doubleSpend(clickedNode)}>Double Spend</button>
+              <button style={{background:"red", color:"white" }} onClick={()=>doubleSpend(clickedNode)}>Double Spend</button>
             </div>) :
             'No node selected.'
           }

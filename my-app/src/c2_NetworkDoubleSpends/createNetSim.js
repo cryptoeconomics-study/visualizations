@@ -28,8 +28,8 @@ class Spender extends Node {
     // Generate random transaction 5% of the time
     // console.log(Math.round((new Date()).getTime() / 10000))
     let startOn = 1;
-    if (Math.round((new Date()).getTime() / 10000) % 2 === 0) {startOn = 0}
-    if(Math.random() < 0.005 && (Math.round((new Date()).getTime() / 10000) % 2 === startOn)) {
+    if (Math.round((new Date()).getTime() / 13000) % 2 === 0) {startOn = 0}
+    if(Math.random() < 0.0035 && (Math.round((new Date()).getTime() / 13000) % 2 === startOn)) {
       const tx = this.generateTx(this.getRandomReceiver(), 10)
       this.transactions.push(tx)
       this.applyTransaction(tx)
@@ -40,7 +40,7 @@ class Spender extends Node {
 }
 
 // ****** Test this out using a simulated network ****** //
-const numNodes = 10
+const numNodes = 7
 const wallets = []
 const genesis = {}
 const network = new NetworkSimulator(15, 0);
