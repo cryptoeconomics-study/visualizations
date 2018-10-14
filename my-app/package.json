@@ -1,5 +1,6 @@
 {
   "name": "my-app",
+  "homepage": "https://k-ho.github.io/code/my-app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
