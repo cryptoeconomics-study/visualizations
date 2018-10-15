@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Graph, Node} from './react-d3-graph-custom/src/index';
-import {nodes, network} from './c2_NetworkDoubleSpends/createNetSim'
-import networkSim from  './c2_NetworkDoubleSpends/networksim.js'
+import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
+import networkSim from  '../c2_NetworkDoubleSpends/networksim.js'
 import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
 import Parameters from './Parameters.js'
@@ -222,7 +222,7 @@ class Network extends Component {
 
     console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
   }
-  
+
   reset(){
     console.log('reset')
     const {clickedNode, time} = this.state
@@ -283,7 +283,7 @@ This is the root cause of the double spend problem: an attacker can send one mes
           </div>
           <div id="Input-container">
             <div id="Controls-container">
-              <Controls 
+              <Controls
               pause = {this.pause.bind(this)}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
