@@ -273,6 +273,8 @@ This is the root cause of the double spend problem: an attacker can send one mes
               onPauseTxs = {this.pauseTxs.bind(this)}
               paused = {paused}
               pausedTxs = {pausedTxs}
+              doubleSpend = {this.doubleSpend.bind(this)}
+              clickedNode = {clickedNode}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
               rewind = {this.rewind.bind(this)}
@@ -288,8 +290,7 @@ This is the root cause of the double spend problem: an attacker can send one mes
         </div>
         <div id="Sidebar-container">
           <Sidebar
-          node = {clickedNode}
-          doubleSpend = {this.doubleSpend.bind(this)}/>
+          node = {clickedNode}/>
         </div>
       </div>
     );
