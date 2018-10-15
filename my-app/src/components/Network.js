@@ -165,7 +165,6 @@ class Network extends Component {
   }
 
   pause(){
-    console.log('pause')
     this.setState({ paused: !this.state.paused })
     //this.state.speed = 1    //(reset FF/Rewind)
     // this.state.pause ^= 1  //toggle pause
@@ -284,7 +283,8 @@ This is the root cause of the double spend problem: an attacker can send one mes
           <div id="Input-container">
             <div id="Controls-container">
               <Controls
-              pause = {this.pause.bind(this)}
+              onPause = {this.pause.bind(this)}
+              paused = {paused}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
               rewind = {this.rewind.bind(this)}
