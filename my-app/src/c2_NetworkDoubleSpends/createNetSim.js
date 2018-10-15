@@ -6,6 +6,7 @@ var {Node, getTxHash} = require('./nodeAgent')
 class Spender extends Node {
   constructor (wallet, genesis, network) {
     super(wallet, genesis, network)
+    this.pausedSpending = true
   }
 
   // returns a random wallet address (excluding the Spender)
@@ -21,15 +22,11 @@ class Spender extends Node {
 
   tick () {
     // If we have no money, don't do anything!
-    if (this.state[this.wallet.address].balance < 10) {
-      console.log('We are honest so we wont send anything :)')
+    if (this.state[this.wallet.address].balance < 10 || this.pausedSpending ) {
       return
     }
-    // Generate random transaction 5% of the time
-    // console.log(Math.round((new Date()).getTime() / 10000))
-    let startOn = 1;
-    if (Math.round((new Date()).getTime() / 13000) % 2 === 0) {startOn = 0}
-    if(Math.random() < 0.0035 && (Math.round((new Date()).getTime() / 13000) % 2 === startOn)) {
+    // Generate random transaction .5% of the ticks
+    if(Math.random() < 0.005) {
       const tx = this.generateTx(this.getRandomReceiver(), 10)
       this.transactions.push(tx)
       this.applyTransaction(tx)

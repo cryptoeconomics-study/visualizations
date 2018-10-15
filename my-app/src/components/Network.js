@@ -6,7 +6,6 @@ import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
 import Parameters from './Parameters.js'
 import clone  from 'clone';
-const _ = require('lodash')
 
 const ICONS = [
   'https://i.imgur.com/Wi9yFXw.png',
@@ -42,37 +41,34 @@ for (const node of nodes) {
     })
   }
 }
-  // the graph configuration, you only need to pass down properties
-  // that you want to override, otherwise default ones will be used
-  const myConfig = {
-    automaticRearrangeAfterDropNode: true,
-    staticGraph: false,
-    nodeHighlightBehavior: true,
-    node: {
-        size: 120,
-        highlightStrokeColor: 'blue',
-        labelProperty: 'name'
-    },
-    link: {
-        highlightColor: 'lightblue'
-    }
-  };
 
+// the graph configuration, you only need to pass down properties
+// that you want to override, otherwise default ones will be used
+const myConfig = {
+  automaticRearrangeAfterDropNode: true,
+  staticGraph: false,
+  nodeHighlightBehavior: true,
+  node: {
+      size: 120,
+      highlightStrokeColor: 'blue',
+      labelProperty: 'name'
+  },
+  link: {
+      highlightColor: 'lightblue'
+  }
+};
 
+const onClickLink = function(source, target) {
+     window.alert(`Clicked link between ${source} and ${target}`);
+};
 
+const onMouseOverLink = function(source, target) {
+     // window.alert(`Mouse over in link between ${source} and ${target}`);
+};
 
-  const onClickLink = function(source, target) {
-       window.alert(`Clicked link between ${source} and ${target}`);
-  };
-
-  const onMouseOverLink = function(source, target) {
-       // window.alert(`Mouse over in link between ${source} and ${target}`);
-  };
-
-  const onMouseOutLink = function(source, target) {
-       // window.alert(`Mouse out link between ${source} and ${target}`);
-  };
-// }
+const onMouseOutLink = function(source, target) {
+     // window.alert(`Mouse out link between ${source} and ${target}`);
+};
 
 const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
@@ -80,24 +76,9 @@ const delay = (duration) =>
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, history: [], paused: false, speed: 10}
+    this.state = {clickedNode: null, history: [], paused: false, pausedTxs: true, speed: 10}
   }
-  componentDidMount() {
-    //run when play is hit
-    // try {
-    //   this.run(300).then(()=>{
-    //     this.getTick(200)
-    //   }
-    //   )
-    // } catch (e) {
-    // }
-  }
-  async run (steps) {
-    for (let i = 0; i < steps; i++) {
-      this.getTick(i)
-      await delay(10)
-    }
-  }
+
   setMessageQueue(network){
     let oldQ = network.messageQueue
     var newQ = []
@@ -108,13 +89,14 @@ class Network extends Component {
     });
     return newQ
   }
+
   tick() {
     network.tick()
     const history = this.state.history
-    history.push(clone(network))
+    history.push(clone(network)) // push a deep clone of the network object
     this.setState({history: history})
   }
-  //
+
   //sets Messages
   getTick(time) {
     const {history, clickedNode} = this.state
@@ -123,7 +105,6 @@ class Network extends Component {
     } else if (time === history.length ) {
       this.tick()
     }
-    // console.log('time:', time, 'history at time:', history[time])
     let messages = this.setMessageQueue(history[time])
     // Update states if agent already clicked
     if (clickedNode){
@@ -167,7 +148,12 @@ class Network extends Component {
   pause(){
     this.setState({ paused: !this.state.paused })
     //this.state.speed = 1    //(reset FF/Rewind)
-    // this.state.pause ^= 1  //toggle pause
+  }
+  pauseTxs(){
+    this.setState({ pausedTxs: !this.state.pausedTxs })
+    for(let node of nodes) {
+      node.pausedSpending = !node.pausedSpending
+    }
   }
 
   rewind(){
@@ -246,7 +232,7 @@ class Network extends Component {
 
   }
   render() {
-    const {clickedNode, messages, time, paused, speed} = this.state
+    const {clickedNode, messages, time, paused, pausedTxs, speed} = this.state
 
     return (
       <div id="App-container">
@@ -284,7 +270,9 @@ This is the root cause of the double spend problem: an attacker can send one mes
             <div id="Controls-container">
               <Controls
               onPause = {this.pause.bind(this)}
+              onPauseTxs = {this.pauseTxs.bind(this)}
               paused = {paused}
+              pausedTxs = {pausedTxs}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
               rewind = {this.rewind.bind(this)}

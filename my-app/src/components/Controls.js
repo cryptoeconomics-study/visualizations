@@ -8,11 +8,12 @@ class Controls extends Component {
     // this.state = {node: props.node}
   }
   render() {
-    const {paused, onPause, stepforward, stepbackward, rewind, fastforward, reset} = this.props
+    const {paused, onPause, onPauseTxs, pausedTxs, stepforward, stepbackward, rewind, fastforward, reset} = this.props
     return (
         <div id = "Controls">
 
           <button onClick={onPause}>{paused ? 'Resume' : 'Pause'}</button>
+          <button onClick={onPauseTxs}>{pausedTxs ? 'Resume Txs' : 'Pause Txs'}</button>
 
         </div>
     );
