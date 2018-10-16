@@ -320,11 +320,11 @@ function messageProps(node, config, nodeCallbacks = {}, highlightedNode, highlig
         (node.id === (highlightedLink && highlightedLink.source) ||
             node.id === (highlightedLink && highlightedLink.target));
     const opacity = _getNodeOpacity(node, highlightedNode, highlightedLink, config);
-    let fill = node.color || config.node.color;
+    // let fill = node.color || config.node.color;
 
-    if (highlight && config.node.highlightColor !== CONST.KEYWORDS.SAME) {
-        fill = config.node.highlightColor;
-    }
+    // if (highlight && config.node.highlightColor !== CONST.KEYWORDS.SAME) {
+    //     fill = config.node.highlightColor;
+    // }
 
     let stroke = config.node.strokeColor;
 

@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import {Graph, Node} from './react-d3-graph-custom/src/index';
+import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
-import networkSim from  '../c2_NetworkDoubleSpends/networksim.js'
 import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
-import Parameters from './Parameters.js'
+// import Parameters from './Parameters.js'
 import clone  from 'clone';
 
-const ICONS = [
-  'https://i.imgur.com/Wi9yFXw.png',
-  'https://i.imgur.com/BBUyb4e.png',
-  'https://i.imgur.com/NPH4rqg.png',
-  'https://i.imgur.com/MptO0GC.png',
-  'https://i.imgur.com/yHwPVBF.png',
-  'https://i.imgur.com/yvv1MMb.png',
-  'https://i.imgur.com/I4Dlkik.png',
-  'https://i.imgur.com/jNB8LS6.png'
-]
+// const ICONS = [
+//   'https://i.imgur.com/Wi9yFXw.png',
+//   'https://i.imgur.com/BBUyb4e.png',
+//   'https://i.imgur.com/NPH4rqg.png',
+//   'https://i.imgur.com/MptO0GC.png',
+//   'https://i.imgur.com/yHwPVBF.png',
+//   'https://i.imgur.com/yvv1MMb.png',
+//   'https://i.imgur.com/I4Dlkik.png',
+//   'https://i.imgur.com/jNB8LS6.png'
+// ]
 
 // graph payload (with minimalist structure)
 const data = {
@@ -69,9 +68,6 @@ const onMouseOverLink = function(source, target) {
 const onMouseOutLink = function(source, target) {
      // window.alert(`Mouse out link between ${source} and ${target}`);
 };
-
-const delay = (duration) =>
-  new Promise(resolve => setTimeout(resolve, duration))
 
 class Network extends Component {
   constructor() {
@@ -176,7 +172,7 @@ class Network extends Component {
 
   stepbackward(){
     console.log('stepbackward')
-    const {clickedNode, time} = this.state
+    const {time} = this.state
     if(time < 1){
       return
     }
@@ -189,7 +185,7 @@ class Network extends Component {
 
   stepforward(){
     console.log('stepforward')
-    const {clickedNode, time} = this.state
+    const {time} = this.state
     this.setState({paused:true})
     this.graph.step(time + 1)
     this.getTick(time + 1)
@@ -210,7 +206,6 @@ class Network extends Component {
 
   reset(){
     console.log('reset')
-    const {clickedNode, time} = this.state
     this.getTick(0)
   }
   setSpeed(value){

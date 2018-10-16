@@ -1,6 +1,6 @@
 var EthCrypto = require('eth-crypto')
 var NetworkSimulator = require('./networksim')
-var {Node, getTxHash} = require('./nodeAgent')
+var {Node} = require('./nodeAgent')
 
 // Spender is a Node that sends a random transaction at every tick()
 class Spender extends Node {

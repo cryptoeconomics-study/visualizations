@@ -3,12 +3,10 @@ import React, { Component } from 'react';
 
 
 class Controls extends Component {
-  constructor(props) {
-    super(props)
-    // this.state = {node: props.node}
-  }
   render() {
-    const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode, stepforward, stepbackward, rewind, fastforward, reset} = this.props
+    const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode,
+      //stepforward, stepbackward, rewind, fastforward, reset
+    } = this.props
     let doubleSpendButton;
 
     if (clickedNode) {

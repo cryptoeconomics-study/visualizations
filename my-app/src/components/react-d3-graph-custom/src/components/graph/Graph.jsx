@@ -76,10 +76,6 @@ export default class Graph extends React.Component {
         if (nextProps.speed) this.setState({speed: nextProps.speed})
         if (nextProps.nodeState) this.setState({nodeState : nextProps.nodeState})
 
-        var nodesDictionary = this.state.nodes
-        // console.log("props:", nodesDictionary)
-
-        // nice
         const wasPaused = this.state.paused
 
         this.setState({paused: nextProps.paused}, function() {
@@ -139,7 +135,7 @@ export default class Graph extends React.Component {
 
             this.animate()
 
-            if ((Math.floor(newTime) - Math.floor(prevTime)) == 1) {
+            if ((Math.floor(newTime) - Math.floor(prevTime)) === 1) {
                 // console.log("TICK", prevTime)
                 const messages = this.state.messages
                 var nodesDictionary = this.state.nodes
@@ -258,10 +254,6 @@ export default class Graph extends React.Component {
             this.state.nodeState,
             this.state.time
         );
-
-        var chartDiv = document.getElementById("Graph-container");
-        // var width = chartDiv.clientWidth;
-        // var height = chartDiv.clientHeight;
 
         const svgStyle = {
             maxHeight: "100%",
@@ -497,8 +489,7 @@ export default class Graph extends React.Component {
         this.props.onMouseOverLink && this.props.onMouseOverLink(source, target);
 
         if (this.state.config.linkHighlightBehavior) {
-            this.state.highlightedLink = { source, target };
-
+            this.setState({highlightedLink : { source, target }});
             this._tick();
         }
     };
@@ -513,7 +504,7 @@ export default class Graph extends React.Component {
         this.props.onMouseOutLink && this.props.onMouseOutLink(source, target);
 
         if (this.state.config.linkHighlightBehavior) {
-            this.state.highlightedLink = undefined;
+            this.setState({highlightedLink: undefined});
 
             this._tick();
         }

@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "https://k-ho.github.io/code/my-app/",
+  "homepage": "https://k-ho.github.io/code/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,12 +12,29 @@
     "rc-table": "^6.3.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-scripts": "1.1.5"
+    "react-scripts": "2.0.0-next.3e165448"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
   }
 }
