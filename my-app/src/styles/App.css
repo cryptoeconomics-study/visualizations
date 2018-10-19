@@ -1,13 +1,14 @@
 .App {
 	text-align: center;
 	
-	background-image: linear-gradient(to bottom, #efefef, #dfdfdf);
+	background-image: linear-gradient(to bottom, #ececec, #dddddd);
 
 	max-height: 100%;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: nowrap;
 	position: fixed;
+	
 	top:0;
     bottom:0;
     left:0;
@@ -93,9 +94,8 @@ button {
 	justify-content: space-around;
 
 	border-radius: 15px;
-	margin-left: 10px;
 	background: white;
-	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.25);
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
 }
 
 #Parameters {
@@ -130,10 +130,11 @@ button {
     overflow-x: hidden;
 
     border-radius: 15px;
+    margin-right: 10px;
 
     background: white;
 
-	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.25);
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
 }
 
 h3 {
@@ -197,7 +198,12 @@ b {
 	align-content: center;
 
 	margin-bottom: 10px;
-	/*border-radius: 15px;*/
+	/*box-shadow: inset 0px 0px 20px 0px rgba(0,0,0,0.6);
+
+	border-radius: 15px;
+
+	background-image: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.15));
+	background: white;*/
 }
 
 #graph-id-graph-wrapper, svg {

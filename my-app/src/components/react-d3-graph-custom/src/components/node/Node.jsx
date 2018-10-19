@@ -60,7 +60,13 @@ export default class Node extends React.Component {
      */
     handleOnMouseOutNode = () => this.props.onMouseOut && this.props.onMouseOut(this.props.id);
 
+    constructor(props) {
+        super(props);
+        this.nodeRef = React.createRef();
+    }
+
     render() {
+
         const nodeProps = {
             cursor: this.props.cursor,
             onClick: this.handleOnClickNode,
@@ -107,7 +113,13 @@ export default class Node extends React.Component {
             nodeProps.stroke = this.props.stroke;
             nodeProps.strokeWidth = this.props.strokeWidth;
             label = <text {...textProps}>{this.props.label}</text>;
-            node = <path {...nodeProps} />;
+            node = <path ref={this.nodeRef} {...nodeProps} />;
+
+            const nodeElement = this.nodeRef.current;
+            if (nodeElement != null) {
+                var rect = nodeElement.getBoundingClientRect();
+                console.log(rect.top, rect.right, rect.bottom, rect.left);
+            }
         }
 
         const gProps = {

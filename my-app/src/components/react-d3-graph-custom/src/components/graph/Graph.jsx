@@ -72,7 +72,9 @@ export default class Graph extends React.Component {
             transform
         });
 
-        if (nextProps.messages) this.setState({messages: nextProps.messages})
+        if (nextProps.messages) {
+            this.setState({messages: nextProps.messages})
+        }
         if (nextProps.speed) this.setState({speed: nextProps.speed})
         if (nextProps.nodeState) this.setState({nodeState : nextProps.nodeState})
 
@@ -132,7 +134,6 @@ export default class Graph extends React.Component {
     }
 
     tick() {
-        // console.log("in tick:", this.state.paused)
         if (!this.state.paused) {
             const prevTime = this.state.time
             // console.log(prevTime)
@@ -140,17 +141,19 @@ export default class Graph extends React.Component {
             this.animate()
             if ((Math.floor(newTime) - Math.floor(prevTime)) === 1) {
                 // console.log("TICK", prevTime)
-                const messages = this.state.messages
-                var nodesDictionary = this.state.nodes
-                for (var i = 0; i < messages.length; i++) {
-                    const key = getKeyByValue(nodesDictionary, messages[i].node)
-                    delete nodesDictionary[key]
-                }
+                // const messages = this.state.messages
+                // var nodesDictionary = this.state.nodes
+                // for (var i = 0; i < messages.length; i++) {
+                //     // const key = getKeyByValue(nodesDictionary, messages[i].node)
+                //     delete nodesDictionary[messages[i].key]
+                // }
                 this.getTick(Math.floor(newTime))
             }
             this.animate()
             this.setState({time : newTime})
-            setTimeout(this.tick, 1);
+            
+            // setTimeout(this.tick, 1);
+            requestAnimationFrame(this.tick);
         } else {
         console.log("paused!")
         }
@@ -187,15 +190,25 @@ export default class Graph extends React.Component {
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
                 var nodesDictionary = this.state.nodes
-                if (!messages[i].node) {
-                    let newTxNode = new Node()
-                    messages[i].node = newTxNode
-                    // console.log("newNode", messages[i].node)
-                    // console.log("added node to msg!")
-                    newTxNode.isMessage = true
-                    newTxNode.isDoubleSpend = messages[i].message.isDoubleSpend
-                    newTxNode.sig = messages[i].message.sig
-                    nodesDictionary[this.state.time + Math.random()] = newTxNode
+                
+                if (!messages[i].key) {
+                    messages[i].key = messages[i].message.sig + messages[i].sender + messages[i].recipient.pid
+
+                    if (!messages[i].node) {
+                        if (!nodesDictionary[messages[i].key]) {
+                            let newTxNode = new Node()
+                            // console.log("newNode", messages[i].node)
+                            // console.log("added node to msg!")
+                            newTxNode.isMessage = true
+                            newTxNode.isDoubleSpend = messages[i].message.isDoubleSpend
+                            newTxNode.sig = messages[i].message.sig
+
+                            messages[i].node = newTxNode
+                            nodesDictionary[messages[i].key] = newTxNode
+                        } else {
+                            messages[i].node = nodesDictionary[messages[i].key] 
+                        }
+                    } 
                 }
                 // console.log(msg.node)
                 var node = messages[i].node
@@ -223,8 +236,7 @@ export default class Graph extends React.Component {
                     node.x = progress * (recipient.x - sender.x) + sender.x
                     node.y = progress * (recipient.y - sender.y) + sender.y
                 } else if (progress > 1) {
-                    const key = getKeyByValue(nodesDictionary, node)
-                    delete nodesDictionary[key]
+                    delete nodesDictionary[messages[i].key]
                     messages.splice(i, 1)
                 }
             }
