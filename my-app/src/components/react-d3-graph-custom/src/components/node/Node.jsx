@@ -106,7 +106,6 @@ export default class Node extends React.Component {
             nodeProps.fill = this.props.fill;
             nodeProps.stroke = this.props.stroke;
             nodeProps.strokeWidth = this.props.strokeWidth;
-
             label = <text {...textProps}>{this.props.label}</text>;
             node = <path {...nodeProps} />;
         }

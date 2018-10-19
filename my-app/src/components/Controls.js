@@ -18,11 +18,8 @@ class Controls extends Component {
           >
             Double Spend
           </button>
-{/*          <button
-            onClick={()=>createTransaction(clickedNode)}
-          >
-            Create Transaction
-          </button>*/}
+
+
         </div>
 
     }

@@ -83,9 +83,15 @@ export default class Graph extends React.Component {
                 this.tick()
             }
         });
+    }
 
-
-
+    onClickNode(nodeID) {
+        if (this.state.clickedNode && this.state.clickedNode.id === nodeID) {
+            this.setState({clickedNode: null})
+        } else {
+            const clickedNode = this.state.nodes[nodeID]
+            this.setState({clickedNode: clickedNode})
+        }
     }
 
     componentDidUpdate() {
@@ -108,7 +114,6 @@ export default class Graph extends React.Component {
         if (!this.state.config.staticGraph) {
             this._graphForcesConfig();
         }
-
         // graph zoom and drag&drop all network
         this._zoomConfig();
         this.tick = this.tick.bind(this)
@@ -132,23 +137,18 @@ export default class Graph extends React.Component {
             const prevTime = this.state.time
             // console.log(prevTime)
             const newTime = this.state.time + VIEW_TIME_INCREMENT;
-
             this.animate()
-
             if ((Math.floor(newTime) - Math.floor(prevTime)) === 1) {
                 // console.log("TICK", prevTime)
                 const messages = this.state.messages
                 var nodesDictionary = this.state.nodes
-                for(var i = 0; i < messages.length; i++) {
+                for (var i = 0; i < messages.length; i++) {
                     const key = getKeyByValue(nodesDictionary, messages[i].node)
                     delete nodesDictionary[key]
                 }
                 this.getTick(Math.floor(newTime))
-
             }
-
             this.animate()
-
             this.setState({time : newTime})
             setTimeout(this.tick, 1);
         } else {
@@ -236,7 +236,7 @@ export default class Graph extends React.Component {
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
-                onClickNode: this.props.onClickNode,
+                onClickNode: this.onClickNode.bind(this), //this.props.onClickNode,
                 onMouseOverNode: this.onMouseOverNode,
                 onMouseOut: this.onMouseOutNode
             },
@@ -255,6 +255,24 @@ export default class Graph extends React.Component {
             this.state.time
         );
 
+        const nodeControlsProps = ()=> {
+            return {
+                className: 'nodeControls',
+                cx: this.state.clickedNode.x,
+                cy: this.state.clickedNode.y,
+                id: this.state.clickedNode.id,
+                transform: `translate(${this.state.clickedNode.x},${this.state.clickedNode.y})`
+            }
+        };
+        let nodeControls = ''
+        if(this.state.clickedNode) {
+            nodeControls = (<g {...nodeControlsProps()}>
+            <text >
+                Double Spend
+            </text>
+            </g>)
+            console.log("clickedNode", this.state.clickedNode)
+        }
         const svgStyle = {
             maxHeight: "100%",
             maxWidth: "100%",
@@ -268,6 +286,7 @@ export default class Graph extends React.Component {
                     <g id={`${this.state.id}-${CONST.GRAPH_CONTAINER_ID}`}>
                         {links}
                         {nodes}
+                        {nodeControls}
                     </g>
                 </svg>
             </div>
@@ -527,7 +546,6 @@ export default class Graph extends React.Component {
         if (!this.state.config.staticGraph) {
             for (let nodeId in this.state.nodes) {
                 let node = this.state.nodes[nodeId];
-
                 if (node.fx && node.fy) {
                     Reflect.deleteProperty(node, 'fx');
                     Reflect.deleteProperty(node, 'fy');
