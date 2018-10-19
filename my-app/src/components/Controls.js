@@ -12,8 +12,7 @@ class Controls extends Component {
     if (clickedNode) {
       nodeControls =
         <div id = "nodeControls">
-          <button
-            style={{background:"red", color:"white" }}
+          <button id = "doubleSpend"
             onClick={()=>doubleSpend(clickedNode)}
           >
             Double Spend
