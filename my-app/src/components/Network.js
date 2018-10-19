@@ -283,10 +283,6 @@ This is the root cause of the double spend problem: an attacker can send one mes
             </div>*/}
           </div>
         </div>
-        <div id="Sidebar-container">
-          <Sidebar
-          node = {clickedNode}/>
-        </div>
       </div>
     );
   }

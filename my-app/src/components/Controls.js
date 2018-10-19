@@ -7,12 +7,24 @@ class Controls extends Component {
     const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode,
       //stepforward, stepbackward, rewind, fastforward, reset
     } = this.props
-    let doubleSpendButton;
+    let nodeControls = "";
 
     if (clickedNode) {
-      doubleSpendButton = <button style={{background:"red", color:"white" }} onClick={()=>doubleSpend(clickedNode)}>Double Spend</button>
-    } else {
-      doubleSpendButton = <button disabled={true}>Double Spend</button>
+      nodeControls =
+        <div id = "nodeControls">
+          <button
+            style={{background:"red", color:"white" }}
+            onClick={()=>doubleSpend(clickedNode)}
+          >
+            Double Spend
+          </button>
+{/*          <button
+            onClick={()=>createTransaction(clickedNode)}
+          >
+            Create Transaction
+          </button>*/}
+        </div>
+
     }
 
     return (
@@ -20,7 +32,7 @@ class Controls extends Component {
 
           <button onClick={onPause}>{paused ? 'Resume' : 'Pause'}</button>
           <button onClick={onPauseTxs}>{pausedTxs ? 'Resume Txs' : 'Pause Txs'}</button>
-          {doubleSpendButton}
+          {nodeControls}
         </div>
     );
   }
