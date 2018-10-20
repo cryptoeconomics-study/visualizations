@@ -60,10 +60,10 @@ export default class Node extends React.Component {
      */
     handleOnMouseOutNode = () => this.props.onMouseOut && this.props.onMouseOut(this.props.id);
 
-    constructor(props) {
-        super(props);
-        this.nodeRef = React.createRef();
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.nodeRef = React.createRef();
+    // }
 
     render() {
 
@@ -115,11 +115,11 @@ export default class Node extends React.Component {
             label = <text {...textProps}>{this.props.label}</text>;
             node = <path ref={this.nodeRef} {...nodeProps} />;
 
-            const nodeElement = this.nodeRef.current;
-            if (nodeElement != null) {
-                var rect = nodeElement.getBoundingClientRect();
-                console.log(rect.top, rect.right, rect.bottom, rect.left);
-            }
+            // const nodeElement = this.nodeRef.current;
+            // if (nodeElement) {
+            //     var rect = nodeElement.getBoundingClientRect();
+            //     // this.props.getPos(rect)
+            // }
         }
 
         const gProps = {

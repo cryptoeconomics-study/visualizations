@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { drag as d3Drag } from 'd3-drag';
 import { forceLink as d3ForceLink } from 'd3-force';
 import { select as d3Select, selectAll as d3SelectAll, event as d3Event } from 'd3-selection';
@@ -14,6 +13,7 @@ import * as graphHelper from './graph.helper';
 import utils from '../../utils';
 
 import Node from '../node/Node.jsx';
+import NodeControls from '../NodeControls'
 
 // Some d3 constant values
 const D3_CONST = {
@@ -151,7 +151,7 @@ export default class Graph extends React.Component {
             }
             this.animate()
             this.setState({time : newTime})
-            
+
             // setTimeout(this.tick, 1);
             requestAnimationFrame(this.tick);
         } else {
@@ -190,7 +190,7 @@ export default class Graph extends React.Component {
         if (messages) {
             for(var i = 0; i < messages.length; i++) {
                 var nodesDictionary = this.state.nodes
-                
+
                 if (!messages[i].key) {
                     messages[i].key = messages[i].message.sig + messages[i].sender + messages[i].recipient.pid
 
@@ -206,9 +206,9 @@ export default class Graph extends React.Component {
                             messages[i].node = newTxNode
                             nodesDictionary[messages[i].key] = newTxNode
                         } else {
-                            messages[i].node = nodesDictionary[messages[i].key] 
+                            messages[i].node = nodesDictionary[messages[i].key]
                         }
-                    } 
+                    }
                 }
                 // console.log(msg.node)
                 var node = messages[i].node
@@ -245,12 +245,14 @@ export default class Graph extends React.Component {
     }
 
     render() {
+        const {showState, doubleSpend, spend} = this.props
+        const {clickedNode} = this.state
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
                 onClickNode: this.onClickNode.bind(this), //this.props.onClickNode,
                 onMouseOverNode: this.onMouseOverNode,
-                onMouseOut: this.onMouseOutNode
+                onMouseOut: this.onMouseOutNode,
             },
             this.state.d3Links,
             this.state.links,
@@ -267,24 +269,14 @@ export default class Graph extends React.Component {
             this.state.time
         );
 
-        const nodeControlsProps = ()=> {
-            return {
-                className: 'nodeControls',
-                cx: this.state.clickedNode.x,
-                cy: this.state.clickedNode.y,
-                id: this.state.clickedNode.id,
-                transform: `translate(${this.state.clickedNode.x},${this.state.clickedNode.y})`
-            }
-        };
         let nodeControls = ''
-        if(this.state.clickedNode) {
-            nodeControls = (<g {...nodeControlsProps()}>
-            <text >
-                Double Spend
-            </text>
-            </g>)
-            console.log("clickedNode", this.state.clickedNode)
+        if(clickedNode) {
+            nodeControls = (
+            <foreignObject x={this.state.nodes[clickedNode.id].x} y={this.state.nodes[clickedNode.id].y}>
+              <NodeControls doubleSpend={()=>doubleSpend(clickedNode.id)} showState={showState} />
+            </foreignObject>)
         }
+
         const svgStyle = {
             maxHeight: "100%",
             maxWidth: "100%",
@@ -301,82 +293,10 @@ export default class Graph extends React.Component {
                         {nodeControls}
                     </g>
                 </svg>
+
             </div>
         );
     }
-
-    // react-d3-graph methods
-    /**
-     * Graph component is the main component for react-d3-graph components, its interface allows its user
-     * to build the graph once the user provides the data, configuration (optional) and callback interactions (also optional).
-     * The code for the [live example](https://danielcaldas.github.io/react-d3-graph/sandbox/index.html)
-     * can be consulted [here](https://github.com/danielcaldas/react-d3-graph/blob/master/sandbox/Sandbox.jsx)
-     * @example
-     * import { Graph } from 'react-d3-graph';
-     *
-     * // graph payload (with minimalist structure)
-     * const data = {
-     *     nodes: [
-     *       {id: 'Harry'},
-     *       {id: 'Sally'},
-     *       {id: 'Alice'}
-     *     ],
-     *     links: [
-     *         {source: 'Harry', target: 'Sally'},
-     *         {source: 'Harry', target: 'Alice'},
-     *     ]
-     * };
-     *
-     * // the graph configuration, you only need to pass down properties
-     * // that you want to override, otherwise default ones will be used
-     * const myConfig = {
-     *     nodeHighlightBehavior: true,
-     *     node: {
-     *         color: 'lightgreen',
-     *         size: 120,
-     *         highlightStrokeColor: 'blue'
-     *     },
-     *     link: {
-     *         highlightColor: 'lightblue'
-     *     }
-     * };
-     *
-     * // graph event callbacks
-     * const onClickNode = function(nodeId) {
-     *      window.alert('Clicked node ${nodeId}');
-     * };
-     *
-     * const onMouseOverNode = function(nodeId) {
-     *      window.alert(`Mouse over node ${nodeId}`);
-     * };
-     *
-     * const onMouseOutNode = function(nodeId) {
-     *      window.alert(`Mouse out node ${nodeId}`);
-     * };
-     *
-     * const onClickLink = function(source, target) {
-     *      window.alert(`Clicked link between ${source} and ${target}`);
-     * };
-     *
-     * const onMouseOverLink = function(source, target) {
-     *      window.alert(`Mouse over in link between ${source} and ${target}`);
-     * };
-     *
-     * const onMouseOutLink = function(source, target) {
-     *      window.alert(`Mouse out link between ${source} and ${target}`);
-     * };
-     *
-     * <Graph
-     *      id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
-     *      data={data}
-     *      config={myConfig}
-     *      onClickNode={onClickNode}
-     *      onClickLink={onClickLink}
-     *      onMouseOverNode={onMouseOverNode}
-     *      onMouseOutNode={onMouseOutNode}
-     *      onMouseOverLink={onMouseOverLink}
-     *      onMouseOutLink={onMouseOutLink}/>
-     */
 
     /**
      * Sets d3 tick function and configures other d3 stuff such as forces and drag events.

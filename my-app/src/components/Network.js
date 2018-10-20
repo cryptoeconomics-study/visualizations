@@ -192,17 +192,27 @@ class Network extends Component {
     this.graph.animate()
   }
 
-  doubleSpend(evilNode){
-    const drEvil = evilNode.pid
-    const victims = [network.peers[drEvil][0], network.peers[drEvil][1]]
+  doubleSpend(nodeId){
+    const evilNode = this.getNode(nodeId, this.state.time)
+    const victims = [network.peers[nodeId][0], network.peers[nodeId][1]]
     const spends = [evilNode.generateTx(victims[0].wallet.address, 10), evilNode.generateTx(victims[1].wallet.address, 10)]
     spends[0].isDoubleSpend = true
     spends[1].isDoubleSpend = true
-    network.broadcastTo(drEvil, victims[0], spends[0])
-    network.broadcastTo(drEvil, victims[1], spends[1])
+    network.broadcastTo(nodeId, victims[0], spends[0])
+    network.broadcastTo(nodeId, victims[1], spends[1])
 
-    console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
+    console.log("Double spender:", nodeId, "victims:", victims, "spends:", spends)
   }
+
+  // spend(nodeId){
+  //   const currNode = this.getNode(nodeId, this.state.time)
+  //   currNode.randomSpend()
+  // }
+
+  showState(node){
+    // create popup with state
+  }
+
 
   reset(){
     console.log('reset')
@@ -271,6 +281,9 @@ This is the root cause of the double spend problem: an attacker can send one mes
              onMouseOutNode={this.onMouseOutNode.bind(this)}
              onMouseOverLink={onMouseOverLink}
              onMouseOutLink={onMouseOutLink}
+             doubleSpend = {this.doubleSpend.bind(this)}
+{/*             spend = {this.spend.bind(this)}*/}
+             showState = {this.showState.bind(this)}
              messages={messages}
              time={time}
              speed={speed}
@@ -285,7 +298,6 @@ This is the root cause of the double spend problem: an attacker can send one mes
               onPauseTxs = {this.pauseTxs.bind(this)}
               paused = {paused}
               pausedTxs = {pausedTxs}
-              doubleSpend = {this.doubleSpend.bind(this)}
               clickedNode = {clickedNode}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
