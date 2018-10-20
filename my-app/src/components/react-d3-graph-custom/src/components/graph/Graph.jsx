@@ -88,6 +88,7 @@ export default class Graph extends React.Component {
     }
 
     onClickNode(nodeID) {
+
         if (this.state.clickedNode && this.state.clickedNode.id === nodeID) {
             this.setState({clickedNode: null})
         } else {
@@ -243,14 +244,13 @@ export default class Graph extends React.Component {
             this.setState( { messages : messages } )
         }
     }
-
     render() {
-        const {showState, doubleSpend, spend} = this.props
-        const {clickedNode} = this.state
+        const {showState, doubleSpend, spend, deselectNode} = this.props
+        const {clickedNode} = this.props
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
-                onClickNode: this.onClickNode.bind(this), //this.props.onClickNode,
+                onClickNode: this.props.onClickNode, //this.onClickNode.bind(this),
                 onMouseOverNode: this.onMouseOverNode,
                 onMouseOut: this.onMouseOutNode,
             },
@@ -270,10 +270,11 @@ export default class Graph extends React.Component {
         );
 
         let nodeControls = ''
+
         if(clickedNode) {
             nodeControls = (
-            <foreignObject x={this.state.nodes[clickedNode.id].x} y={this.state.nodes[clickedNode.id].y}>
-              <NodeControls doubleSpend={()=>doubleSpend(clickedNode.id)} showState={showState} />
+            <foreignObject x={this.state.nodes[clickedNode.pid].x} y={this.state.nodes[clickedNode.pid].y}>
+              <NodeControls doubleSpend={()=>doubleSpend(clickedNode)} showState={()=>showState(clickedNode)} hide = {deselectNode}/>
             </foreignObject>)
         }
 

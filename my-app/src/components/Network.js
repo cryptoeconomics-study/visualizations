@@ -3,6 +3,7 @@ import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
 import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
+import Ledgers from './Ledgers.jsx'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
@@ -72,7 +73,7 @@ const onMouseOutLink = function(source, target) {
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, history: [], paused: false, pausedTxs: true, speed: 10}
+    this.state = {clickedNode: null, selectedNodes:{}, history: [], paused: false, pausedTxs: true, speed: 10}
   }
 
   setMessageQueue(network){
@@ -95,7 +96,7 @@ class Network extends Component {
 
   //sets Messages
   getTick(time) {
-    const {history, clickedNode} = this.state
+    const {history, selectedNodes, clickedNode} = this.state
     if(time > history.length) {
       throw new Error('You skipped a time step!')
     } else if (time === history.length ) {
@@ -107,7 +108,12 @@ class Network extends Component {
       const node = this.getNode(clickedNode.pid, time)
       this.setState({clickedNode: node, isNodeClicked: true})
     }
-    this.setState({messages: messages, time: time})
+
+    for (var nodeId in selectedNodes) {
+      selectedNodes[nodeId] = this.getNode(nodeId, time)
+    }
+
+    this.setState({selectedNodes: selectedNodes, messages: messages, time: time})
   }
 
   getNode (nodeId, time) {
@@ -123,6 +129,7 @@ class Network extends Component {
     const {clickedNode, time} = this.state
     const node = this.getNode(nodeId, time)
     // console.log('Clicked node', node.state, node.invalidNonceTxs)
+
     if (clickedNode && node.pid === clickedNode.pid) {
       this.setState({clickedNode: null, isNodeClicked: false})
     } else {
@@ -192,27 +199,37 @@ class Network extends Component {
     this.graph.animate()
   }
 
-  doubleSpend(nodeId){
-    const evilNode = this.getNode(nodeId, this.state.time)
-    const victims = [network.peers[nodeId][0], network.peers[nodeId][1]]
+  doubleSpend(evilNode){
+    const drEvil = evilNode.pid
+    const victims = [network.peers[drEvil][0], network.peers[drEvil][1]]
     const spends = [evilNode.generateTx(victims[0].wallet.address, 10), evilNode.generateTx(victims[1].wallet.address, 10)]
     spends[0].isDoubleSpend = true
     spends[1].isDoubleSpend = true
-    network.broadcastTo(nodeId, victims[0], spends[0])
-    network.broadcastTo(nodeId, victims[1], spends[1])
+    network.broadcastTo(drEvil, victims[0], spends[0])
+    network.broadcastTo(drEvil, victims[1], spends[1])
 
-    console.log("Double spender:", nodeId, "victims:", victims, "spends:", spends)
+    console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
   }
 
-  // spend(nodeId){
-  //   const currNode = this.getNode(nodeId, this.state.time)
-  //   currNode.randomSpend()
-  // }
+  spend(nodeId){
+    const currNode = this.getNode(nodeId, this.state.time)
+    // initiate random spend
+  }
 
   showState(node){
     // create popup with state
+    const {selectedNodes} = this.state
+    if (selectedNodes[node.pid]) {
+      delete selectedNodes[node.pid]
+    } else {
+      selectedNodes[node.pid] = node
+    }
+    this.setState({clickedNode: node, isNodeClicked: true})
   }
 
+  deselectNode(){
+    this.setState({clickedNode: null})
+  }
 
   reset(){
     console.log('reset')
@@ -237,7 +254,7 @@ class Network extends Component {
 
   }
   render() {
-    const {clickedNode, messages, time, paused, pausedTxs, speed} = this.state
+    const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
 
     return (
       <div id="App-container">
@@ -271,19 +288,23 @@ This is the root cause of the double spend problem: an attacker can send one mes
         </div>
         <div id = "Network-container">
           <div id = "Graph-container">
+            <Ledgers
+              nodes={selectedNodes}/>
             <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
              config={myConfig}
              onClickNode={this.onClickNode.bind(this)}
+             clickedNode = {clickedNode}
              onClickLink={onClickLink}
              onMouseOverNode={this.onMouseOverNode.bind(this)}
              onMouseOutNode={this.onMouseOutNode.bind(this)}
              onMouseOverLink={onMouseOverLink}
              onMouseOutLink={onMouseOutLink}
              doubleSpend = {this.doubleSpend.bind(this)}
-{/*             spend = {this.spend.bind(this)}*/}
+             spend = {this.spend.bind(this)}
              showState = {this.showState.bind(this)}
+             deselectNode = {this.deselectNode.bind(this)}
              messages={messages}
              time={time}
              speed={speed}
