@@ -116,10 +116,10 @@ export default class Node extends React.Component {
             node = <path ref={this.nodeRef} {...nodeProps} />;
 
             const nodeElement = this.nodeRef.current;
-            if (nodeElement != null) {
-                var rect = nodeElement.getBoundingClientRect();
-                console.log(rect.top, rect.right, rect.bottom, rect.left);
-            }
+            // if (nodeElement != null) {
+            //     var rect = nodeElement.getBoundingClientRect();
+            //     // console.log(rect.top, rect.right, rect.bottom, rect.left);
+            // }
         }
 
         const gProps = {

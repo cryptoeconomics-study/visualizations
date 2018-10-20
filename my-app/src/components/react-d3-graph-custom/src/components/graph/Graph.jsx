@@ -88,6 +88,7 @@ export default class Graph extends React.Component {
     }
 
     onClickNode(nodeID) {
+
         if (this.state.clickedNode && this.state.clickedNode.id === nodeID) {
             this.setState({clickedNode: null})
         } else {
@@ -248,7 +249,7 @@ export default class Graph extends React.Component {
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
-                onClickNode: this.onClickNode.bind(this), //this.props.onClickNode,
+                onClickNode: this.props.onClickNode, //this.onClickNode.bind(this), 
                 onMouseOverNode: this.onMouseOverNode,
                 onMouseOut: this.onMouseOutNode
             },
@@ -283,7 +284,7 @@ export default class Graph extends React.Component {
                 Double Spend
             </text>
             </g>)
-            console.log("clickedNode", this.state.clickedNode)
+            // console.log("clickedNode", this.state.clickedNode)
         }
         const svgStyle = {
             maxHeight: "100%",

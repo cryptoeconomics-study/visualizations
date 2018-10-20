@@ -60,11 +60,11 @@ function _buildLinks(nodes, links, linksMatrix, config, linkCallbacks, highlight
  * @memberof Graph/helper
  */
 
-var EthCrypto = require('eth-crypto')
+// var EthCrypto = require('eth-crypto')
 
-function getHash (tx) {
-  return EthCrypto.hash.keccak256(JSON.stringify(tx))
-}
+// function getHash(thing) {
+//   return EthCrypto.hash.keccak256(JSON.stringify(thing))
+// }
 
 function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedLink, transform, nodeState, time) {
     return Object.keys(nodes).map(nodeId => {
@@ -97,15 +97,16 @@ function _buildNodes(nodes, nodeCallbacks, config, highlightedNode, highlightedL
             );
             if (nodeState) {
                 let node = nodeState(nodeId, Math.floor(time))
-                if (node) {
-                    let state = node.state
-                    if (state) {
-                        let stateHash = getHash(state)
-                        let color = stateHash.substr(-6)
-                        //console.log(color)
-                        props.fill = '#' + color
-                    }
-                }
+                props.fill = node.color
+            //     if (node) {
+            //         let state = node.state
+            //         if (state) {
+            //             let stateHash = getHash(state)
+            //             let color = stateHash.substr(-6)
+            //             //console.log(color)
+            //             props.fill = '#' + color
+            //         }
+            //     }
             }
         }
 

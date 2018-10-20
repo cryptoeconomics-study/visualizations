@@ -3,6 +3,7 @@ import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
 import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
+import Ledgers from './Ledgers.jsx'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
@@ -72,7 +73,7 @@ const onMouseOutLink = function(source, target) {
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, history: [], paused: false, pausedTxs: true, speed: 10}
+    this.state = {clickedNode: null, selectedNodes:{}, history: [], paused: false, pausedTxs: true, speed: 10}
   }
 
   setMessageQueue(network){
@@ -95,7 +96,7 @@ class Network extends Component {
 
   //sets Messages
   getTick(time) {
-    const {history, clickedNode} = this.state
+    const {history, selectedNodes, clickedNode} = this.state
     if(time > history.length) {
       throw new Error('You skipped a time step!')
     } else if (time === history.length ) {
@@ -107,7 +108,12 @@ class Network extends Component {
       const node = this.getNode(clickedNode.pid, time)
       this.setState({clickedNode: node, isNodeClicked: true})
     }
-    this.setState({messages: messages, time: time})
+
+    for (var nodeId in selectedNodes) {
+      selectedNodes[nodeId] = this.getNode(nodeId, time)
+    }
+
+    this.setState({selectedNodes: selectedNodes, messages: messages, time: time})
   }
 
   getNode (nodeId, time) {
@@ -120,13 +126,20 @@ class Network extends Component {
   }
 
   onClickNode (nodeId) {
-    const {clickedNode, time} = this.state
+    const {clickedNode, selectedNodes, time} = this.state
     const node = this.getNode(nodeId, time)
     // console.log('Clicked node', node.state, node.invalidNonceTxs)
-    if (clickedNode && node.pid === clickedNode.pid) {
-      this.setState({clickedNode: null, isNodeClicked: false})
+    
+    if (selectedNodes[node.pid]) {
+      delete selectedNodes[node.pid]
     } else {
-      this.setState({clickedNode: node, isNodeClicked: true})
+      selectedNodes[node.pid] = node
+    }
+
+    if (clickedNode && node.pid === clickedNode.pid) {
+      this.setState({clickedNode: null, isNodeClicked: false, selectedNodes: selectedNodes})
+    } else {
+      this.setState({clickedNode: node, isNodeClicked: true, selectedNodes: selectedNodes})
     }
   };
 
@@ -227,7 +240,7 @@ class Network extends Component {
 
   }
   render() {
-    const {clickedNode, messages, time, paused, pausedTxs, speed} = this.state
+    const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
 
     return (
       <div id="App-container">
@@ -261,6 +274,8 @@ This is the root cause of the double spend problem: an attacker can send one mes
         </div>
         <div id = "Network-container">
           <div id = "Graph-container">
+            <Ledgers
+              nodes={selectedNodes}/>
             <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
