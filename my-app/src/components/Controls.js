@@ -28,7 +28,6 @@ class Controls extends Component {
 
           <button onClick={onPause}>{paused ? 'Resume' : 'Pause'}</button>
           <button onClick={onPauseTxs}>{pausedTxs ? 'Resume Txs' : 'Pause Txs'}</button>
-          {nodeControls}
         </div>
     );
   }

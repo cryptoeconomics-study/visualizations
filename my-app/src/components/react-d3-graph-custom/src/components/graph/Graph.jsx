@@ -25,6 +25,9 @@ const D3_CONST = {
 // View animation/state loop constant values
 const VIEW_TIME_INCREMENT = 0.1
 
+// Suppress some drag events
+let d2;
+
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
@@ -327,10 +330,15 @@ export default class Graph extends React.Component {
      * Handles d3 drag 'end' event.
      * @returns {undefined}
      */
-    _onDragEnd = () =>
+    _onDragEnd = () => {
         !this.state.config.staticGraph &&
         this.state.config.automaticRearrangeAfterDropNode &&
         this.state.simulation.alphaTarget(D3_CONST.SIMULATION_ALPHA_TARGET).restart();
+        
+        if (d2 < 10) {
+            d3Select(window).on('click.drag', null);
+        }
+    }
 
     /**
      * Handles d3 'drag' event.
@@ -358,13 +366,18 @@ export default class Graph extends React.Component {
             this._tick();
             this.animate();
         }
+
+         d2 += d3Event.dx * d3Event.dx + d3Event.dy * d3Event.dy;
     };
 
     /**
      * Handles d3 drag 'start' event.
      * @returns {undefined}
      */
-    _onDragStart = () => this.pauseSimulation();
+    _onDragStart = () => {
+        this.pauseSimulation();
+         d2 = 0;
+    }
 
     /**
      * Sets nodes and links highlighted value.
