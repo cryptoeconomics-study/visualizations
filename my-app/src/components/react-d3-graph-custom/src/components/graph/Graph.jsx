@@ -196,7 +196,7 @@ export default class Graph extends React.Component {
                 var nodesDictionary = this.state.nodes
 
                 if (!messages[i].key) {
-                    messages[i].key = messages[i].message.sig + messages[i].sender + messages[i].recipient.pid
+                    messages[i].key = messages[i].message.sig + messages[i].sender + messages[i].recipient.pid + messages[i].rcvTime
 
                     if (!messages[i].node) {
                         if (!nodesDictionary[messages[i].key]) {
