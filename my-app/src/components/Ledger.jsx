@@ -22,10 +22,22 @@ class Ledger extends Component {
       } else return 'None'
     }
 
-    const color = node.color
+    const backgroundColor = Number.parseInt(node.color.slice(1), 16)
+
+    const r = (backgroundColor >> 16) & 0xff
+    const g = (backgroundColor >> 8) & 0xff
+    const b = backgroundColor & 0xff
+
+    const brightness = (r * 0.299 + g * 0.587 + b * 0.114)/255
+
+    let textColor = "white"
+    if (brightness > 0.5) {
+      textColor = "black"
+    }
+
 
     return (
-        <div className="Ledger" id={"ledger-" + node.pid} style={{ backgroundColor: color }}>
+        <div className="Ledger" id={"ledger-" + node.pid} style={{ backgroundColor: node.color, color: textColor }}>
           <span className="ledger-title">Node {node.pid.substring(0,10)}</span>
           <table>
            <tbody>
