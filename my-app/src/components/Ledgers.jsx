@@ -10,7 +10,7 @@ class Ledgers extends Component {
         <div id = "Ledgers">
         {
         	Object.keys(nodes).map((pid, index) => (
-        		<Ledger key={nodes[pid]} node={nodes[pid]} icons={icons}/>
+        		<Ledger key={pid} node={nodes[pid]} icons={icons}/>
         	))
         }
         </div>

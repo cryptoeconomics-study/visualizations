@@ -29,7 +29,7 @@ for (let i = 0; i < nodes.length; i++) {
   // add peers
   data.nodes.push({
     id: nodes[i].pid,
-    name: nodes[i].pid.slice(0, 10),
+    name: nodes[i].pid.slice(0, 5),
     gerbil: ICONS[i]
   })
   iconMap[nodes[i].pid] = ICONS[i]
@@ -274,7 +274,7 @@ class Network extends Component {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
     return (
       <div id="App-container">
-        <div id="Text-container">
+{/*        <div id="Text-container">
         <div id="Overflow-top"></div>
         <h3>V2: A Distributed Ledger</h3><div id="Text">Building a centralized payments processor like Paypal is simple, but relies on trust that Paypal will not break the rules. A simple way to decentralize PayPal is to make clients download all transactions and run the PayPal code to generate their belief of the current state.  In this section we see why this is not enough, how to mentally model a network & synchrony assumptions.<br/><br/>
 
@@ -289,7 +289,7 @@ In a decentralized system, we cannot rely on a global clock, and we cannot assum
 This is the root cause of the double spend problem: an attacker can send one message to Jing & another message to Aparna each spending the same coins. If Jing and Aparna both accept those transactions, their states will diverge and we will have a fork. Not good! We need decentralized consensus!
           </div>
         <div id="Overflow-bottom"></div>
-        </div>
+        </div>*/}
         <div id = "Network-container">
           <div id = "Graph-container">
             <Ledgers

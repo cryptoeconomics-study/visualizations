@@ -2,7 +2,7 @@
 	text-align: center;
 
 	background-image: linear-gradient(to bottom, #ececec, #dddddd);
-
+	font-family: "Open Sans";
 	max-height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -74,6 +74,8 @@ button {
 
 
 #Input-container {
+/*	width: 50%;
+	min-width: 300px;*/
 	width: 100% - 20px;
 	height: 10%;
 	display: flex;
@@ -223,13 +225,17 @@ b {
 .Ledger {
 	margin: 5px;
 	overflow: hidden;
-
 	padding: 10px;
 	border-radius: 15px;
 	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
 }
 
 .ledger-title {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.Ledger a {
 	font-size: 12px;
 	font-weight: 500;
 }
@@ -261,15 +267,15 @@ b {
 	border-radius: 3px;
 	font-size: 4px;
 	font-weight: 600;
-	
+
 	padding: 0;
-	
+
 	text-align: center;
 	border: none;
 
 	width: 35px;
   	height: 11px;
-  	
+
   	display: inline-block;
 
   	background-color: #dcdcdc;

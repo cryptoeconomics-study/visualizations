@@ -4,24 +4,7 @@ import React, { Component } from 'react';
 
 class Controls extends Component {
   render() {
-    const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode,
-      //stepforward, stepbackward, rewind, fastforward, reset
-    } = this.props
-    let nodeControls = "";
-
-    if (clickedNode) {
-      nodeControls =
-        <div id = "nodeControls">
-          <button id = "doubleSpend"
-            onClick={()=>doubleSpend(clickedNode)}
-          >
-            Double Spend
-          </button>
-
-
-        </div>
-
-    }
+    const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode} = this.props
 
     return (
         <div id = "Controls">
