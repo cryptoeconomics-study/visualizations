@@ -211,8 +211,13 @@ class Network extends Component {
     console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
   }
 
-  spend(nodeId){
-    const currNode = this.getNode(nodeId, this.state.time)
+  spend(node){
+    const tx = node.generateTx(node.getRandomReceiver(), 10)
+    node.transactions.push(tx)
+    node.applyTransaction(tx)
+    // Broadcast this tx to the network
+    network.broadcast(node.pid, tx)
+
     // initiate random spend
   }
 
@@ -225,6 +230,10 @@ class Network extends Component {
       selectedNodes[node.pid] = node
     }
     this.setState({clickedNode: node, isNodeClicked: true})
+  }
+
+  visibleState(node){
+    return !!this.state.selectedNodes[node.pid]
   }
 
   deselectNode(){
@@ -271,18 +280,6 @@ class Network extends Component {
 In a decentralized system, we cannot rely on a global clock, and we cannot assume a constant latency for all messages to be delivered.<br/><br/>
 
 This is the root cause of the double spend problem: an attacker can send one message to Jing & another message to Aparna each spending the same coins. If Jing and Aparna both accept those transactions, their states will diverge and we will have a fork. Not good! We need decentralized consensus!
-
-<br/><br/>Building a centralized payments processor like Paypal is simple, but relies on trust that Paypal will not break the rules. A simple way to decentralize PayPal is to make clients download all transactions and run the PayPal code to generate their belief of the current state.  In this section we see why this is not enough, how to mentally model a network & synchrony assumptions.<br/><br/>
-
-<b>Synchronous network</b><br/>Global clock, & there is a known (constant) latency L in which all messages are assumed to be received. For instance all messages propagate in 5 seconds.<br/><br/>
-
-<b>Partially Synchronous network</b><br/>There is some unknown latency L in which all messages are assumed to be received. It is important to note that this latency is unknown and could be extremely high.<br/><br/>
-
-<b>Asynchronous network</b><br/>Local clock, & there are no timing assumptions made. We are not able to determine objectively the time ordering of transactions, though each individual node still has an idea of what order it saw messages arrive in (and different nodes can disagree).<br/><br/>
-
-In a decentralized system, we cannot rely on a global clock, and we cannot assume a constant latency for all messages to be delivered.<br/><br/>
-
-This is the root cause of the double spend problem: an attacker can send one message to Jing & another message to Aparna each spending the same coins. If Jing and Aparna both accept those transactions, their states will diverge and we will have a fork. Not good! We need decentralized consensus!
           </div>
         <div id="Overflow-bottom"></div>
         </div>
@@ -305,6 +302,7 @@ This is the root cause of the double spend problem: an attacker can send one mes
              spend = {this.spend.bind(this)}
              showState = {this.showState.bind(this)}
              deselectNode = {this.deselectNode.bind(this)}
+             visibleState = {this.visibleState.bind(this)}
              messages={messages}
              time={time}
              speed={speed}

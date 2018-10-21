@@ -248,8 +248,7 @@ export default class Graph extends React.Component {
         }
     }
     render() {
-        const {showState, doubleSpend, spend, deselectNode} = this.props
-        const {clickedNode} = this.props
+        const {showState, doubleSpend, spend, deselectNode, clickedNode, visibleState} = this.props
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
@@ -277,7 +276,12 @@ export default class Graph extends React.Component {
         if(clickedNode) {
             nodeControls = (
             <foreignObject x={this.state.nodes[clickedNode.pid].x} y={this.state.nodes[clickedNode.pid].y}>
-              <NodeControls doubleSpend={()=>doubleSpend(clickedNode)} showState={()=>showState(clickedNode)} hide = {deselectNode}/>
+              <NodeControls
+                doubleSpend={()=>doubleSpend(clickedNode)}
+                showState={()=>showState(clickedNode)}
+                spend={()=>spend(clickedNode)}
+                hide = {deselectNode}
+                visibleState = {()=>visibleState(clickedNode)}/>
             </foreignObject>)
         }
 
@@ -334,7 +338,7 @@ export default class Graph extends React.Component {
         !this.state.config.staticGraph &&
         this.state.config.automaticRearrangeAfterDropNode &&
         this.state.simulation.alphaTarget(D3_CONST.SIMULATION_ALPHA_TARGET).restart();
-        
+
         if (d2 < 10) {
             d3Select(window).on('click.drag', null);
         }
@@ -470,7 +474,6 @@ export default class Graph extends React.Component {
 
         if (this.state.config.linkHighlightBehavior) {
             this.setState({highlightedLink: undefined});
-
             this._tick();
         }
     };

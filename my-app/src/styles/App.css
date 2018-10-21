@@ -1,6 +1,6 @@
 .App {
 	text-align: center;
-	
+
 	background-image: linear-gradient(to bottom, #ececec, #dddddd);
 
 	max-height: 100%;
@@ -8,7 +8,7 @@
 	flex-direction: column;
 	flex-wrap: nowrap;
 	position: fixed;
-	
+
 	top:0;
     bottom:0;
     left:0;
@@ -25,7 +25,6 @@ button {
   box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.1);
   z-index: 1;
   margin-bottom: 0px;
-
   display: none;
 }
 
@@ -56,7 +55,7 @@ button {
 #Controls button {
 	width: 100px;
   	height: 30px;
-  	
+
   	display: inline-block;
 
   	background-color: #dcdcdc;
@@ -68,10 +67,10 @@ button {
   	color: rgba(0,0,0,0.65);
 }
 
-#Controls button:active {   
-	box-shadow: none;   
-	transform:translate(0px, 1px); 
-	background-color: #c0c0c0; 
+#Controls button:active {
+	box-shadow: none;
+	transform:translate(0px, 1px);
+	background-color: #c0c0c0;
 }
 
 
@@ -97,11 +96,11 @@ button {
 	justify-content: flex-start;
 	width: 100%;
 	max-height: 100%;
-	
+
 	align-content: center;
-	
+
 	border: 0px black solid;
-	
+
 	flex: 1 1 auto;
 }
 
@@ -110,9 +109,9 @@ button {
 	height: 100% - 10px;
 	position:relative;
 	padding: 10px;
-	
+
 	border: 0px black solid;
-	
+
 	border-left: 0;
 	border-right: 0;
     overflow-y: scroll;
@@ -142,25 +141,25 @@ h3 {
 
 
 #Overflow-bottom {
-	position: sticky; 
-	bottom: -10px; 
+	position: sticky;
+	bottom: -10px;
 	left: 0;
-	width: 100%; 
-	text-align: center; 
-	margin: 0; 
-	padding: 50px 0; 
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	padding: 50px 0;
 	background-image: linear-gradient(to bottom, transparent, white);
 }
 
 /*#Overflow-top {
-	position: sticky; 
+	position: sticky;
 	height: 0;
-	top: -10px; 
+	top: -10px;
 	left: 0;
-	width: 100%; 
-	text-align: center; 
-	margin: 0; 
-	padding: 50px 0; 
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	padding: 50px 0;
 	background-image: linear-gradient(to top, transparent, white);
 }*/
 
@@ -291,7 +290,7 @@ b {
 }
 
 tr {
-	font-size: 10px;	
+	font-size: 10px;
 }
 
 td, th {
@@ -308,10 +307,10 @@ table {
 	display: flex;
 	flex-direction: row;
 	overflow: hidden;
-	
+
 	/* display: none on .app-header */
-	height: 95%; 
+	height: 95%;
 	height: 100%;
-	
+
 	padding: 10px;
 }
