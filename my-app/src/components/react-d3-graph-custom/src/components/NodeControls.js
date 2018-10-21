@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 class NodeControls extends Component {
   render() {
-    const {doubleSpend, spend, showState, hide} = this.props
+    const {doubleSpend, spend, showState, hide, visibleState} = this.props
     return (
         <div id = "NodeControls">
           <button id = "doubleSpend" onClick={()=> {
@@ -17,7 +17,13 @@ class NodeControls extends Component {
             showState()
             hide()
           }}>
-            Show State
+            {visibleState() ? 'Hide State' : 'Show State'}
+          </button>
+          <button id = "spend" onClick={()=> {
+            spend()
+            hide()
+          }}>
+            Spend
           </button>
         </div>
     );
