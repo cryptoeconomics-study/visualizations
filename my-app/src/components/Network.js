@@ -7,16 +7,16 @@ import Ledgers from './Ledgers.jsx'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
-// const ICONS = [
-//   'https://i.imgur.com/Wi9yFXw.png',
-//   'https://i.imgur.com/BBUyb4e.png',
-//   'https://i.imgur.com/NPH4rqg.png',
-//   'https://i.imgur.com/MptO0GC.png',
-//   'https://i.imgur.com/yHwPVBF.png',
-//   'https://i.imgur.com/yvv1MMb.png',
-//   'https://i.imgur.com/I4Dlkik.png',
-//   'https://i.imgur.com/jNB8LS6.png'
-// ]
+const ICONS = [
+  'https://i.imgur.com/Wi9yFXw.png',
+  'https://i.imgur.com/BBUyb4e.png',
+  'https://i.imgur.com/NPH4rqg.png',
+  'https://i.imgur.com/MptO0GC.png',
+  'https://i.imgur.com/yHwPVBF.png',
+  'https://i.imgur.com/yvv1MMb.png',
+  'https://i.imgur.com/I4Dlkik.png',
+  'https://i.imgur.com/jNB8LS6.png'
+]
 
 // graph payload (with minimalist structure)
 const data = {
@@ -29,7 +29,7 @@ for (let i = 0; i < nodes.length; i++) {
   data.nodes.push({
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 10),
-    // svg: ICONS[i]
+    gerbil: ICONS[i]
   })
 }
 for (const node of nodes) {
@@ -49,7 +49,7 @@ const myConfig = {
   staticGraph: false,
   nodeHighlightBehavior: true,
   node: {
-      size: 120,
+      size: 400,
       highlightStrokeColor: 'blue',
       labelProperty: 'name'
   },

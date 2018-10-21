@@ -84,6 +84,7 @@ export default class Node extends React.Component {
         let gty = this.props.cy;
         let label;
         let node;
+        let gerbil;
 
         if (this.props.svg) {
             const height = size / 10;
@@ -103,6 +104,22 @@ export default class Node extends React.Component {
             gtx -= tx;
             gty -= ty;
         } else {
+            if (this.props.gerbil) {
+
+                const height = size / 27;
+                const width = size / 27;
+                const tx = width / 2;
+                const ty = height / 2;
+                const transform = `translate(${tx},${ty})`;
+
+                label = (
+                    <text {...textProps} transform={transform}>
+                        {this.props.label}
+                    </text>
+                );
+                gerbil = <g transform= {'translate(' + -tx + ',' +  -ty + ')'}><image {...nodeProps} href={this.props.gerbil} width={width} height={height} /></g>;
+            }
+
             nodeProps.d = nodeHelper.buildSvgSymbol(size, this.props.type);
             nodeProps.fill = this.props.fill;
             nodeProps.stroke = this.props.stroke;
@@ -123,6 +140,7 @@ export default class Node extends React.Component {
             <g {...gProps}>
                 {node}
                 {this.props.renderLabel && label}
+                {gerbil}
             </g>
         );
     }
