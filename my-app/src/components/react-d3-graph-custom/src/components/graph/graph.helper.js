@@ -287,6 +287,7 @@ function buildNodeProps(node, config, nodeCallbacks = {}, highlightedNode, highl
     const dx = fontSize * t + nodeSize / 100 + 1.5;
     const strokeWidth = highlight ? config.node.highlightStrokeWidth : config.node.strokeWidth;
     const svg = node.svg || config.node.svg;
+    const gerbil = node.gerbil
     const fontColor = node.fontColor || config.node.fontColor;
 
     return {
@@ -299,6 +300,7 @@ function buildNodeProps(node, config, nodeCallbacks = {}, highlightedNode, highl
         fontSize: fontSize * t,
         dx,
         fontWeight: highlight ? config.node.highlightFontWeight : config.node.fontWeight,
+        gerbil,
         id: node.id,
         label: node[config.node.labelProperty] || node.id,
         onClickNode: nodeCallbacks.onClickNode,
