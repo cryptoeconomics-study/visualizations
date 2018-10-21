@@ -4,15 +4,13 @@ import Ledger from './Ledger.jsx'
 
 class Ledgers extends Component {
   render() {
-    const {nodes,
-      //stepforward, stepbackward, rewind, fastforward, reset
-    } = this.props
+    const {nodes, icons} = this.props
 
     return (
         <div id = "Ledgers">
-        { 
-        	Object.keys(nodes).map((pid, index) => ( 
-        		<Ledger node={nodes[pid]}/>
+        {
+        	Object.keys(nodes).map((pid, index) => (
+        		<Ledger key={nodes[pid]} node={nodes[pid]} icons={icons}/>
         	))
         }
         </div>

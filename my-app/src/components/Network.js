@@ -24,6 +24,7 @@ const data = {
   links: []
 }
 
+let iconMap = {}
 for (let i = 0; i < nodes.length; i++) {
   // add peers
   data.nodes.push({
@@ -31,6 +32,7 @@ for (let i = 0; i < nodes.length; i++) {
     name: nodes[i].pid.slice(0, 10),
     gerbil: ICONS[i]
   })
+  iconMap[nodes[i].pid] = ICONS[i]
 }
 for (const node of nodes) {
   // connect them
@@ -74,6 +76,13 @@ class Network extends Component {
   constructor() {
     super()
     this.state = {clickedNode: null, selectedNodes:{}, history: [], paused: false, pausedTxs: true, speed: 10}
+  }
+
+  componentDidMount() {
+    for (let node of nodes) {
+      this.showState(node)
+    }
+
   }
 
   setMessageQueue(network){
@@ -229,7 +238,6 @@ class Network extends Component {
     } else {
       selectedNodes[node.pid] = node
     }
-    this.setState({clickedNode: node, isNodeClicked: true})
   }
 
   visibleState(node){
@@ -264,7 +272,6 @@ class Network extends Component {
   }
   render() {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
-
     return (
       <div id="App-container">
         <div id="Text-container">
@@ -286,7 +293,8 @@ This is the root cause of the double spend problem: an attacker can send one mes
         <div id = "Network-container">
           <div id = "Graph-container">
             <Ledgers
-              nodes={selectedNodes}/>
+              nodes={selectedNodes}
+              icons = {iconMap}/>
             <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
