@@ -74,17 +74,6 @@ button {
 	background-color: #c0c0c0; 
 }
 
-#doubleSpend {
-	background-color: #c0392b !important;
-  	box-shadow: 0px 5px 0px 0px #691010 !important;
-  	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.25) !important;
-  	color: rgba(0,0,0,0.65);
-}
-
-#doubleSpend:active {
-	background-color: #A33025 !important;
-}
-
 
 #Input-container {
 	width: 100% - 20px;
@@ -245,6 +234,60 @@ b {
 .ledger-title {
 	font-size: 12px;
 	font-weight: 500;
+}
+
+#NodeControls {
+	border-radius: 3px;
+	display: flex;
+
+	width: 71px;
+	height: 13px;
+
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+
+	background-color: rgba(0,0,0,1) !important;
+	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.25) !important;
+
+	padding: 0px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#NodeControls button {
+	background-color: white !important;
+	color: black;
+	border-radius: 3px;
+	font-size: 4px;
+	font-weight: 600;
+	
+	padding: 0;
+	
+	text-align: center;
+	border: none;
+
+	width: 35px;
+  	height: 11px;
+  	
+  	display: inline-block;
+
+  	background-color: #dcdcdc;
+  	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.25) !important;
+
+  	border-radius: 3px;
+  	font-size: 4px;
+}
+
+#doubleSpend {
+	background-color: #c0392b !important;
+  	color: rgba(0,0,0,0.65);
+}
+
+#doubleSpend:active {
+	background-color: #A33025 !important;
 }
 
 tr {
