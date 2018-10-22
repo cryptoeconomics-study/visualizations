@@ -2,7 +2,7 @@
 	text-align: center;
 
 	background-image: linear-gradient(to bottom, #ececec, #dddddd);
-	font-family: -apple-system, BlinkMacSystemFont, "Open Sans", "Helvetica", sans-serif;
+	font-family: "Open Sans", "Helvetica", sans-serif;
 	max-height: 100%;
 	display: flex;
 	flex-direction: column;
