@@ -106,13 +106,13 @@ button {
 }
 
 #Text-container {
-	width: 550px;
+	width: 400px;
 	height: 100% - 10px;
 	position:relative;
 	padding: 10px;
 
 	border: 0px black solid;
-
+	font-size: 14px;
 	border-left: 0;
 	border-right: 0;
     overflow-y: scroll;
