@@ -1,8 +1,45 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 
 class Ledger extends Component {
+  constructor(props) {
+    super(props)
+    this.invalidNonceTxs = []
+  }
+
+  updateInvalidNonceTxs() {
+    const {invalidNonceTxs} = this
+    const {node} = this.props
+    const newTxs = []
+    const updatedInvalidNonceTxs = []
+
+    Object.keys(node.invalidNonceTxs).forEach(function(address, i) {
+      Object.keys(node.invalidNonceTxs[address]).forEach(function(nonce, i) {
+        const tx = node.invalidNonceTxs[address][nonce]
+        newTxs.push(tx.contents)
+      })
+    })
+    //add Old txs into updatedInvalidNonceTxs if it's in the array of new txs
+    for (let tx of invalidNonceTxs) {
+      const hasOldTx = newTxs.find(newTx => _.isEqual(newTx, tx))
+      if (hasOldTx) {
+        updatedInvalidNonceTxs.push(tx)
+      }
+    }
+    //add all new txs into updatedInvalidNonceTxs
+    for(let newTx of newTxs) {
+      const hasNewTx = updatedInvalidNonceTxs.find(tx => _.isEqual(newTx, tx))
+      if (!hasNewTx) {
+        updatedInvalidNonceTxs.push(newTx)
+      }
+    }
+    this.invalidNonceTxs = updatedInvalidNonceTxs
+  }
+
   render() {
     const {node, icons} = this.props
+
+    this.updateInvalidNonceTxs()
 
     const data = Object.keys(node.state).map(function(nodeId, i) {
       return (
@@ -13,15 +50,8 @@ class Ledger extends Component {
         </tr>
       )
     })
-    let invalidNonceTxs = []
-    Object.keys(node.invalidNonceTxs).forEach(function(address, i) {
-      Object.keys(node.invalidNonceTxs[address]).forEach(function(nonce, i) {
-        const tx = node.invalidNonceTxs[address][nonce]
-        invalidNonceTxs.push(tx.contents)
-      })
-    })
 
-    const nonceData = invalidNonceTxs.map(function(tx, i) {
+    const nonceData = this.invalidNonceTxs.map(function(tx, i) {
       return (
         <tr key={i}>
           <td>{tx.from.substring(0,5)}</td>
@@ -32,8 +62,8 @@ class Ledger extends Component {
       )
     })
     const nonceTable =
-    <div style = {invalidNonceTxs.length ? {} : {display: 'none'}}>
-        <a>Invalid Nonce Transactions</a>
+    <div style = {this.invalidNonceTxs.length ? {} : {display: 'none'}}>
+        <p>Invalid Nonce Transactions</p>
        <table>
          <tbody>
           <tr>
@@ -62,7 +92,7 @@ class Ledger extends Component {
 
     return (
         <div className="Ledger" id={"ledger-" + node.pid} style={{ backgroundColor: node.color, color: textColor }}>
-          <img src={icons[node.pid]} width="30" />
+          <img alt="Gerbil" src={icons[node.pid]} width="30" />
           <span className="ledger-title">
             {' ' + node.pid.substring(0,5)}
           </span>

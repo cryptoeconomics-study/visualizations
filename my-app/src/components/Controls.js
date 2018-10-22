@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 class Controls extends Component {
   render() {
-    const {paused, onPause, onPauseTxs, pausedTxs, doubleSpend, clickedNode} = this.props
+    const {paused, onPause, onPauseTxs, pausedTxs} = this.props
 
     return (
         <div id = "Controls">

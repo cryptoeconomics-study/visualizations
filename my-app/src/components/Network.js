@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
-import Sidebar from './Sidebar.js'
 import Controls from './Controls.js'
 import Ledgers from './Ledgers.jsx'
 // import Parameters from './Parameters.js'
@@ -9,7 +8,7 @@ import clone  from 'clone';
 
 const ICONS = [
   'https://i.imgur.com/Wi9yFXw.png',
-  'https://i.imgur.com/BBUyb4e.png',
+  'https://i.imgur.com/U5Y99Rm.png',
   'https://i.imgur.com/NPH4rqg.png',
   'https://i.imgur.com/MptO0GC.png',
   'https://i.imgur.com/yHwPVBF.png',
@@ -325,7 +324,6 @@ class Network extends Component {
               onPauseTxs = {this.pauseTxs.bind(this)}
               paused = {paused}
               pausedTxs = {pausedTxs}
-              clickedNode = {clickedNode}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
               rewind = {this.rewind.bind(this)}
