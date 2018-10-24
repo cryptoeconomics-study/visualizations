@@ -81,7 +81,6 @@ class Network extends Component {
     for (let node of nodes) {
       this.showState(node)
     }
-
   }
 
   setMessageQueue(network){
