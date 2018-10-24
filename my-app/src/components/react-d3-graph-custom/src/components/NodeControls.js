@@ -19,12 +19,12 @@ class NodeControls extends Component {
           }}>
             {visibleState() ? 'Hide State' : 'Show State'}
           </button>
-{/*          <button id = "spend" onClick={()=> {
+          <button id = "spend" onClick={()=> {
             spend()
             hide()
           }}>
             Spend
-          </button>*/}
+          </button>
         </div>
     );
   }

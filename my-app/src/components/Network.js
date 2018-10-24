@@ -114,7 +114,7 @@ class Network extends Component {
     // Update states if agent already clicked
     if (clickedNode){
       const node = this.getNode(clickedNode.pid, time)
-      this.setState({clickedNode: node, isNodeClicked: true})
+      this.setState({clickedNode: node})
     }
 
     for (var nodeId in selectedNodes) {
@@ -133,15 +133,23 @@ class Network extends Component {
     }
   }
 
+  getCurrNode(nodeId) {
+    if (network) {
+      return network.agents.find((node) => {
+        return node.pid === nodeId;
+      });
+    }
+  }
+
   onClickNode (nodeId) {
     const {clickedNode, time} = this.state
     const node = this.getNode(nodeId, time)
     // console.log('Clicked node', node.state, node.invalidNonceTxs)
 
     if (clickedNode && node.pid === clickedNode.pid) {
-      this.setState({clickedNode: null, isNodeClicked: false})
+      this.setState({clickedNode: null})
     } else {
-      this.setState({clickedNode: node, isNodeClicked: true})
+      this.setState({clickedNode: node})
     }
   };
 
@@ -219,7 +227,8 @@ class Network extends Component {
     console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
   }
 
-  spend(node){
+  spend(currNode){
+    const node = this.getCurrNode(currNode.pid)
     const tx = node.generateTx(node.getRandomReceiver(), 10)
     node.transactions.push(tx)
     node.applyTransaction(tx)
