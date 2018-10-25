@@ -329,7 +329,6 @@ class Network extends Component {
              onMouseOutLink={onMouseOutLink}
              doubleSpend = {this.doubleSpend.bind(this)}
              spend = {this.spend.bind(this)}
-             showState = {this.showState.bind(this)}
              deselectNode = {this.deselectNode.bind(this)}
              visibleState = {this.visibleState.bind(this)}
              messages={messages}
