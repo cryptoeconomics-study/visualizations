@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 
+ // <button id = "showState" onClick={()=> {
+ //            showState()
+ //            hide()
+ //          }}>
+ //            {visibleState() ? 'Hide State' : 'Show State'}
+ //  </button>
 
 class NodeControls extends Component {
   render() {
@@ -12,12 +18,6 @@ class NodeControls extends Component {
             hide()
           }}>
             Double Spend
-          </button>
-          <button id = "showState" onClick={()=> {
-            showState()
-            hide()
-          }}>
-            {visibleState() ? 'Hide State' : 'Show State'}
           </button>
           <button id = "spend" onClick={()=> {
             spend()
