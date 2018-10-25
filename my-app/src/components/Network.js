@@ -4,6 +4,7 @@ import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
 import Controls from './Controls.js'
 import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
+import Tray from './Tray.jsx'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
@@ -306,6 +307,12 @@ class Network extends Component {
         </div>
         <div id = "Network-container">
           <div id = "Graph-container">
+            <Tray
+              nodes={nodes}
+              selectedNodes={selectedNodes}
+              showState = {this.showState.bind(this)}
+              icons = {iconMap}
+            />
             <Ledgers
               nodes={selectedNodes}
               icons = {iconMap}/>
@@ -353,13 +360,10 @@ class Network extends Component {
             </div>*/}
           </div>
         </div>
-        {this.state.showPopup ?
-          <Instructions
-            text='Close Me'
-            closePopup={this.togglePopup.bind(this)}
-          />
-          : null
-        }
+        <Instructions
+        show= {this.state.showPopup}
+        handleClose={this.togglePopup.bind(this)}
+        />
       </div>
     );
   }

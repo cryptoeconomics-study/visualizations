@@ -210,6 +210,7 @@ b {
 
 	margin: 0;
 	right: 0;
+	top: 75px;
 
 	position: absolute;
 
@@ -225,7 +226,8 @@ b {
 }
 
 .Ledger {
-	margin: 5px;
+	margin-left: 10px;
+	margin-bottom: 10px;
 	overflow: hidden;
 	padding: 10px;
 	border-radius: 15px;
@@ -242,11 +244,44 @@ b {
 	font-weight: 500;
 }
 
+#Tray {
+	display: inline-flex;
+	text-align: right;
+	flex-direction: row;
+
+	right: 0;
+	top: 0;
+	position: absolute;
+	align-self: end;
+
+/*	border-radius: 15px;
+	background: rgba(255,255,255,1);
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);*/
+}
+
+.TrayButton {
+	margin: 10px;
+	display:flex !important;
+	justify-content: center;
+	align-items: center;
+
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
+}
+
+.TrayButton:active {
+	box-shadow: none;
+}
+
+.TrayButton img{
+	display: block;
+    margin: auto;
+}
+
 #NodeControls {
 	border-radius: 3px;
 	display: flex;
 
-	width: 71px;
+	width: 108px;
 	height: 13px;
 
 	flex-direction: row;
@@ -320,24 +355,4 @@ table {
 	height: 100%;
 
 	padding: 10px;
-}
-
-.popup {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  background-color: rgba(0,0,0, 0.5);
-  z-index:1;
-}
-.popup_inner {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  margin: auto;
-  background: white;
 }
