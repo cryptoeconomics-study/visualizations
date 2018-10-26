@@ -100,7 +100,9 @@ class Ledger extends Component {
           <span className="ledger-title">
             {' ' + node.pid.substring(0,5)}
           </span>
-          <button onClick={(e) => this.clicked(showState, node)}></button>
+          <button className="LedgerMinimizeButton" onClick={(e) => this.clicked(showState, node)}>
+            <div className="LedgerMinimizeButtonIcon" style={{ backgroundColor: textColor }}></div>
+          </button>
           <table>
            <tbody>
             <tr>
