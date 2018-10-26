@@ -3,6 +3,7 @@ import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
 import Controls from './Controls.js'
 import Ledgers from './Ledgers.jsx'
+import Instructions from './Instructions.jsx'
 import Tray from './Tray.jsx'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
@@ -248,6 +249,12 @@ class Network extends Component {
     }
   }
 
+  togglePopup() {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
+  }
+
   visibleState(node){
     return !!this.state.selectedNodes[node.pid]
   }
@@ -322,7 +329,6 @@ class Network extends Component {
              onMouseOutLink={onMouseOutLink}
              doubleSpend = {this.doubleSpend.bind(this)}
              spend = {this.spend.bind(this)}
-             showState = {this.showState.bind(this)}
              deselectNode = {this.deselectNode.bind(this)}
              visibleState = {this.visibleState.bind(this)}
              messages={messages}
@@ -339,6 +345,7 @@ class Network extends Component {
               onPauseTxs = {this.pauseTxs.bind(this)}
               paused = {paused}
               pausedTxs = {pausedTxs}
+              togglePopup = {this.togglePopup.bind(this)}
               stepbackward = {this.stepbackward.bind(this)}
               stepforward = {this.stepforward.bind(this)}
               rewind = {this.rewind.bind(this)}
@@ -352,6 +359,10 @@ class Network extends Component {
             </div>*/}
           </div>
         </div>
+        <Instructions
+        show= {this.state.showPopup}
+        handleClose={this.togglePopup.bind(this)}
+        />
       </div>
     );
   }

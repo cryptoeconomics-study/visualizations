@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 
 class NodeControls extends Component {
   render() {
-    const {doubleSpend, spend, showState, hide, visibleState} = this.props
+    const {doubleSpend, spend, hide, visibleState} = this.props
     return (
         <div id = "NodeControls">
           <button id = "doubleSpend" onClick={()=> {

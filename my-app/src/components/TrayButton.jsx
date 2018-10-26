@@ -14,10 +14,10 @@ class TrayButton extends Component {
     const {isSelected, icons, node, showState} = this.props
 
     const styles = {
-      height: "45px", 
-      width: "45px", 
-      backgroundColor: node.color, 
-      borderRadius: "50%", 
+      height: "45px",
+      width: "45px",
+      backgroundColor: node.color,
+      borderRadius: "50%",
       display: "inline-block",
       opacity: isSelected ? 1.0 : 0.5,
     }
