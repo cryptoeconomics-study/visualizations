@@ -247,6 +247,7 @@ class Network extends Component {
     } else {
       selectedNodes[node.pid] = node
     }
+    this.setState({selectedNodes: selectedNodes})
   }
 
   togglePopup() {
