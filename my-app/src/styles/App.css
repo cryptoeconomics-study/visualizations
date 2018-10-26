@@ -263,7 +263,6 @@ b {
 
 .TrayButton {
 	margin: 10px;
-	display:flex !important;
 	justify-content: center;
 	align-items: center;
 
