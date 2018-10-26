@@ -36,8 +36,12 @@ class Ledger extends Component {
     this.invalidNonceTxs = updatedInvalidNonceTxs
   }
 
+  clicked(showState, node) {
+    showState(node)
+  }
+
   render() {
-    const {node, icons} = this.props
+    const {node, icons, showState} = this.props
 
     this.updateInvalidNonceTxs()
 
@@ -96,6 +100,7 @@ class Ledger extends Component {
           <span className="ledger-title">
             {' ' + node.pid.substring(0,5)}
           </span>
+          <button onClick={(e) => this.clicked(showState, node)}></button>
           <table>
            <tbody>
             <tr>

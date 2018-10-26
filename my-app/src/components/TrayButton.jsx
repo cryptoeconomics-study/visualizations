@@ -19,7 +19,7 @@ class TrayButton extends Component {
       backgroundColor: node.color,
       borderRadius: "50%",
       display: "inline-block",
-      opacity: isSelected ? 1.0 : 0.5,
+      visibility: isSelected ? "hidden" : "visible"
     }
 
     if (node) {

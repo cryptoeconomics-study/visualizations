@@ -316,6 +316,7 @@ class Network extends Component {
             />
             <Ledgers
               nodes={selectedNodes}
+              showState = {this.showState.bind(this)}
               icons = {iconMap}/>
             <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
