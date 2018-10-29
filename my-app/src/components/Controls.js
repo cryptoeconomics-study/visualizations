@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { Button, Glyphicon, Well} from 'react-bootstrap';
+import Switch from 'rc-switch';
 
 
 class Controls extends Component {
@@ -8,10 +9,17 @@ class Controls extends Component {
 
     return (
         <div id = "Controls">
-          <button onClick={onPause}>{paused ? 'Resume' : 'Pause'}</button>
-          <button onClick={onPauseTxs}>{pausedTxs ? 'Resume Txs' : 'Pause Txs'}</button>
-
-          <button onClick={togglePopup}>?</button>
+          <Button onClick={onPause}>{paused ?
+            <Glyphicon glyph="play" />
+           : <Glyphicon glyph="pause" />}</Button>
+          <div id="txToggle">
+          Send Transactions <Switch
+             onChange={onPauseTxs}
+           />
+           </div>
+          <Button onClick={togglePopup}>
+            <Glyphicon glyph="question-sign" />
+          </Button>
         </div>
     );
   }

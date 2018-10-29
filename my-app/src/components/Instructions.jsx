@@ -47,15 +47,15 @@ class Instructions extends Component {
          <p>
           Click on a node to either {' '}
             <OverlayTrigger overlay={spendPopover}>
-              <a href>Spend</a>
+              <a href="">Spend</a>
             </OverlayTrigger>
           {' '} or {' '}
             <OverlayTrigger overlay={doubleSpendPopover}>
-              <a href>Double Spend</a>
+              <a href="">Double Spend</a>
             </OverlayTrigger>
           {' '}. You can also toggle the {' '}
             <OverlayTrigger overlay={transactionsPopover}>
-              <a href>Resume Transactions</a>
+              <a href="">Resume Transactions</a>
             </OverlayTrigger>
             {' '}switch.
          </p>
@@ -64,7 +64,7 @@ class Instructions extends Component {
          <p>
           The color of each node {' '}
               <OverlayTrigger overlay={colorPopover}>
-                <a href>represents</a>
+                <a href = "">represents</a>
               </OverlayTrigger>{' '} the state of that node's ledger.
          </p>
          <hr />
