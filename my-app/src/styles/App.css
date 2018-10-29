@@ -105,6 +105,7 @@
 	border: 0px black solid;
 
 	flex: 1 1 auto;
+	user-select: none;
 }
 
 #Text-container {
@@ -205,8 +206,8 @@ b {
 }
 
 #Ledgers {
-	width: 50%;
-	height: 100%;
+	width: 100%;
+	bottom: 0;
 
 	margin: 0;
 	right: 0;
@@ -214,24 +215,26 @@ b {
 
 	position: absolute;
 
-	align-items: flex-start;
+	align-items: flex-end;
 	align-content: flex-start;
-	justify-content: flex-end;
+	justify-content: flex-start;
 
 	flex-wrap: wrap;
 	z-index: 1;
 	pointer-events: none;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 }
 
 .Ledger {
 	margin-left: 10px;
 	margin-bottom: 10px;
 	overflow: hidden;
+	pointer-events: all;
 	padding: 10px;
 	border-radius: 15px;
 	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
+	position: relative;
 }
 
 .ledger-title {
@@ -259,16 +262,47 @@ b {
 	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);*/
 }
 
+.LedgerMinimizeButton {
+	width: 30px;
+	height: 15px;
+	top: 0px;
+	right: 0px;
+	position: absolute;
+	border-radius: 2px;
+	background: none;
+	border: none;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.LedgerMinimizeButton:hover > .LedgerMinimizeButtonIcon {
+	background-color: red !important;
+}
+
+.LedgerMinimizeButtonIcon {
+	width: 10px;
+	height: 1px;
+	border-radius: 2px;
+	border: none;
+	margin: 5px;
+}
+
 .TrayButton {
 	margin: 10px;
-	display:flex !important;
 	justify-content: center;
 	align-items: center;
 
 	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
 }
 
+.TrayButton:hover {
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.5);
+}
+
 .TrayButton:active {
+	opacity: 0.75;
 	box-shadow: none;
 }
 
