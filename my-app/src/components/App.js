@@ -4,15 +4,12 @@ import Network from './Network.js';
 
 
 
-class App extends Component {
-
-  render() {
-    return (
-      <div className="App">
-        <Network/>
-      </div>
-    );
-  }
+const App = () => {
+  return (
+    <div className="App">
+      <Network/>
+    </div>
+  );
 }
 
 export default App;
