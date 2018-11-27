@@ -76,7 +76,15 @@ const onMouseOutLink = function(source, target) {
 class Network extends Component {
   constructor() {
     super()
-    this.state = {clickedNode: null, selectedNodes:{}, history: [], paused: false, pausedTxs: true, speed: 10, showPopup: true}
+    this.state = {
+      clickedNode: null,
+      selectedNodes:{},
+      history: [],
+      paused: false,
+      pausedTxs: true,
+      speed: 10,
+      showPopup: true
+    }
   }
 
   componentDidMount() {

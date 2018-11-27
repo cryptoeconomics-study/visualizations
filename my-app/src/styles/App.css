@@ -215,15 +215,15 @@ b {
 
 	position: absolute;
 
-	align-items: flex-end;
+	align-items: flex-start;
 	align-content: flex-start;
-	justify-content: flex-start;
+	justify-content: flex-end;
 
 	flex-wrap: wrap;
 	z-index: 1;
 	pointer-events: none;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 }
 
 .Ledger {
