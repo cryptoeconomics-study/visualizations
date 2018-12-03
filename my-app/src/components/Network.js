@@ -264,10 +264,6 @@ class Network extends Component {
     });
   }
 
-  visibleState(node){
-    return !!this.state.selectedNodes[node.pid]
-  }
-
   deselectNode(){
     this.setState({clickedNode: null})
   }
@@ -338,7 +334,6 @@ class Network extends Component {
              doubleSpend = {this.doubleSpend.bind(this)}
              spend = {this.spend.bind(this)}
              deselectNode = {this.deselectNode.bind(this)}
-             visibleState = {this.visibleState.bind(this)}
              messages={messages}
              time={time}
              speed={speed}

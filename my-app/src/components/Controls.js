@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Button, Glyphicon, Well} from 'react-bootstrap';
+import React from 'react';
+import { Button, Glyphicon } from 'react-bootstrap';
 import Switch from 'rc-switch';
 
 const Controls = ({paused, onPause, onPauseTxs, pausedTxs, togglePopup}) => {

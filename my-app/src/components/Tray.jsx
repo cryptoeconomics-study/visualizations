@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import TrayButton from './TrayButton.jsx'
 
 const Tray = ({nodes, selectedNodes, icons, showState}) => {

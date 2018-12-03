@@ -248,7 +248,7 @@ export default class Graph extends React.Component {
         }
     }
     render() {
-        const {doubleSpend, spend, deselectNode, clickedNode, visibleState} = this.props
+        const {doubleSpend, spend, deselectNode, clickedNode} = this.props
         const { nodes, links } = graphRenderer.buildGraph(
             this.state.nodes,
             {
@@ -280,7 +280,7 @@ export default class Graph extends React.Component {
                 doubleSpend={()=>doubleSpend(clickedNode)}
                 spend={()=>spend(clickedNode)}
                 hide = {deselectNode}
-                visibleState = {()=>visibleState(clickedNode)}/>
+              />
             </foreignObject>)
         }
 
