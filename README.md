@@ -1,9 +1,17 @@
-# 👾 Coding Project
-This repository contains the coding project which accompanies the cryptoeconomics.study course. This includes implementing a payment processor blockchain, proof of work, proof of stake, and Plasma.
+#<img src="https://i.imgur.com/XzsEQmk.png" alt="ethereum logo" width="20px" top="15px"> Cryptoeconomics.study
+  
+  
+---
 
-Much of the code here will be reviewed in online videos which karl.tech and other community members put together. Links to these tutorial videos coming soon!
 
-## Contributing
+## 👾 Coding Project
+This repository contains the coding project which accompanies the Cryptoeconomics.study course. This includes implementing a payment processor blockchain, proof of work, proof of stake, and Plasma.
+
+The project is currently in its early development stages and requires major refactoring before building new lessons. You can watch a [demo](https://youtu.be/PMabMK_XZ1A) of what our end vision is for the coding project and view in-depth details of our roadmap [here](https://docs.google.com/document/d/1R85zczC1-nklLXEFx-dZfQdlZexRAk8S9G9Hc3Zjkx4/edit?usp=sharing).
+
+Feel free to try out our first network visualization [sandbox](https://k-ho.github.io/code/).
+
+### Contributing
 Suggestions and contributions are extremely welcome. For instance, there might be room in the curriculum to implement a simple state channel as well. There is also room for contributors to optimize the code as well as create visualizations. Check out the open issues and project board and help out! :) 
 
 ## Coding Project Outline
@@ -18,6 +26,8 @@ Suggestions and contributions are extremely welcome. For instance, there might b
 - [x] Nodes sending transactions
   - Send transactions until invalid tx found - https://github.com/cryptoeconomics-study/code/blob/master/c2_NetworkDoubleSpends/invalidWithHonestNodes.js
   - Intentionally double spend - https://github.com/cryptoeconomics-study/code/blob/master/c2_NetworkDoubleSpends/doubleSpend.js
+- [x] Network message propagation visualization ![](https://media.giphy.com/media/EExX2XytOTdIOMaKut/giphy.gif)
+
 
 ### Adding Proof of Work block proposal
 - [ ] Nodes sending blocks
@@ -50,12 +60,4 @@ Suggestions and contributions are extremely welcome. For instance, there might b
   - Submit merkle proofs to the root chain contract which transfer the coin
   - Exit the coin with a different account than the one that deposited
 - [ ] Add exit challenges
-
-## Stretch Goals!
-- [ ] Network message propagation visualization
-  - Using https://github.com/feross/p2p-graph as a base, create a visualization which shows which nodes are receiving messages and which nodes are sending messages. These messages are sent and received in steps, so you can change the color of the little dots corresponding to each state. Get creative :)
-
-Example of current network visualization:
-
-<img width="250" alt="screen shot 2018-06-02 at 8 55 34 pm" src="https://user-images.githubusercontent.com/706123/42516156-b89adf9c-845d-11e8-8ee9-8492cfab1bfa.png">
 
