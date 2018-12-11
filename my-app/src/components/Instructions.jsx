@@ -48,7 +48,6 @@ const Instructions = ({show, handleClose}) => {
        <p>
         This is an interactive network simulation designed as a part of Chapter 2 of {' '}
            <a href="https://cryptoeconomics.study/">Cryptoeconomics.study</a>. To best understand the double spend problem, here is Ethereum Researcher Karl Floersch's explanation in section 2.2 of the course:
-
            <YouTube
              videoId="k6JVGR7Jx0A"
              opts={opts}
@@ -70,6 +69,10 @@ const Instructions = ({show, handleClose}) => {
           </OverlayTrigger>
           {' '}switch.
        </p>
+       <h4>Why is my network graphso small?</h4>
+       <p>
+        To increase the size of the network graph, hover over it and scroll upwards. You can also reposition the graph by dragging it around.
+       </p>
 
        <h4>What do the colors mean?</h4>
        <p>
@@ -78,7 +81,6 @@ const Instructions = ({show, handleClose}) => {
               <a href = "">represents</a>
             </OverlayTrigger>{' '} the state of that node's ledger.
        </p>
-       <hr />
      </Modal.Body>
      <Modal.Footer>
        <Button onClick={handleClose}>Close</Button>
