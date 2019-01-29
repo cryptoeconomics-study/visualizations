@@ -45,7 +45,6 @@ export default class Graph extends React.Component {
         this.state.time = 0;
         this.state.paused = false;
     }
-
     componentWillReceiveProps(nextProps) {
         // console.log('got new messages:', nextProps.messages, nextProps.time)
 
@@ -419,7 +418,6 @@ export default class Graph extends React.Component {
      */
     _zoomed = () => {
         const transform = d3Event.transform;
-
         d3SelectAll(`#${this.state.id}-${CONST.GRAPH_CONTAINER_ID}`).attr('transform', transform);
 
         this.state.config.panAndZoom && this.setState({ transform: transform.k });

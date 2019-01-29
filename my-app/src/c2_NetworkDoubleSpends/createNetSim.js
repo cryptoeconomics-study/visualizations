@@ -26,7 +26,7 @@ class Spender extends Node {
       return
     }
     // Generate random transaction .5% of the ticks
-    if(Math.random() < 0.01) {
+    if(Math.random() < 0.001) {
       const tx = this.generateTx(this.getRandomReceiver(), 10)
       this.transactions.push(tx)
       this.applyTransaction(tx)
@@ -37,10 +37,10 @@ class Spender extends Node {
 }
 
 // ****** Test this out using a simulated network ****** //
-const numNodes = 4
+const numNodes = 7
 const wallets = []
 const genesis = {}
-const network = new NetworkSimulator(15, 0);
+const network = new NetworkSimulator(150, 0);
 for (let i = 0; i < numNodes; i++) {
   // Create new identity
   wallets.push(EthCrypto.createIdentity())

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import {Graph} from './react-d3-graph-custom/src/index';
-import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
+import { Graph } from './react-d3-graph-custom/src/index';
+import { nodes, network } from '../c2_NetworkDoubleSpends/createNetSim'
 import Controls from './Controls.js'
 import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
 import Tray from './Tray.jsx'
 // import Parameters from './Parameters.js'
-import clone  from 'clone';
-
+import clone  from 'clone'
+//test Uber graph
+import GraphFactory from './GraphFactory.jsx'
 const ICONS = [
   'https://i.imgur.com/Wi9yFXw.png',
   'https://i.imgur.com/U5Y99Rm.png',
@@ -19,47 +20,31 @@ const ICONS = [
   'https://i.imgur.com/jNB8LS6.png'
 ]
 
-// graph payload (with minimalist structure)
-const data = {
-  nodes: [],
-  links: []
-}
-
 let iconMap = {}
 for (let i = 0; i < nodes.length; i++) {
-  // add peers
-  data.nodes.push({
-    id: nodes[i].pid,
-    name: nodes[i].pid.slice(0, 5),
-    gerbil: ICONS[i]
-  })
   iconMap[nodes[i].pid] = ICONS[i]
 }
-for (const node of nodes) {
-  // connect them
-  for (const peer of network.peers[node.pid]) {
-    data.links.push({
-      source: node.pid,
-      target: peer.pid
-    })
-  }
-}
-
 // the graph configuration, you only need to pass down properties
 // that you want to override, otherwise default ones will be used
-const myConfig = {
-  automaticRearrangeAfterDropNode: true,
-  staticGraph: false,
-  nodeHighlightBehavior: true,
-  node: {
-      size: 400,
-      highlightStrokeColor: 'blue',
-      labelProperty: 'name'
-  },
-  link: {
-      highlightColor: 'lightblue'
-  }
-};
+// const myConfig = {
+//   automaticRearrangeAfterDropNode: true,
+//   staticGraph: false,
+//   nodeHighlightBehavior: true,
+//   node: {
+//       size: 400,
+//       highlightStrokeColor: 'blue',
+//       labelProperty: 'name'
+//   },
+//   link: {
+//       highlightColor: 'lightblue'
+//   },
+//   "d3": {
+//     "alphaTarget": 0.05,
+//     "gravity": -100,
+//     "linkLength": 1000,
+//     "linkStrength": 1
+//   },
+// };
 
 const onClickLink = function(source, target) {
      window.alert(`Clicked link between ${source} and ${target}`);
@@ -73,7 +58,7 @@ const onMouseOutLink = function(source, target) {
      // window.alert(`Mouse out link between ${source} and ${target}`);
 };
 
-class Network extends Component {
+class Sandbox extends Component {
   constructor() {
     super()
     this.state = {
@@ -83,14 +68,19 @@ class Network extends Component {
       paused: false,
       pausedTxs: true,
       speed: 10,
-      showPopup: true
+      time: 0,
+      showPopup: false // TODO: true
     }
+    this.tick = this.tick.bind(this)
+    this.animate = this.animate.bind(this)
   }
 
   componentDidMount() {
-    for (let node of nodes) {
-      this.showState(node)
-    }
+    //TODO UNCOMMENT
+    // for (let node of nodes) {
+    //   this.showState(node)
+    // }
+    this.animate()
   }
 
   setMessageQueue(network){
@@ -104,9 +94,15 @@ class Network extends Component {
     return newQ
   }
 
+  animate() {
+    this.tick()
+    const messages = this.setMessageQueue(network);
+    this.setState({ messages: messages, time: network.time}, () =>{requestAnimationFrame(this.animate)})
+  }
+
   tick() {
     network.tick()
-    const history = this.state.history
+    const {history} = this.state
     history.push(clone(network)) // push a deep clone of the network object
     this.setState({history: history})
   }
@@ -275,14 +271,12 @@ class Network extends Component {
   setSpeed(value){
     let speed = value/1000.0
     this.setState({speed : speed})
-    console.log("speeedooo", speed)
 
   }
   setLatency(event){
     let raw = event.target.value
     let scaled = Math.min(Math.max(parseInt(raw), 1), 10)
     console.log("latency", raw, scaled)
-
   }
   setPacketLoss(event){
     let raw = event.target.value
@@ -319,8 +313,16 @@ class Network extends Component {
             <Ledgers
               nodes={selectedNodes}
               showState = {this.showState.bind(this)}
-              icons = {iconMap}/>
-            <Graph ref={instance => { this.graph = instance; }}
+              icons = {iconMap}
+            />
+            <GraphFactory
+              nodes = {nodes}
+              network = {network}
+              icons = {iconMap}
+              messages = {messages}
+            />
+
+{/*            <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
              config={myConfig}
@@ -339,7 +341,7 @@ class Network extends Component {
              speed={speed}
              paused={paused}
              onTick = {this.getTick.bind(this)}
-             nodeState = {this.getNode.bind(this)}/>
+             nodeState = {this.getNode.bind(this)}/>*/}
           </div>
           <div id="Input-container">
             <div id="Controls-container">
@@ -371,4 +373,4 @@ class Network extends Component {
   }
 }
 
-export default Network;
+export default Sandbox;

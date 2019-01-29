@@ -69,7 +69,7 @@ const Instructions = ({show, handleClose}) => {
           </OverlayTrigger>
           {' '}switch.
        </p>
-       <h4>Why is my network graphso small?</h4>
+       <h4>Why is my network graph so small?</h4>
        <p>
         To increase the size of the network graph, hover over it and scroll upwards. You can also reposition the graph by dragging it around.
        </p>
