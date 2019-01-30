@@ -1,46 +1,43 @@
 {
-  "name": "cryptoeconomics-an-introduction",
-  "version": "1.0.0",
-  "description": "Code for the course!",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "http-server public",
-    "chapter1": "node c1_CentralPaymentOperator/paypalWithSigs.js",
-    "build-c2": "browserify c2_NetworkDoubleSpends/paypalWithSigs.js -o public/bundle.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/cryptoeconomics-study/code.git"
-  },
-  "keywords": [
-    "cryptoeconomics"
-  ],
-  "author": "Cryptoeconomics Study Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cryptoeconomics-study/code/issues"
-  },
-  "homepage": "https://github.com/cryptoeconomics-study/code#readme",
+  "name": "my-app",
+  "homepage": "https://k-ho.github.io/code/",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "browserify": "^16.2.2",
-    "d3": "^5.2.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "eslit": "^5.0.0",
-    "eth-crypto": "^1.1.0",
-    "faker": "^4.1.0",
-    "http-server": "^0.11.1",
-    "lodash": "^4.17.10",
-    "npm": "^6.1.0",
-    "p2p-graph": "^1.2.2",
-    "seedrandom": "^2.4.3",
-    "to": "^0.2.9",
-    "update": "^0.7.4"
+    "blockies": "0.0.2",
+    "canvas2svg": "^1.0.16",
+    "clone": "^2.1.2",
+    "eth-crypto": "^1.2.3",
+    "rc-slider": "^8.6.3",
+    "rc-switch": "^1.8.0",
+    "rc-table": "^6.3.4",
+    "react": "^16.4.2",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.4.2",
+    "react-scripts": "2.0.0-next.3e165448",
+    "react-youtube": "^7.8.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
   },
   "devDependencies": {
-    "eslint-config-standard": "^11.0.0"
+    "gh-pages": "^2.0.1"
   }
 }
