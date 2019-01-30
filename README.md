@@ -28,6 +28,7 @@ Suggestions and contributions are extremely welcome. There is also room for cont
 #### Section 2.1 - Naive P2P Network 
 - [x] Network Visualization
 - [x] message propagation 
+
 ![](https://media.giphy.com/media/EExX2XytOTdIOMaKut/giphy.gif)
 - [ ] Latency controls
 - [ ] Speed Controls (Rewind, fast forward, etc.)
