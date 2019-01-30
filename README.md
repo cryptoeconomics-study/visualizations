@@ -1,4 +1,4 @@
-#<img src="https://i.imgur.com/XzsEQmk.png" alt="ethereum logo" width="20px" top="15px"> Cryptoeconomics.study
+# <img src="https://i.imgur.com/XzsEQmk.png" alt="ethereum logo" width="25px" top="25px"> Cryptoeconomics.study
   
   
 ---
@@ -27,9 +27,10 @@ Suggestions and contributions are extremely welcome. There is also room for cont
 ### Chapter 2 - Networks and Synchrony Assumptions
 #### Section 2.1 - Naive P2P Network 
 - [x] Network Visualization
-- [x]message propagation ![](https://media.giphy.com/media/EExX2XytOTdIOMaKut/giphy.gif)
+- [x] message propagation 
+![](https://media.giphy.com/media/EExX2XytOTdIOMaKut/giphy.gif)
 - [ ] Latency controls
-- [ ]  Speed Controls (Rewind, fast forward, etc.)
+- [ ] Speed Controls (Rewind, fast forward, etc.)
 
 #### Section 2.2 - Double Spends
 - [x] Visually distinct double spend message
