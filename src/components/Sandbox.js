@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {Graph} from './react-d3-graph-custom/src/index';
 import {nodes, network} from '../c2_NetworkDoubleSpends/createNetSim'
 import Controls from './Controls.js'
 import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
 import Tray from './Tray.jsx'
+import Graph from './Graph.js'
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
@@ -31,7 +31,8 @@ for (let i = 0; i < nodes.length; i++) {
   data.nodes.push({
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 5),
-    gerbil: ICONS[i]
+    gerbil: ICONS[i],
+    size: 5,
   })
   iconMap[nodes[i].pid] = ICONS[i]
 }
@@ -73,7 +74,7 @@ const onMouseOutLink = function(source, target) {
      // window.alert(`Mouse out link between ${source} and ${target}`);
 };
 
-class Network extends Component {
+class Sandbox extends Component {
   constructor() {
     super()
     this.state = {
@@ -292,6 +293,227 @@ class Network extends Component {
   }
   render() {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
+    const testNodes = [
+    {
+      key: 25,
+      size: 5,
+      // x: 485,
+      // y: 230
+    },
+    {
+      key: 3,
+      size: 9,
+      // x: 393,
+      // y: 228
+    },
+    {
+      key: 18,
+      size: 8,
+      // x: 377,
+      // y: 275
+    },
+    {
+      key: 0,
+      size: 6,
+      // x: 404,
+      // y: 242
+    },
+    {
+      key: 2,
+      size: 9,
+      // x: 577,
+      // y: 263
+    },
+    {
+      key: 4,
+      size: 5,
+      // x: 622,
+      // y: 228
+    },
+    {
+      key: 1,
+      size: 4,
+      // x: 585,
+      // y: 237
+    },
+    {
+      key: 22,
+      size: 6,
+      // x: 355,
+      // y: 272
+    },
+    {
+      key: 28,
+      size: 4,
+      // x: 389,
+      // y: 261
+    },
+    {
+      key: 11,
+      size: 6,
+      // x: 433,
+      // y: 252
+    },
+    {
+      key: 20,
+      size: 4,
+      // x: 372,
+      // y: 256
+    },
+    {
+      key: 26,
+      size: 9,
+      // x: 451,
+      // y: 225
+    },
+    {
+      key: 30,
+      size: 9,
+      // x: 527,
+      // y: 263
+    },
+    {
+      key: 27,
+      size: 10,
+      // x: 345,
+      // y: 233
+    },
+    {
+      key: 12,
+      size: 9,
+      // x: 564,
+      // y: 229
+    },
+    {
+      key: 9,
+      size: 8,
+      // x: 453,
+      // y: 258
+    }
+  ]
+
+  const testLinks = [
+    {
+      source: 10,
+      target: 10,
+      key: '10,10',
+      size: 3
+    },
+    {
+      source: 9,
+      target: 14,
+      key: '9,14',
+      size: 3
+    },
+    {
+      source: 12,
+      target: 14,
+      key: '12,14',
+      size: 1
+    },
+    {
+      source: 7,
+      target: 3,
+      key: '7,3',
+      size: 3
+    },
+    {
+      source: 11,
+      target: 12,
+      key: '11,12',
+      size: 3
+    },
+    {
+      source: 12,
+      target: 5,
+      key: '12,5',
+      size: 1
+    },
+    {
+      source: 14,
+      target: 9,
+      key: '14,9',
+      size: 2
+    },
+    {
+      source: 11,
+      target: 5,
+      key: '11,5',
+      size: 2
+    },
+    {
+      source: 1,
+      target: 14,
+      key: '1,14',
+      size: 3
+    },
+    {
+      source: 8,
+      target: 6,
+      key: '8,6',
+      size: 3
+    },
+    {
+      source: 2,
+      target: 7,
+      key: '2,7',
+      size: 2
+    },
+    {
+      source: 11,
+      target: 3,
+      key: '11,3',
+      size: 2
+    },
+    {
+      source: 9,
+      target: 1,
+      key: '9,1',
+      size: 2
+    },
+    {
+      source: 0,
+      target: 14,
+      key: '0,14',
+      size: 1
+    },
+    {
+      source: 4,
+      target: 0,
+      key: '4,0',
+      size: 2
+    },
+    {
+      source: 4,
+      target: 4,
+      key: '4,4',
+      size: 2
+    },
+    {
+      source: 13,
+      target: 14,
+      key: '13,14',
+      size: 3
+    },
+    {
+      source: 13,
+      target: 3,
+      key: '13,3',
+      size: 2
+    },
+    {
+      source: 11,
+      target: 6,
+      key: '11,6',
+      size: 3
+    },
+    {
+      source: 5,
+      target: 3,
+      key: '5,3',
+      size: 2
+    }
+  ]
     return (
       <div id="App-container">
         <div id="Text-container">
@@ -320,7 +542,7 @@ class Network extends Component {
               nodes={selectedNodes}
               showState = {this.showState.bind(this)}
               icons = {iconMap}/>
-            <Graph ref={instance => { this.graph = instance; }}
+{/*            <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
              config={myConfig}
@@ -339,7 +561,8 @@ class Network extends Component {
              speed={speed}
              paused={paused}
              onTick = {this.getTick.bind(this)}
-             nodeState = {this.getNode.bind(this)}/>
+             nodeState = {this.getNode.bind(this)}/>*/}
+             <Graph nodes={data.nodes} links={data.links}/>
           </div>
           <div id="Input-container">
             <div id="Controls-container">
@@ -371,4 +594,4 @@ class Network extends Component {
   }
 }
 
-export default Network;
+export default Sandbox;

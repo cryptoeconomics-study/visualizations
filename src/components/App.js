@@ -1,13 +1,13 @@
 import React from 'react';
 import '../styles/App.css';
-import Network from './Network.js';
+import Sandbox from './Sandbox.js';
 
 
 
 const App = () => {
   return (
     <div className="App">
-      <Network/>
+      <Sandbox/>
     </div>
   );
 }
