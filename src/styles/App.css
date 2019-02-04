@@ -17,6 +17,10 @@
     right:0;
 }
 
+body {
+	overflow: hidden;
+}
+
 /*button {
 	border-radius: 5px;
 }*/
