@@ -5,7 +5,6 @@ var width = 960;
 var height = 1000;
 //Make responsive
 var force = d3.forceSimulation()
-        // .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -15,9 +14,16 @@ var force = d3.forceSimulation()
 
 var enterNode = (selection) => {
 
-  selection.append('circle')
-    .attr("r", 10)
-  selection.classed('node', true);
+  selection.classed('node', true)
+    .append('circle')
+    .attr("r", 37)
+  selection.append("svg:image")
+    .attr("xlink:href",  function(d) { console.log(d, "gerrbil")
+      return d.gerbil;})
+    .attr("x", d => -25)
+    .attr("y", d => -25)
+    .attr("height", 50)
+    .attr("width", 50)
   // selection.append('text')
   //   .attr("x", (d) => d.size + 5)
   //   .attr("dy", ".35em")
@@ -66,7 +72,6 @@ class Graph extends Component {
 
     shouldComponentUpdate(nextProps) {
       this.d3Graph = d3.select(this.viz);
-      console.log(nextProps)
       var d3Nodes = this.d3Graph.selectAll('.node')
         .data(nextProps.nodes, (node) => node.pid);
       d3Nodes.enter().append('g').call(enterNode);
@@ -86,7 +91,10 @@ class Graph extends Component {
       // mutates the nodes and links array directly
       // we're bypassing that here for sake of brevity in example
       force.nodes(nextProps.nodes)
-        .force("link", d3.forceLink(nextProps.links).id(d => d.pid));
+        .force("link", d3.forceLink(nextProps.links)
+          .id(d => d.pid)
+          .distance(d=>100)
+        );
       // force.start();
 
       return false;

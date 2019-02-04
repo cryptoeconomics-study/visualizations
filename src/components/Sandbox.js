@@ -35,6 +35,7 @@ for (let i = 0; i < nodes.length; i++) {
     fill: nodes[i].color,
     size: 5,
   })
+  nodes[i].gerbil = ICONS[i]
   iconMap[nodes[i].pid] = ICONS[i]
 }
 for (const node of nodes) {
@@ -92,7 +93,6 @@ class Sandbox extends Component {
   }
 
   tick() {
-    console.log(nodes)
     network.tick()
     const history = this.state.history
     history.push(clone(network)) // push a deep clone of the network object
