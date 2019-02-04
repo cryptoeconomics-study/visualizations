@@ -5,8 +5,12 @@ var width = 960;
 var height = 1000;
 //Make responsive
 var force = d3.forceSimulation()
-        .force("charge", d3.forceManyBody())
+        .force("charge", d3.forceManyBody().strength(-10000))
         .force("center", d3.forceCenter(width / 2, height / 2));
+
+// var collision = d3.forceCollide(37)
+//         .strength(30)
+//         .iterations(100)
 
 // *****************************************************
 // ** d3 functions to manipulate attributes
@@ -64,7 +68,7 @@ class Graph extends Component {
       this.d3Graph = d3.select(this.viz);
       force.on('tick', () => {
         // after force calculation starts, call updateGraph
-        // which uses d3 to manipulate the attributes,
+        // which uses d3 to manipulate the attributes, 
         // and React doesn't have to go through lifecycle on each tick
         this.d3Graph.call(updateGraph);
       });
@@ -93,7 +97,8 @@ class Graph extends Component {
       force.nodes(nextProps.nodes)
         .force("link", d3.forceLink(nextProps.links)
           .id(d => d.pid)
-          .distance(d=>100)
+          .distance(d=>300)
+          .strength(.3)
         );
       // force.start();
 
