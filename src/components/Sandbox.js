@@ -32,6 +32,7 @@ for (let i = 0; i < nodes.length; i++) {
     id: nodes[i].pid,
     name: nodes[i].pid.slice(0, 5),
     gerbil: ICONS[i],
+    fill: nodes[i].color,
     size: 5,
   })
   iconMap[nodes[i].pid] = ICONS[i]
@@ -45,22 +46,6 @@ for (const node of nodes) {
     })
   }
 }
-
-// the graph configuration, you only need to pass down properties
-// that you want to override, otherwise default ones will be used
-const myConfig = {
-  automaticRearrangeAfterDropNode: true,
-  staticGraph: false,
-  nodeHighlightBehavior: true,
-  node: {
-      size: 400,
-      highlightStrokeColor: 'blue',
-      labelProperty: 'name'
-  },
-  link: {
-      highlightColor: 'lightblue'
-  }
-};
 
 const onClickLink = function(source, target) {
      window.alert(`Clicked link between ${source} and ${target}`);
@@ -84,7 +69,7 @@ class Sandbox extends Component {
       paused: false,
       pausedTxs: true,
       speed: 10,
-      showPopup: true
+      showPopup: false //for DEV3
     }
   }
 
@@ -92,6 +77,7 @@ class Sandbox extends Component {
     for (let node of nodes) {
       this.showState(node)
     }
+    setInterval(function() {this.tick()}.bind(this), 100);
   }
 
   setMessageQueue(network){
@@ -106,6 +92,7 @@ class Sandbox extends Component {
   }
 
   tick() {
+    console.log(nodes)
     network.tick()
     const history = this.state.history
     history.push(clone(network)) // push a deep clone of the network object
@@ -341,7 +328,7 @@ class Sandbox extends Component {
              paused={paused}
              onTick = {this.getTick.bind(this)}
              nodeState = {this.getNode.bind(this)}/>*/}
-             <Graph nodes={data.nodes} links={data.links}/>
+             <Graph nodes={nodes} links={data.links}/>
           </div>
           <div id="Input-container">
             <div id="Controls-container">

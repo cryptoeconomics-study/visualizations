@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 
 var width = 960;
-var height = 500;
+var height = 1000;
+//Make responsive
 var force = d3.forceSimulation()
         // .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
@@ -13,10 +14,10 @@ var force = d3.forceSimulation()
 // *****************************************************
 
 var enterNode = (selection) => {
-  selection.classed('node', true);
 
   selection.append('circle')
-    .attr("r", (d) => d.size)
+    .attr("r", 10)
+  selection.classed('node', true);
   // selection.append('text')
   //   .attr("x", (d) => d.size + 5)
   //   .attr("dy", ".35em")
@@ -24,7 +25,8 @@ var enterNode = (selection) => {
 };
 
 var updateNode = (selection) => {
-  selection.attr("transform", (d) => "translate(" + d.x + "," + d.y + ")");
+  selection.attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
+  .attr('fill', (d) => d.color)
 };
 
 var enterLink = (selection) => {
@@ -66,16 +68,14 @@ class Graph extends Component {
       this.d3Graph = d3.select(this.viz);
       console.log(nextProps)
       var d3Nodes = this.d3Graph.selectAll('.node')
-        .data(nextProps.nodes, (node) => node.id);
+        .data(nextProps.nodes, (node) => node.pid);
       d3Nodes.enter().append('g').call(enterNode);
       d3Nodes.exit().remove();
       d3Nodes.call(updateNode);
 
       var d3Links = this.d3Graph.selectAll('.link')
         .data(nextProps.links)
-        // .id(function(d,i) {
-        //     return d.id
-        // })
+
       d3Links.enter().insert('line', '.node').call(enterLink);
       d3Links.exit().remove();
       d3Links.call(updateLink);
@@ -86,7 +86,7 @@ class Graph extends Component {
       // mutates the nodes and links array directly
       // we're bypassing that here for sake of brevity in example
       force.nodes(nextProps.nodes)
-        .force("link", d3.forceLink(nextProps.links).id(d => d.id));
+        .force("link", d3.forceLink(nextProps.links).id(d => d.pid));
       // force.start();
 
       return false;
