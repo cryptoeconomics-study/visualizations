@@ -78,48 +78,50 @@ class Sandbox extends Component {
     for (let node of nodes) {
       this.showState(node)
     }
-    setInterval(function() {this.tick()}.bind(this), 100);
+    //Use d3 interval or nanotimer for timer without delay
+    setInterval(function() {this.tick()}.bind(this), 300);
   }
 
-  setMessageQueue(network){
-    let oldQ = network.messageQueue
-    var newQ = []
+  setMessageQueue(currNetwork){
+    let oldQ = currNetwork.messageQueue
+    const messages = []
     Object.keys(oldQ).forEach(function(key,index) {
       for (let message of oldQ[key]) {
-        newQ.push({...message, rcvTime: key})
+        messages.push(message)
       }
     });
-    return newQ
+    return messages
   }
 
   tick() {
     network.tick()
     const history = this.state.history
     history.push(clone(network)) // push a deep clone of the network object
-    this.setState({history: history})
+    const messages = this.setMessageQueue(network)
+    this.setState({history: history, messages: messages})
   }
 
   //sets Messages
-  getTick(time) {
-    const {history, selectedNodes, clickedNode} = this.state
-    if(time > history.length) {
-      throw new Error('You skipped a time step!')
-    } else if (time === history.length ) {
-      this.tick()
-    }
-    let messages = this.setMessageQueue(history[time])
-    // Update states if agent already clicked
-    if (clickedNode){
-      const node = this.getNode(clickedNode.pid, time)
-      this.setState({clickedNode: node})
-    }
+  // getTick(time) {
+  //   const {history, selectedNodes, clickedNode} = this.state
+  //   if(time > history.length) {
+  //     throw new Error('You skipped a time step!')
+  //   } else if (time === history.length ) {
+  //     this.tick()
+  //   }
+  //   let messages = this.setMessageQueue(history[time])
+  //   // Update states if agent already clicked
+  //   if (clickedNode){
+  //     const node = this.getNode(clickedNode.pid, time)
+  //     this.setState({clickedNode: node})
+  //   }
 
-    for (var nodeId in selectedNodes) {
-      selectedNodes[nodeId] = this.getNode(nodeId, time)
-    }
+  //   for (var nodeId in selectedNodes) {
+  //     selectedNodes[nodeId] = this.getNode(nodeId, time)
+  //   }
 
-    this.setState({selectedNodes: selectedNodes, messages: messages, time: time})
-  }
+  //   this.setState({selectedNodes: selectedNodes, messages: messages, time: time})
+  // }
 
   getNode (nodeId, time) {
     const currNetwork = this.state.history[time]
@@ -307,7 +309,8 @@ class Sandbox extends Component {
             <Ledgers
               nodes={selectedNodes}
               showState = {this.showState.bind(this)}
-              icons = {iconMap}/>
+              icons = {iconMap}
+            />
 {/*            <Graph ref={instance => { this.graph = instance; }}
              id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
              data={data}
@@ -328,7 +331,11 @@ class Sandbox extends Component {
              paused={paused}
              onTick = {this.getTick.bind(this)}
              nodeState = {this.getNode.bind(this)}/>*/}
-             <Graph nodes={nodes} links={data.links}/>
+            <Graph
+              nodes={nodes}
+              links={data.links}
+              messages = {messages || []}
+              />
           </div>
           <div id="Input-container">
             <div id="Controls-container">
