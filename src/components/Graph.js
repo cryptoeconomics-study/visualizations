@@ -118,6 +118,8 @@ class Graph extends Component {
         // and React doesn't have to go through lifecycle on each tick
         this.d3Graph.call(updateGraph);
       });
+
+      this.d3Graph.call(resize);
       d3.select(window).on("resize", () => {
         this.d3Graph.call(resize);
       });
