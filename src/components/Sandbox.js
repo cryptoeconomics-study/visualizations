@@ -5,6 +5,8 @@ import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
 import Tray from './Tray.jsx'
 import Graph from './Graph.js'
+import * as d3 from 'd3'
+
 // import Parameters from './Parameters.js'
 import clone  from 'clone';
 
@@ -78,8 +80,7 @@ class Sandbox extends Component {
     for (let node of nodes) {
       this.showState(node)
     }
-    //Use d3 interval or nanotimer for timer without delay
-    setInterval(function() {this.tick()}.bind(this), 300);
+    const t = d3.interval(this.tick.bind(this),1000);
   }
 
   setMessageQueue(currNetwork){
@@ -223,7 +224,7 @@ class Sandbox extends Component {
     network.broadcastTo(drEvil, victims[0], spends[0])
     network.broadcastTo(drEvil, victims[1], spends[1])
 
-    console.log("Double spender:", drEvil, "victims:", victims, "spends:", spends)
+    console.log('Double spender:', drEvil, 'victims:', victims, 'spends:', spends)
   }
 
   spend(currNode){
@@ -265,29 +266,29 @@ class Sandbox extends Component {
   setSpeed(value){
     let speed = value/1000.0
     this.setState({speed : speed})
-    console.log("speeedooo", speed)
+    console.log('speeedooo', speed)
 
   }
   setLatency(event){
     let raw = event.target.value
     let scaled = Math.min(Math.max(parseInt(raw), 1), 10)
-    console.log("latency", raw, scaled)
+    console.log('latency', raw, scaled)
 
   }
   setPacketLoss(event){
     let raw = event.target.value
     let scaled = Math.min(Math.max(parseInt(raw), 1), 20)
-    console.log("packetloss", raw, scaled)
+    console.log('packetloss', raw, scaled)
 
   }
   render() {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
     return (
-      <div id="App-container">
-        <div id="Text-container">
-          <div id="Overflow-top"></div>
+      <div id='App-container'>
+        <div id='Text-container'>
+          <div id='Overflow-top'></div>
           <h3>2.2: The Double Spend</h3>
-          <div id="Text">
+          <div id='Text'>
             Building a centralized payments processor like Paypal is simple, but relies on trust that Paypal will not break the rules. A simple way to decentralize PayPal is to make clients download all transactions and run the PayPal code to generate their belief of the current state.
             <br/>
             <br/>
@@ -296,10 +297,10 @@ class Sandbox extends Component {
             <br/>
             This is the root cause of the double spend problem: an attacker can send one message to Jing & another message to Karl each spending the same coins. If Jing and Karl both accept those transactions, their states will diverge and we will have a fork. Not good! We need decentralized consensus!
             </div>
-          <div id="Overflow-bottom"></div>
+          <div id='Overflow-bottom'></div>
         </div>
-        <div id = "Network-container">
-          <div id = "Graph-container">
+        <div id = 'Network-container'>
+          <div id = 'Graph-container'>
             <Tray
               nodes={nodes}
               selectedNodes={selectedNodes}
@@ -337,8 +338,8 @@ class Sandbox extends Component {
               messages = {messages || []}
               />
           </div>
-          <div id="Input-container">
-            <div id="Controls-container">
+          <div id='Input-container'>
+            <div id='Controls-container'>
               <Controls
               onPause = {this.pause.bind(this)}
               onPauseTxs = {this.pauseTxs.bind(this)}
@@ -351,7 +352,7 @@ class Sandbox extends Component {
               fastforward = {this.fastforward.bind(this)}
               reset = {this.reset.bind(this)}/>
             </div>
-            {/*<div id="Parameters-container">
+            {/*<div id='Parameters-container'>
               <Parameters
               setSpeed = {this.setSpeed.bind(this)}
               setLatency = {this.setLatency.bind(this)}/>

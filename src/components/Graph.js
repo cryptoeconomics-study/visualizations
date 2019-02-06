@@ -70,7 +70,7 @@ var enterMessage = (selection) => {
     .attr("cx", d=> getNodeById(d.sender).x)
     .attr("cy", d=> getNodeById(d.sender).y)
     .transition()
-    .duration(d=> (300 * (d.recvTime - d.sentTime)))
+    .duration(d=> (1000 * (d.recvTime - d.sentTime)))
     .ease(d3.easeLinear)
     .attr("cx", d=> getNodeById(d.recipient.pid).x)
     .attr("cy", d=> getNodeById(d.recipient.pid).y)
