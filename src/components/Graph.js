@@ -93,8 +93,9 @@ var updateGraph = (selection) => {
 };
 
 var zoomed = (selection, width, height) => {
+  // Need to get the geometry right here
   selection.attr('transform', 
-            'translate(' + (-width/2 + 100) + ', ' + (height/2 - 500) + ')scale(' + 1.5 + ')');
+            'translate(' + (width/2 - 900) + ', ' + (height/2 - 400) + ')scale(' + 1.5 + ')');
   console.log("Zoomed", width, height)
 };
 
