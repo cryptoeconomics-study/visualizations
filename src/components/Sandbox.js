@@ -21,6 +21,8 @@ const ICONS = [
   'https://i.imgur.com/jNB8LS6.png'
 ]
 
+const TICK_LENGTH = 300 //ms
+
 // graph payload (with minimalist structure)
 const data = {
   nodes: [],
@@ -29,14 +31,6 @@ const data = {
 
 let iconMap = {}
 for (let i = 0; i < nodes.length; i++) {
-  // add peers
-  data.nodes.push({
-    id: nodes[i].pid,
-    name: nodes[i].pid.slice(0, 5),
-    gerbil: ICONS[i],
-    fill: nodes[i].color,
-    size: 5,
-  })
   nodes[i].gerbil = ICONS[i]
   iconMap[nodes[i].pid] = ICONS[i]
 }
@@ -50,28 +44,16 @@ for (const node of nodes) {
   }
 }
 
-const onClickLink = function(source, target) {
-     window.alert(`Clicked link between ${source} and ${target}`);
-};
-
-const onMouseOverLink = function(source, target) {
-     // window.alert(`Mouse over in link between ${source} and ${target}`);
-};
-
-const onMouseOutLink = function(source, target) {
-     // window.alert(`Mouse out link between ${source} and ${target}`);
-};
-
 class Sandbox extends Component {
   constructor() {
     super()
     this.state = {
-      clickedNode: null,
+      // clickedNode: null,
       selectedNodes:{},
       history: [],
       paused: false,
       pausedTxs: true,
-      speed: 10,
+      speed: 1,
       showPopup: false //for DEV3
     }
   }
@@ -80,7 +62,7 @@ class Sandbox extends Component {
     for (let node of nodes) {
       this.showState(node)
     }
-    const t = d3.interval(this.tick.bind(this),1000);
+    this.timer = d3.interval(this.tick.bind(this), TICK_LENGTH/this.state.speed);
   }
 
   setMessageQueue(currNetwork){
@@ -88,7 +70,9 @@ class Sandbox extends Component {
     const messages = []
     Object.keys(oldQ).forEach(function(key,index) {
       for (let message of oldQ[key]) {
-        messages.push(message)
+        const newMsg = {...message, time: currNetwork.time}
+        newMsg.recipient = newMsg.recipient.pid
+        messages.push(newMsg)
       }
     });
     return messages
@@ -102,7 +86,6 @@ class Sandbox extends Component {
     this.setState({history: history, messages: messages})
   }
 
-  //sets Messages
   // getTick(time) {
   //   const {history, selectedNodes, clickedNode} = this.state
   //   if(time > history.length) {
@@ -111,61 +94,47 @@ class Sandbox extends Component {
   //     this.tick()
   //   }
   //   let messages = this.setMessageQueue(history[time])
-  //   // Update states if agent already clicked
-  //   if (clickedNode){
-  //     const node = this.getNode(clickedNode.pid, time)
-  //     this.setState({clickedNode: node})
-  //   }
-
-  //   for (var nodeId in selectedNodes) {
-  //     selectedNodes[nodeId] = this.getNode(nodeId, time)
-  //   }
-
-  //   this.setState({selectedNodes: selectedNodes, messages: messages, time: time})
+  //   this.setState({messages: messages, time: time})
   // }
 
-  getNode (nodeId, time) {
-    const currNetwork = this.state.history[time]
-    if (currNetwork) {
-      return currNetwork.agents.find((node) => {
-        return node.pid === nodeId;
-      });
-    }
-  }
+  // getNode (nodeId, time) {
+  //   const currNetwork = this.state.history[time]
+  //   if (currNetwork) {
+  //     return currNetwork.agents.find((node) => {
+  //       return node.pid === nodeId;
+  //     });
+  //   }
+  // }
 
-  getCurrNode(nodeId) {
-    if (network) {
-      return network.agents.find((node) => {
-        return node.pid === nodeId;
-      });
-    }
-  }
+  // getCurrNode(nodeId) {
+  //   if (network) {
+  //     return network.agents.find((node) => {
+  //       return node.pid === nodeId;
+  //     });
+  //   }
+  // }
 
-  onClickNode (nodeId) {
-    const {clickedNode, time} = this.state
-    const node = this.getNode(nodeId, time)
-    // console.log('Clicked node', node.state, node.invalidNonceTxs)
+  // onClickNode (nodeId) {
+  //   const {clickedNode, time} = this.state
+  //   const node = this.getNode(nodeId, time)
+  //   console.log('Clicked node', node.state, node.invalidNonceTxs)
 
-    if (clickedNode && node.pid === clickedNode.pid) {
-      this.setState({clickedNode: null})
-    } else {
-      this.setState({clickedNode: node})
-    }
-  };
-
-  onMouseOverNode (nodeId) {
-    // const node = getNode(nodeId)
-    // this.setState({clickedNode: node})
-    // if not clicked, highlight node in green
-  };
-
-  onMouseOutNode (nodeId) {
-    // if(!this.state.isNodeClicked) this.setState({clickedNode: this.state.prevNode})
-    // if not clicked, change nodes color back to normal
-  }
+  //   if (clickedNode && node.pid === clickedNode.pid) {
+  //     this.setState({clickedNode: null})
+  //   } else {
+  //     this.setState({clickedNode: node})
+  //   }
+  // };
 
   pause(){
-    this.setState({ paused: !this.state.paused })
+    const {paused, speed} = this.state
+    if (paused) {
+      this.timer = d3.interval(this.tick.bind(this), TICK_LENGTH/this.state.speed);
+    } else {
+      this.timer.stop()
+    }
+    this.setState({ paused: !paused })
+
     //this.state.speed = 1    //(reset FF/Rewind)
   }
   pauseTxs(){
@@ -255,9 +224,9 @@ class Sandbox extends Component {
     });
   }
 
-  deselectNode(){
-    this.setState({clickedNode: null})
-  }
+  // deselectNode(){
+  //   this.setState({clickedNode: null})
+  // }
 
   reset(){
     console.log('reset')
@@ -312,26 +281,6 @@ class Sandbox extends Component {
               showState = {this.showState.bind(this)}
               icons = {iconMap}
             />
-{/*            <Graph ref={instance => { this.graph = instance; }}
-             id='graph-id' // id is mandatory, if no id is defined rd3g will throw an error
-             data={data}
-             config={myConfig}
-             onClickNode={this.onClickNode.bind(this)}
-             clickedNode = {clickedNode}
-             onClickLink={onClickLink}
-             onMouseOverNode={this.onMouseOverNode.bind(this)}
-             onMouseOutNode={this.onMouseOutNode.bind(this)}
-             onMouseOverLink={onMouseOverLink}
-             onMouseOutLink={onMouseOutLink}
-             doubleSpend = {this.doubleSpend.bind(this)}
-             spend = {this.spend.bind(this)}
-             deselectNode = {this.deselectNode.bind(this)}
-             messages={messages}
-             time={time}
-             speed={speed}
-             paused={paused}
-             onTick = {this.getTick.bind(this)}
-             nodeState = {this.getNode.bind(this)}/>*/}
             <Graph
               nodes={nodes}
               links={data.links}

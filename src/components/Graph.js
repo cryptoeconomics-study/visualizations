@@ -55,13 +55,6 @@ var updateLink = (selection) => {
 };
 
 // **** Message Functions  ****
-
-var getNodeById = (id) => {
-  return force.nodes().find(
-    (node) => node.pid === id
-  )
-}
-
 var enterMessage = (selection) => {
   selection.classed('message', true)
     .attr("r", 6)
@@ -71,14 +64,30 @@ var enterMessage = (selection) => {
     .attr('stroke', (d) => '#' + d.message.sig.slice(2,8))
     .attr("cx", d=> getNodeById(d.sender).x)
     .attr("cy", d=> getNodeById(d.sender).y)
-    .transition()
-    .duration(d=> (1000 * (d.recvTime - d.sentTime)))
-    .ease(d3.easeLinear)
-    .attr("cx", d=> getNodeById(d.recipient.pid).x)
-    .attr("cy", d=> getNodeById(d.recipient.pid).y)
+}
+
+var getNodeById = (id) => {
+  return force.nodes().find(
+    (node) => node.pid === id
+  )
+}
+
+const getMsgPos = (msg, coord) => {
+  const distance = msg.time - msg.sentTime
+  const length = msg.recvTime - msg.sentTime
+  const progress = distance/length
+  const recCoord = getNodeById(msg.recipient)[coord]
+  const sentCoord = getNodeById(msg.sender)[coord]
+  return progress * (recCoord - sentCoord) + sentCoord
 }
 
 var updateMessage = (selection) => {
+  selection
+  .transition()
+  .duration(300)
+  .ease(d3.easeLinear)
+  .attr("cx", d => getMsgPos(d,'x'))
+  .attr("cy", d => getMsgPos(d, 'y'))
 }
 
 // **** Graph Functions  ****
@@ -88,12 +97,12 @@ var updateGraph = (selection) => {
     .call(updateNode);
   selection.selectAll('.link')
     .call(updateLink)
-  selection.selectAll('.message')
-    .call(updateMessage)
+  // selection.selectAll('.message')
+  //   .call(updateMessage)
 };
 
 var zoomed = (selection, width, height) => {
-  selection.attr('transform', 
+  selection.attr('transform',
             'translate(' + (-width/2 + 100) + ', ' + (height/2 - 500) + ')scale(' + 1.5 + ')');
   console.log("Zoomed", width, height)
 };
@@ -139,16 +148,15 @@ class Graph extends Component {
       d3Links.enter().insert('line', '.node').call(enterLink);
       d3Links.exit().remove();
       d3Links.call(updateLink);
-
       const d3Messages = this.d3Graph.selectAll('.message')
         .data(nextProps.messages, message => {
           return message.message.sig + ':' +
-          message.recipient.pid + ':' +
+          message.recipient + ':' +
           message.sender
         });
-      d3Messages.enter().insert('circle', '.node').call(enterMessage);
+      const msgEnter = d3Messages.enter().insert('circle', '.node').call(enterMessage);
       d3Messages.exit().remove();
-      d3Messages.call(updateMessage);
+      d3Messages.merge(msgEnter).call(updateMessage);
 
       // we should actually clone the nodes and links
       // since we're not supposed to directly mutate

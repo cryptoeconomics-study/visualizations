@@ -49,7 +49,7 @@ class NetworkSimulator {
           recipient.onReceive(message)
         }
       }
-      delete this.messageQueue.time
+      delete this.messageQueue[this.time]
     }
     for (let a of this.agents) {
       a.tick()
