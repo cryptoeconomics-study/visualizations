@@ -8,6 +8,8 @@ var force = d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(-10000))
         .force("center", d3.forceCenter(width / 2, height / 2));
 
+var zoom = d3.zoom();
+
 // *****************************************************
 // ** d3 functions to manipulate attributes
 // *****************************************************
@@ -90,6 +92,19 @@ var updateGraph = (selection) => {
     .call(updateMessage)
 };
 
+var zoomed = (selection, width, height) => {
+  selection.attr('transform', 
+            'translate(' + (-width/2 + 100) + ', ' + (height/2 - 500) + ')scale(' + 1.5 + ')');
+  console.log("Zoomed", width, height)
+};
+
+var resize = (selection) => {
+  console.log("Resized")
+  width = window.innerWidth;
+  height = window.innerHeight;
+  zoomed(selection, width, height)
+};
+
 // *****************************************************
 // ** Graph component
 // *****************************************************
@@ -102,6 +117,9 @@ class Graph extends Component {
         // which uses d3 to manipulate the attributes,
         // and React doesn't have to go through lifecycle on each tick
         this.d3Graph.call(updateGraph);
+      });
+      d3.select(window).on("resize", () => {
+        this.d3Graph.call(resize);
       });
     }
 
