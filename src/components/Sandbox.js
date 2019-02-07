@@ -5,6 +5,7 @@ import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
 import Tray from './Tray.jsx'
 import Graph from './Graph.js'
+import NodeControls from './NodeControls.js'
 import * as d3 from 'd3'
 
 // import Parameters from './Parameters.js'
@@ -106,25 +107,21 @@ class Sandbox extends Component {
   //   }
   // }
 
-  // getCurrNode(nodeId) {
-  //   if (network) {
-  //     return network.agents.find((node) => {
-  //       return node.pid === nodeId;
-  //     });
-  //   }
-  // }
+  getCurrNode(nodeId) {
+    if (network) {
+      return network.agents.find((node) => node.pid === nodeId);
+    }
+  }
 
-  // onClickNode (nodeId) {
-  //   const {clickedNode, time} = this.state
-  //   const node = this.getNode(nodeId, time)
-  //   console.log('Clicked node', node.state, node.invalidNonceTxs)
+  onClickNode (node, x, y) {
+    const {clickedNode} = this.state
 
-  //   if (clickedNode && node.pid === clickedNode.pid) {
-  //     this.setState({clickedNode: null})
-  //   } else {
-  //     this.setState({clickedNode: node})
-  //   }
-  // };
+    if (clickedNode && node.pid === clickedNode.pid) {
+      this.setState({clickedNode: null})
+    } else {
+      this.setState({clickedNode: {...node, clickedX: x, clickedY: y}})
+    }
+  };
 
   pause(){
     const {paused, speed} = this.state
@@ -185,6 +182,7 @@ class Sandbox extends Component {
   }
 
   doubleSpend(evilNode){
+    evilNode = this.getCurrNode(evilNode.pid)
     const drEvil = evilNode.pid
     const victims = [network.peers[drEvil][0], network.peers[drEvil][1]]
     const spends = [evilNode.generateTx(victims[0].wallet.address, 10), evilNode.generateTx(victims[1].wallet.address, 10)]
@@ -224,9 +222,9 @@ class Sandbox extends Component {
     });
   }
 
-  // deselectNode(){
-  //   this.setState({clickedNode: null})
-  // }
+  deselectNode(){
+    this.setState({clickedNode: null})
+  }
 
   reset(){
     console.log('reset')
@@ -252,6 +250,7 @@ class Sandbox extends Component {
   }
   render() {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
+    console.log(clickedNode && clickedNode.x)
     return (
       <div id='App-container'>
         <div id='Text-container'>
@@ -285,7 +284,20 @@ class Sandbox extends Component {
               nodes={nodes}
               links={data.links}
               messages = {messages || []}
+              onClick = {this.onClickNode.bind(this)}
+           />
+           {clickedNode ? (
+            <div style= {{
+              position:'absolute',
+              left: clickedNode.clickedX - 400,
+              top: clickedNode.clickedY
+            }}>
+              <NodeControls
+                doubleSpend={this.doubleSpend.bind(this, clickedNode)}
+                spend={this.spend.bind(this, clickedNode)}
+                hide={this.deselectNode.bind(this)}
               />
+              </div>) : ''}
           </div>
           <div id='Input-container'>
             <div id='Controls-container'>

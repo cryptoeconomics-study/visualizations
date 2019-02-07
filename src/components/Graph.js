@@ -136,10 +136,14 @@ class Graph extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
+      const {onClick} = this.props
       this.d3Graph = d3.select(this.viz);
       const d3Nodes = this.d3Graph.selectAll('.node')
         .data(nextProps.nodes, (node) => node.pid);
-      d3Nodes.enter().append('g').call(enterNode);
+      d3Nodes.enter().append('g').call(enterNode)
+      .on('click', function(d){
+        onClick(d, d3.event.pageX, d3.event.pageY)
+      })
       d3Nodes.exit().remove();
       d3Nodes.call(updateNode);
 

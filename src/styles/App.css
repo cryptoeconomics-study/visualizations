@@ -314,7 +314,7 @@ b {
 	display: block;
     margin: auto;
 }
-
+/*
 #NodeControls {
 	border-radius: 3px;
 	display: flex;
@@ -358,7 +358,7 @@ b {
 
 	border-radius: 3px;
 	font-size: 4px;
-}
+}*/
 
 #doubleSpend {
 	background-color: #c0392b !important;
