@@ -9,6 +9,11 @@ Feel free to try out the [first network visualization of Sections 2.1 - 2.2](htt
 ### Contributing
 Suggestions and contributions are extremely welcome. There is also room for contributors to optimize the code as well as create visualizations for protocols that we don't cover in the course. Check out the open issues and project board and help out! Have something you'd like to add or edit or just have a question? Open an issue! :) 
 
+## How to run
+Clone this repo with `git clone`.
+Run: `npm install` and then `npm start`.
+
+
 ## Coding Project Outline
 
 ### Chapter 1 - Central Payment Operator 
