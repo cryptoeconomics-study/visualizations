@@ -250,7 +250,6 @@ class Sandbox extends Component {
   }
   render() {
     const {clickedNode, selectedNodes, messages, time, paused, pausedTxs, speed} = this.state
-    console.log(clickedNode && clickedNode.x)
     return (
       <div id='App-container'>
         <div id='Text-container'>

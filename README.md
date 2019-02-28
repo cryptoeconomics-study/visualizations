@@ -1,20 +1,13 @@
-# <img src="https://i.imgur.com/XzsEQmk.png" alt="ethereum logo" width="25px" top="25px"> Cryptoeconomics.study
-  
-  
----
+# 🕹 Network Visualizations
 
-
-## Network Visualizations
-This repository contains the network visualizatons which accompany the Cryptoeconomics.study course. The visualizations will be integrated into the coding lessons on Chainshot and will include interactive visualizations of all of the protocols we build in the course, from a central payment operator up to a Proof of Stake blockchain.
+This repository contains the network visualizatons which accompany the Cryptoeconomics.study course. The visualizations will be integrated into the coding lessons on Chainshot ([repo](https://github.com/cryptoeconomics-study/chainshot-content)) and will include interactive visualizations of all of the protocols we build in the course, from a central payment operator up to a Proof of Stake blockchain.
 
 This project is currently in its early development stages and requires major refactoring before building new visualizations. You can watch a [demo](https://youtu.be/PMabMK_XZ1A) of what our end vision is for the coding project and view in-depth details of our roadmap [here](https://docs.google.com/document/d/1R85zczC1-nklLXEFx-dZfQdlZexRAk8S9G9Hc3Zjkx4/edit?usp=sharing).
 
-Feel free to try out the [first network visualization of Sections 2.1 - 2.2](https://k-ho.github.io/code/).
-
-Questions? Reach out to Kevin at kevinjho1996 [at] gmail.com
+Feel free to try out the [first network visualization of Sections 2.1 - 2.2](https://k-ho.github.io/code/) <--sorry this link is broken will fix ASAP - watch a demo [here](https://www.youtube.com/watch?v=LWKHs7Zfq34).
 
 ### Contributing
-Suggestions and contributions are extremely welcome. There is also room for contributors to optimize the code as well as create visualizations for protocols that we don't cover in the course. Check out the open issues and project board and help out! :) 
+Suggestions and contributions are extremely welcome. There is also room for contributors to optimize the code as well as create visualizations for protocols that we don't cover in the course. Check out the open issues and project board and help out! Have something you'd like to add or edit or just have a question? Open an issue! :) 
 
 ## Coding Project Outline
 

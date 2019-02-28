@@ -19,7 +19,10 @@ var zoom = d3.zoom();
 var enterNode = (selection) => {
   selection.classed('node', true)
     .append('circle')
-    .attr("r", 20)
+    .attr("r", d=>{
+      if (d.constructor.name === 'Spender') return 20
+
+    })
   selection.append("svg:image")
     .attr("xlink:href", d => d.gerbil)
     .attr("x", d => -12.5)
