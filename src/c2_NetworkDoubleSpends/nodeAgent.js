@@ -4,10 +4,6 @@ function getTxHash (tx) {
   return EthCrypto.hash.keccak256(JSON.stringify(tx))
 }
 
-function getColor(state) {
-  return "#" + EthCrypto.hash.keccak256(JSON.stringify(state)).substr(-6)
-}
-
 class Node {
   constructor (wallet, genesis, network) {
     // Blockchain identity
@@ -18,9 +14,9 @@ class Node {
     this.pid = wallet.address
     this.network = network
     this.state = genesis
-    this.color = getColor(genesis)
     this.transactions = []
     this.invalidNonceTxs = {}
+    this.setColor()
   }
 
   onReceive (tx) {
@@ -59,6 +55,10 @@ class Node {
     return tx
   }
 
+  setColor() {
+    this.color = "#" + EthCrypto.hash.keccak256(JSON.stringify(this.state)).substr(-6)
+  }
+
   applyTransaction (tx) {
     // Check the from address matches the signature
     const signer = EthCrypto.recover(tx.sig, getTxHash(tx.contents))
@@ -92,7 +92,7 @@ class Node {
       throw new Error('Invalid transaction type!')
     }
     this.state[[tx.contents.from]].nonce += 1
-    this.color = getColor(this.state)
+    this.setColor()
   }
 }
 
