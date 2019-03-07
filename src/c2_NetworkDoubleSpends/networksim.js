@@ -6,7 +6,8 @@ class NetworkSimulator {
   constructor (latency, packetLoss) {
     const normalRandom = d3.randomNormal.source(seedrandom('a22ebc7c488a3a47'))(latency, (latency * 2) / 5)
     this.agents = []
-    this.latencyDistribution = () => Math.floor(Math.max(normalRandom(), 0))
+    // this.latencyDistribution = () => Math.floor(Math.max(normalRandom(), 0))
+    this.latencyDistribution =() => Math.floor(d3.randomUniform((latency * 2) / 5, latency)())
     this.time = 0
     this.messageQueue = {}
     this.peers = {}

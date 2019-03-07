@@ -1,6 +1,5 @@
 var EthCrypto = require('eth-crypto')
 var {Node, getTxHash} = require('../nodeAgent')
-var _ = require('lodash')
 
 // Spender is a Node that sends a random transaction at every tick()
 class FaultTolerant extends Node {
@@ -9,10 +8,10 @@ class FaultTolerant extends Node {
     this.delta = delta
     this.pendingTxs = {}
     this.seen = []
+    this.nonce = 0
   }
 
   timeout(timestamp, numObservers) {
-    console.log('timeout', timestamp, numObservers, this.delta)
     return timestamp + numObservers * this.delta
   }
   addressesFromSigs(tx) {
@@ -36,6 +35,12 @@ class FaultTolerant extends Node {
     const sigs = this.addressesFromSigs(tx)
     //TODO catch error if first signee is not tx sender
     if(this.network.time >= this.timeout(tx.contents.timestamp, sigs.size)) return
+    this.addToPending(tx)
+    //add signature
+    tx.sigs.push(EthCrypto.sign(this.wallet.privateKey, getTxHash(tx)))
+    this.network.broadcast(this.pid, tx)
+  }
+  addToPending(tx) {
     //seen tx
     this.seen.push(tx.contents)
     //TODO Check that each signee is actually a peer in the network
@@ -48,9 +53,11 @@ class FaultTolerant extends Node {
     this.pendingTxs[finalTimeout].sort((a, b)=>{
       return a.sigs[0] - b.sigs[0]
     })
-
-    //add signature
-    tx.sigs.push(EthCrypto.sign(this.wallet.privateKey, getTxHash(tx)))
+  }
+  sendTx(to, amount) {
+    const tx = this.generateTx(to, amount)
+    this.nonce++
+    this.addToPending(tx)
     this.network.broadcast(this.pid, tx)
   }
 
@@ -70,7 +77,7 @@ class FaultTolerant extends Node {
       amount: amount,
       from: this.wallet.address,
       to: to,
-      nonce: this.state[this.wallet.address].nonce,
+      nonce: this.nonce,
       timestamp: this.network.time
     }
     const tx = {

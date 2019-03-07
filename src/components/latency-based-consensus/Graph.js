@@ -163,9 +163,8 @@ class Graph extends Component {
           message.recipient + ':' +
           message.sender
         });
-        console.log('propsmessages',nextProps.messages)
       const msgEnter = d3Messages.enter().insert('circle', '.node').call(enterMessage);
-      d3Messages.exit().remove();
+      d3Messages.exit().remove()
       d3Messages.merge(msgEnter).call(updateMessage);
 
       // we should actually clone the nodes and links

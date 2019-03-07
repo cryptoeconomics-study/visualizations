@@ -1,5 +1,5 @@
 var EthCrypto = require('eth-crypto')
-var NetworkSimulator = require('./networksimFT')
+var NetworkSimulator = require('../networksim')
 var FaultTolerant = require('./FaultTolerant')
 
 class FTSpender extends FaultTolerant {
@@ -26,10 +26,28 @@ class FTSpender extends FaultTolerant {
       return
     }
     // Generate random transaction .5% of the ticks
-    if(Math.random() < 0.01) {
-      const tx = this.generateTx(this.getRandomReceiver(), 10)
-      // Broadcast this tx to the network
-      this.network.broadcast(this.pid, tx)
+    if(Math.random() < 0.1) {
+      this.sendTx(this.getRandomReceiver(), 10)
+      // const tx = this.generateTx(this.getRandomReceiver(), 10)
+      // if (this.seen.includes(tx.contents)) return
+      // const sigs = this.addressesFromSigs(tx)
+      // //TODO catch error if first signee is not tx sender
+      // if(this.network.time >= this.timeout(tx.contents.timestamp, sigs.size)) return
+      // //seen tx
+      // this.seen.push(tx.contents)
+      // //TODO Check that each signee is actually a peer in the network
+      //   //-possible attack: byzantine node signs a message 100 times with random Private Key
+      // const finalTimeout = this.timeout(tx.contents.timestamp, this.network.agents.length)
+      // if (!this.pendingTxs[finalTimeout]) this.pendingTxs[finalTimeout] = []
+      // //add to pending ( we'll apply this transaction once we hit finalTimeout)
+      // this.pendingTxs[finalTimeout].push(tx)
+      // //Choice rule: if have two transactions with same sender, nonce, and timestamp apply the one with lower sig first
+      // this.pendingTxs[finalTimeout].sort((a, b)=>{
+      //   return a.sigs[0] - b.sigs[0]
+      // })
+      // // Broadcast this tx to the network
+      // this.nonce++
+      // this.network.broadcast(this.pid, tx)
     }
   }
 }
@@ -40,7 +58,7 @@ const wallets = []
 const genesis = {}
 const latency = 15 //10-15 ticks per message
 const packetLoss = 0
-const delta = 16
+const delta = latency
 const numConnections = 2
 const network = new NetworkSimulator(latency, packetLoss);
 for (let i = 0; i < numNodes; i++) {

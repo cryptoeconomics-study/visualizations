@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
+import CircularProgressbar from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 class Ledger extends Component {
   constructor(props) {
     super(props)
     this.invalidNonceTxs = []
+    this.pendingTxs = []
   }
 
   updateInvalidNonceTxs() {
@@ -36,24 +39,57 @@ class Ledger extends Component {
     this.invalidNonceTxs = updatedInvalidNonceTxs
   }
 
+  updatePendingTxs() {
+    const {node} = this.props
+    const pendingTxs = []
+    Object.keys(node.pendingTxs).forEach((timeout, i) => {
+      for (let tx of node.pendingTxs[timeout]) {
+        console.log('tx', tx)
+        pendingTxs.push({...tx.contents, timeout: timeout})
+      }
+    })
+    this.pendingTxs = pendingTxs
+  }
+
   clicked(showState, node) {
     showState(node)
   }
 
   render() {
     const {node, icons, showState} = this.props
-
     this.updateInvalidNonceTxs()
-
-    const data = Object.keys(node.state).map(function(nodeId, i) {
+    this.updatePendingTxs()
+    const pendingTxData = this.pendingTxs.map(function(tx, i) {
+      const percentage = Math.floor(100*(node.network.time - tx.timestamp)/(tx.timeout-tx.timestamp))
       return (
         <tr key={i}>
-          <td>{nodeId.substring(0,5)}</td>
-          <td>{node.state[nodeId].balance}</td>
-          <td>{node.state[nodeId].nonce}</td>
+          <td>{tx.from.substring(0,5)}</td>
+          <td>{tx.to.substring(0,5)}</td>
+          <td>{tx.amount}</td>
+          <td>
+            <CircularProgressbar
+              percentage={percentage}
+              text={`${percentage}%`}
+            />
+          </td>
         </tr>
       )
     })
+    const pendingTxTable =
+    <div style = {this.pendingTxs.length ? {} : {display: 'none'}}>
+      <p>Pending Transactions</p>
+      <table>
+        <tbody>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Amount</th>
+            <th>Time Remaining</th>
+          </tr>
+          { pendingTxData }
+       </tbody>
+      </table>
+    </div>
 
     const nonceData = this.invalidNonceTxs.map(function(tx, i) {
       return (
@@ -66,20 +102,30 @@ class Ledger extends Component {
       )
     })
     const nonceTable =
-    <div style = {this.invalidNonceTxs.length ? {} : {display: 'none'}}>
+      <div style = {this.invalidNonceTxs.length ? {} : {display: 'none'}}>
         <p>Invalid Nonce Transactions</p>
-       <table>
-         <tbody>
-          <tr>
-            <th>From</th>
-            <th>To</th>
-            <th>Amount</th>
-            <th>Nonce</th>
-          </tr>
-          { nonceData }
+        <table>
+          <tbody>
+            <tr>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount</th>
+              <th>Nonce</th>
+            </tr>
+            { nonceData }
          </tbody>
         </table>
-        </div>
+      </div>
+
+    const data = Object.keys(node.state).map(function(nodeId, i) {
+      return (
+        <tr key={i}>
+          <td>{nodeId.substring(0,5)}</td>
+          <td>{node.state[nodeId].balance}</td>
+          <td>{node.state[nodeId].nonce}</td>
+        </tr>
+      )
+    })
 
     const backgroundColor = Number.parseInt(node.color.slice(1), 16)
 
@@ -114,6 +160,7 @@ class Ledger extends Component {
             { data }
            </tbody>
           </table>
+          {pendingTxTable}
           {nonceTable}
         </div>
     );

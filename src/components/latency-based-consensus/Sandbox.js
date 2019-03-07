@@ -196,11 +196,8 @@ class Sandbox extends Component {
 
   spend(currNode){
     const node = this.getCurrNode(currNode.pid)
-    const tx = node.generateTx(node.getRandomReceiver(), 10)
-    // Broadcast this tx to the network
-    network.broadcast(node.pid, tx)
-
     // initiate random spend
+    node.sendTx(node.getRandomReceiver(), 10)
   }
 
   showState(node){

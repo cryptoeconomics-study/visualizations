@@ -66,20 +66,20 @@ class Ledger extends Component {
       )
     })
     const nonceTable =
-    <div style = {this.invalidNonceTxs.length ? {} : {display: 'none'}}>
+      <div style = {this.invalidNonceTxs.length ? {} : {display: 'none'}}>
         <p>Invalid Nonce Transactions</p>
-       <table>
-         <tbody>
-          <tr>
-            <th>From</th>
-            <th>To</th>
-            <th>Amount</th>
-            <th>Nonce</th>
-          </tr>
-          { nonceData }
+        <table>
+          <tbody>
+            <tr>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount</th>
+              <th>Nonce</th>
+            </tr>
+            { nonceData }
          </tbody>
         </table>
-        </div>
+      </div>
 
     const backgroundColor = Number.parseInt(node.color.slice(1), 16)
 
