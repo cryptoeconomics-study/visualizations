@@ -44,8 +44,7 @@ class Ledger extends Component {
     const pendingTxs = []
     Object.keys(node.pendingTxs).forEach((timeout, i) => {
       for (let tx of node.pendingTxs[timeout]) {
-        console.log('tx', tx)
-        pendingTxs.push({...tx.contents, timeout: timeout})
+        pendingTxs.push({...tx, timeout: timeout})
       }
     })
     this.pendingTxs = pendingTxs
@@ -60,17 +59,29 @@ class Ledger extends Component {
     this.updateInvalidNonceTxs()
     this.updatePendingTxs()
     const pendingTxData = this.pendingTxs.map(function(tx, i) {
-      const percentage = Math.floor(100*(node.network.time - tx.timestamp)/(tx.timeout-tx.timestamp))
+      const percentage = Math.floor(100*(node.network.time - tx.contents.timestamp)/(tx.timeout-tx.contents.timestamp))
+      console.log('percentage:', percentage, 'color: #', tx.sigs[0].slice(2,8))
       return (
         <tr key={i}>
-          <td>{tx.from.substring(0,5)}</td>
-          <td>{tx.to.substring(0,5)}</td>
-          <td>{tx.amount}</td>
+          <td>{tx.contents.from.substring(0,5)}</td>
+          <td>{tx.contents.to.substring(0,5)}</td>
+          <td>{tx.contents.amount}</td>
           <td>
+          <div style={{ width: '50px' }}>
             <CircularProgressbar
               percentage={percentage}
-              text={`${percentage}%`}
+              strokeWidth={50}
+              key = {tx.sigs[0]}
+              textForPercentage={null}
+              styles={{
+                path: {
+                  strokeLinecap: 'butt',
+                  stroke: '#' + tx.sigs[0].slice(2,8)
+                },
+                text: { fill: '#000' },
+              }}
             />
+            </div>
           </td>
         </tr>
       )
@@ -84,7 +95,7 @@ class Ledger extends Component {
             <th>From</th>
             <th>To</th>
             <th>Amount</th>
-            <th>Time Remaining</th>
+            <th>Timeout</th>
           </tr>
           { pendingTxData }
        </tbody>
