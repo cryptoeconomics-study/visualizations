@@ -88,7 +88,7 @@ const getMsgPos = (msg, coord) => {
 var updateMessage = (selection) => {
   selection
   .transition()
-  .duration(300)
+  .duration(500)
   .ease(d3.easeLinear)
   .attr("cx", d => getMsgPos(d,'x'))
   .attr("cy", d => getMsgPos(d, 'y'))

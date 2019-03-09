@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {nodes, network} from '../../c2_NetworkDoubleSpends/Latency_Based_Consensus/createFTNetSim'
-import Controls from './Controls.js'
+import Controls from '../Controls.js'
 import Ledgers from './Ledgers.jsx'
 import Instructions from './Instructions.jsx'
-import Tray from './Tray.jsx'
+import Tray from '../Tray.jsx'
 import Graph from './Graph.js'
-import NodeControls from './NodeControls.js'
+import NodeControls from '../NodeControls.js'
 import * as d3 from 'd3'
 
 // import Parameters from './Parameters.js'
@@ -22,7 +22,7 @@ const ICONS = [
   'https://i.imgur.com/jNB8LS6.png'
 ]
 
-const TICK_LENGTH = 300 //ms
+const TICK_LENGTH = 500 //ms
 
 // graph payload (with minimalist structure)
 const data = {
