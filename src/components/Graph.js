@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 
 var width = 960;
 var height = 700;
+let speed = 1;
 //Make responsive
 var force = d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(-10000))
@@ -87,7 +88,7 @@ const getMsgPos = (msg, coord) => {
 var updateMessage = (selection) => {
   selection
   .transition()
-  .duration(300)
+  .duration(300/speed)
   .ease(d3.easeLinear)
   .attr("cx", d => getMsgPos(d,'x'))
   .attr("cy", d => getMsgPos(d, 'y'))
@@ -140,6 +141,7 @@ class Graph extends Component {
 
     shouldComponentUpdate(nextProps) {
       const {onClick} = this.props
+      speed = nextProps.speed
       this.d3Graph = d3.select(this.viz);
       const d3Nodes = this.d3Graph.selectAll('.node')
         .data(nextProps.nodes, (node) => node.pid);

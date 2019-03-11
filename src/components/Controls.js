@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import Switch from 'rc-switch';
 
-const Controls = ({paused, onPause, onPauseTxs, pausedTxs, togglePopup}) => {
+const Controls = ({paused, onPause, onPauseTxs, pausedTxs, togglePopup, adjustSpeed}) => {
   return (
       <div id = "Controls">
         <Button onClick={onPause}>{paused ?
@@ -13,6 +13,9 @@ const Controls = ({paused, onPause, onPauseTxs, pausedTxs, togglePopup}) => {
            onChange={onPauseTxs}
          />
          </div>
+         <Button onClick={adjustSpeed}>
+           <Glyphicon glyph="question-sign" />
+         </Button>
         <Button onClick={togglePopup}>
           <Glyphicon glyph="question-sign" />
         </Button>

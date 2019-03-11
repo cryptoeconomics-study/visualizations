@@ -141,44 +141,11 @@ class Sandbox extends Component {
     }
   }
 
-  rewind(){
-    let speed = this.state.speed
-    if(speed*1.5 > 10){
-      return
-    }
-    this.setState({speed : speed *= 1.5})
-    console.log('rewind', speed)
-  }
-
-  fastforward(){
-    let speed = this.state.speed
-    if(speed/1.5 < .005){
-      return
-    }
-    this.setState({speed : speed /= 1.5})
-    console.log('fastforward', speed)
-  }
-
-  stepbackward(){
-    console.log('stepbackward')
-    const {time} = this.state
-    if(time < 1){
-      return
-    }
-    this.setState({paused:true})
-    this.graph.step(time - 1)
-    this.getTick(time - 1)
-    this.graph.animate()
-    //this.graph.setState({messages: this.setMessageQueue(this.history[time])})
-  }
-
-  stepforward(){
-    console.log('stepforward')
-    const {time} = this.state
-    this.setState({paused:true})
-    this.graph.step(time + 1)
-    this.getTick(time + 1)
-    this.graph.animate()
+  adjustSpeed(speed){
+    this.setState({speed : speed }, () => {
+     this.timer.stop()
+     this.timer = d3.interval(this.tick.bind(this), TICK_LENGTH/this.state.speed);
+   })
   }
 
   doubleSpend(evilNode){
@@ -284,6 +251,7 @@ class Sandbox extends Component {
               links={data.links}
               messages = {messages || []}
               onClick = {this.onClickNode.bind(this)}
+              speed = {speed}
            />
            {clickedNode ? (
             <div style= {{
@@ -306,11 +274,7 @@ class Sandbox extends Component {
               paused = {paused}
               pausedTxs = {pausedTxs}
               togglePopup = {this.togglePopup.bind(this)}
-              stepbackward = {this.stepbackward.bind(this)}
-              stepforward = {this.stepforward.bind(this)}
-              rewind = {this.rewind.bind(this)}
-              fastforward = {this.fastforward.bind(this)}
-              reset = {this.reset.bind(this)}/>
+              adjustSpeed = {this.adjustSpeed.bind(this, 2.0)}/>
             </div>
             {/*<div id='Parameters-container'>
               <Parameters
