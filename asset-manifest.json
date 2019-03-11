@@ -1,11 +1,11 @@
 {
-  "runtime~main.js": "/visualizations/static/js/runtime~main.84b9534d.js",
-  "runtime~main.js.map": "/visualizations/static/js/runtime~main.84b9534d.js.map",
-  "vendors.css": "/visualizations/static/css/vendors.1db98da3.chunk.css",
-  "vendors.js": "/visualizations/static/js/vendors.7a97b335.chunk.js",
-  "vendors.js.map": "/visualizations/static/js/vendors.7a97b335.chunk.js.map",
-  "main.css": "/visualizations/static/css/main.074b7b6b.chunk.css",
-  "main.js": "/visualizations/static/js/main.3b106cb2.chunk.js",
-  "main.js.map": "/visualizations/static/js/main.3b106cb2.chunk.js.map",
-  "index.html": "/visualizations/index.html"
+  "runtime~main.js": "/static/js/runtime~main.41117e05.js",
+  "runtime~main.js.map": "/static/js/runtime~main.41117e05.js.map",
+  "vendors.css": "/static/css/vendors.1db98da3.chunk.css",
+  "vendors.js": "/static/js/vendors.9ac69fcf.chunk.js",
+  "vendors.js.map": "/static/js/vendors.9ac69fcf.chunk.js.map",
+  "main.css": "/static/css/main.074b7b6b.chunk.css",
+  "main.js": "/static/js/main.57a29b4a.chunk.js",
+  "main.js.map": "/static/js/main.57a29b4a.chunk.js.map",
+  "index.html": "/index.html"
 }
