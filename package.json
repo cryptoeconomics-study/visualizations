@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "https://cryptoeconomics-study.github.io",
+  "homepage": "https://cryptoeconomics-study.github.io/visualizations/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

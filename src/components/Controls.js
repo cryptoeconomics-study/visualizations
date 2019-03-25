@@ -13,9 +13,9 @@ const Controls = ({paused, onPause, onPauseTxs, pausedTxs, togglePopup, adjustSp
            onChange={onPauseTxs}
          />
          </div>
-         <Button onClick={adjustSpeed}>
-           <Glyphicon glyph="question-sign" />
-         </Button>
+{/*        <Button onClick={adjustSpeed}>
+           <Glyphicon glyph="forward" />
+        </Button>*/}
         <Button onClick={togglePopup}>
           <Glyphicon glyph="question-sign" />
         </Button>
