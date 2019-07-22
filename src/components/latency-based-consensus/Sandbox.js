@@ -269,7 +269,7 @@ class Sandbox extends Component {
            {clickedNode ? (
             <div style= {{
               position:'absolute',
-              left: clickedNode.clickedX - 400,
+              left: clickedNode.clickedX,
               top: clickedNode.clickedY
             }}>
               <NodeControls
