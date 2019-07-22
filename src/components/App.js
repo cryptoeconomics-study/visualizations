@@ -8,13 +8,14 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 const App = () => {
   return (
     <div className="App">
-      <Router>
+      <NaiveSandbox/>
+{/*      <Router>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/naive-consensus" component={NaiveSandbox} />
           <Route path="/latency-based-consensus" component={LatencySandbox} />
         </Switch>
-      </Router>
+      </Router>*/}
     </div>
   )
 }
