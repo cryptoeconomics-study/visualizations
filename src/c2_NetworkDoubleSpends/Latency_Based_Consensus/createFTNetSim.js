@@ -33,7 +33,7 @@ class FTSpender extends FaultTolerant {
 }
 
 // ****** Test this out using a simulated network ****** //
-const numNodes = 5
+const numNodes = 4
 const wallets = []
 const genesis = {}
 const latency = 15 //10-15 ticks per message
