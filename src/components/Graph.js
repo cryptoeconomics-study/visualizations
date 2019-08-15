@@ -21,8 +21,8 @@ var enterNode = (selection) => {
   selection.classed('node', true)
     .append('circle')
     .attr("r", d=>{
-      if (d.constructor.name === 'Spender') return 20
-
+      //if (d.constructor.name === 'Spender')
+      return 20
     })
   selection.append("svg:image")
     .attr("xlink:href", d => d.gerbil)

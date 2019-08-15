@@ -55,7 +55,7 @@ class Sandbox extends Component {
       paused: false,
       pausedTxs: true,
       speed: 1,
-      showPopup: false //for DEV3
+      showPopup: true
     }
   }
 

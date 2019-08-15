@@ -47,9 +47,9 @@ const Instructions = ({show, handleClose}) => {
        <h4>What is this?</h4>
        <p>
         This is an interactive network simulation designed as a part of Chapter 2 of {' '}
-           <a href="https://cryptoeconomics.study/">Cryptoeconomics.study</a>. To best understand the double spend problem, here is Ethereum Researcher Karl Floersch's explanation in section 2.2 of the course:
+           <a href="https://cryptoeconomics.study/">Cryptoeconomics.study</a>. To best understand Latency-based Consensus read Vitalik Buterin's post <a href="https://vitalik.ca/general/2018/08/07/99_fault_tolerant.html">here</a> or watch Ethereum Researcher Karl Floersch's explanation in section 2.3 of the course:
            <YouTube
-             videoId="k6JVGR7Jx0A"
+             videoId="l0AQ0UJAvM8"
              opts={opts}
            />
        </p>
@@ -68,10 +68,6 @@ const Instructions = ({show, handleClose}) => {
             <a href="">Resume Transactions</a>
           </OverlayTrigger>
           {' '}switch.
-       </p>
-       <h4>Why is my network graph so small?</h4>
-       <p>
-        To increase the size of the network graph, hover over it and scroll upwards. You can also reposition the graph by dragging it around.
        </p>
 
        <h4>What do the colors mean?</h4>
