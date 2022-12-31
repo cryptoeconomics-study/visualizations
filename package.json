@@ -9,7 +9,7 @@
     "clone": "^2.1.2",
     "d3": "^5.8.0",
     "d3-random": "^1.1.2",
-    "eth-crypto": "^1.2.3",
+    "eth-crypto": "^1.9.0",
     "rc-slider": "^8.6.3",
     "rc-switch": "^1.8.0",
     "rc-table": "^6.3.4",
@@ -18,7 +18,7 @@
     "react-circular-progressbar": "^1.0.0",
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.0-next.3e165448",
+    "react-scripts": "2.1.8",
     "react-youtube": "^7.8.0",
     "seedrandom": "^2.4.4"
   },
