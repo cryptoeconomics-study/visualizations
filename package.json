@@ -9,7 +9,7 @@
     "clone": "^2.1.2",
     "d3": "^5.8.0",
     "d3-random": "^1.1.2",
-    "eth-crypto": "^1.2.3",
+    "eth-crypto": "^1.9.0",
     "rc-slider": "^8.6.3",
     "rc-switch": "^1.8.0",
     "rc-table": "^6.3.4",
